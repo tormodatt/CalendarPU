@@ -1,4 +1,4 @@
-package calendar;
+package Appointment;
 
 import java.util.ArrayList;
 

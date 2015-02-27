@@ -1,7 +1,9 @@
-package calendar;
+package Appointment;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import calendar.User;
 
 public class Appointment {
 	
