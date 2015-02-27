@@ -1,0 +1,674 @@
+!SESSION 2015-02-26 11:00:37.750 -----------------------------------------------
+eclipse.buildId=4.4.1.M20140925-0400
+java.version=1.8.0_25
+java.vendor=Oracle Corporation
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=no_NO
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.m2e.logback.configuration 2 0 2015-02-26 11:05:16.346
+!MESSAGE Exception while setting up logging:org.eclipse.osgi.internal.framework.EquinoxConfiguration$1 cannot be cast to java.lang.String
+!STACK 0
+java.lang.ClassCastException: org.eclipse.osgi.internal.framework.EquinoxConfiguration$1 cannot be cast to java.lang.String
+	at org.eclipse.m2e.logback.configuration.LogHelper.logJavaProperties(LogHelper.java:26)
+	at org.eclipse.m2e.logback.configuration.LogPlugin.loadConfiguration(LogPlugin.java:189)
+	at org.eclipse.m2e.logback.configuration.LogPlugin.configureLogback(LogPlugin.java:144)
+	at org.eclipse.m2e.logback.configuration.LogPlugin.access$2(LogPlugin.java:107)
+	at org.eclipse.m2e.logback.configuration.LogPlugin$1.run(LogPlugin.java:62)
+	at java.util.TimerThread.mainLoop(Unknown Source)
+	at java.util.TimerThread.run(Unknown Source)
+
+!ENTRY org.eclipse.egit.ui 2 0 2015-02-26 11:06:57.219
+!MESSAGE Warning: EGit couldn't detect the installation path "gitPrefix" of native Git. Hence EGit can't respect system level
+Git settings which might be configured in ${gitPrefix}/etc/gitconfig under the native Git installation directory.
+The most important of these settings is core.autocrlf. Git for Windows by default sets this parameter to true in
+this system level configuration. The Git installation location can be configured on the
+Team > Git > Configuration preference page's 'System Settings' tab.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.egit.ui 2 0 2015-02-26 11:06:57.221
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\SynneVåge'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.pde.core 4 0 2015-02-26 11:07:19.380
+!MESSAGE The current target platform contains errors, open Window > Preferences > Plug-in Development > Target Platform for details.
+!STACK 1
+org.eclipse.core.runtime.CoreException: Problems occurred getting the plug-ins in this container
+	at org.eclipse.pde.internal.core.PluginModelManager.getExternalBundles(PluginModelManager.java:604)
+	at org.eclipse.pde.internal.core.PluginModelManager.initializeTable(PluginModelManager.java:525)
+	at org.eclipse.pde.internal.core.PluginModelManager.findModel(PluginModelManager.java:874)
+	at org.eclipse.pde.core.plugin.PluginRegistry.findModel(PluginRegistry.java:110)
+	at org.eclipse.acceleo.common.internal.utils.workspace.AcceleoWorkspaceUtil$WorkspaceResourcesListener.resourceChanged(AcceleoWorkspaceUtil.java:1066)
+	at org.eclipse.core.internal.events.NotificationManager$1.run(NotificationManager.java:291)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:42)
+	at org.eclipse.core.internal.events.NotificationManager.notify(NotificationManager.java:285)
+	at org.eclipse.core.internal.events.NotificationManager.handleEvent(NotificationManager.java:261)
+	at org.eclipse.core.internal.resources.Workspace.broadcastEvent(Workspace.java:373)
+	at org.eclipse.core.internal.resources.Resource.broadcastPreDeleteEvent(Resource.java:2036)
+	at org.eclipse.core.internal.resources.Resource.delete(Resource.java:788)
+	at org.eclipse.core.internal.resources.Project.delete(Project.java:344)
+	at org.eclipse.ltk.core.refactoring.resource.DeleteResourceChange.perform(DeleteResourceChange.java:160)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.CompositeChange.perform(CompositeChange.java:278)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation$1.run(PerformChangeOperation.java:258)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.executeChange(PerformChangeOperation.java:306)
+	at org.eclipse.ltk.internal.ui.refactoring.UIPerformChangeOperation.executeChange(UIPerformChangeOperation.java:92)
+	at org.eclipse.ltk.core.refactoring.PerformChangeOperation.run(PerformChangeOperation.java:218)
+	at org.eclipse.core.internal.resources.Workspace.run(Workspace.java:2313)
+	at org.eclipse.ltk.internal.ui.refactoring.WorkbenchRunnableAdapter.run(WorkbenchRunnableAdapter.java:87)
+	at org.eclipse.jface.operation.ModalContext$ModalContextThread.run(ModalContext.java:122)
+Contains: File does not exist: C:\eclipse\plugins\com.ibm.icu.source_50.1.1.v201304230130.jar
+Contains: File does not exist: C:\eclipse\plugins\com.jcraft.jsch.source_0.1.46.v201205102330.jar
+Contains: File does not exist: C:\eclipse\plugins\com.sun.el.source_2.2.0.v201303151357.jar
+Contains: File does not exist: C:\eclipse\plugins\javax.annotation.source_1.1.0.v201209060031.jar
+Contains: File does not exist: C:\eclipse\plugins\javax.el.source_2.2.0.v201303151357.jar
+Contains: File does not exist: C:\eclipse\plugins\javax.inject.source_1.0.0.v20091030.jar
+Contains: File does not exist: C:\eclipse\plugins\javax.servlet.jsp.source_2.2.0.v201112011158.jar
+Contains: File does not exist: C:\eclipse\plugins\javax.servlet.source_3.0.0.v201112011016.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.ant.source_1.8.4.v201303080030.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.commons.codec.source_1.4.0.v201209201156.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.commons.logging.source_1.1.1.v201101211721.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.felix.gogo.command.source_0.10.0.v201209301215.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.felix.gogo.runtime.source_0.10.0.v201209301036.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.felix.gogo.shell.source_0.10.0.v201212101605.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.httpcomponents.httpclient.source_4.1.3.v201209201135.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.httpcomponents.httpcore.source_4.1.4.v201203221030.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.jasper.glassfish.source_2.2.2.v201205150955.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.lucene.analysis.source_3.5.0.v20120725-1805.jar
+Contains: File does not exist: C:\eclipse\plugins\org.apache.lucene.core.source_3.5.0.v20120725-1805.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ant.core.source_3.2.500.v20130402-1746.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ant.launching.source_1.0.300.v20130514-1341.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ant.ui.source_3.5.400.v20130514-1341.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.compare.core.source_3.5.300.v20130514-1224.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.compare.source_3.5.401.v20130709-1308.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.compare.win32.source_1.0.200.v20130514-1224.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.commands.source_3.6.100.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.contenttype.source_3.4.200.v20130326-1255.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.databinding.beans.source_1.2.200.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.databinding.observable.source_1.4.1.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.databinding.property.source_1.4.200.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.databinding.source_1.4.1.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.expressions.source_3.4.500.v20130515-1343.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.externaltools.source_1.0.200.v20130402-1741.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.filebuffers.source_3.5.300.v20130225-1821.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.filesystem.source_1.4.0.v20130514-1240.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.jobs.source_3.5.300.v20130429-1813.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.net.source_1.2.200.v20130430-1352.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.resources.source_3.8.101.v20130717-0806.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.runtime.compatibility.registry.source_3.5.200.v20130514-1256.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.runtime.compatibility.source_3.2.200.v20130326-1255.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.runtime.source_3.9.0.v20130326-1255.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.core.variables.source_3.2.700.v20130402-1741.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.debug.core.source_3.8.0.v20130514-0954.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.debug.ui.source_3.9.0.v20130516-1713.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.core.commands.source_0.10.2.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.core.contexts.source_1.3.1.v20130905-0905.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.core.di.extensions.source_0.11.100.v20130514-1256.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.core.di.source_1.3.0.v20130514-1256.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.core.services.source_1.1.0.v20130515-1343.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.bindings.source_0.10.101.v20130801-2002.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.css.core.source_0.10.100.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.css.swt.source_0.11.0.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.css.swt.theme.source_0.9.100.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.di.source_1.0.0.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.model.workbench.source_1.0.1.v20130909-1436.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.services.source_1.0.1.v20130909-1436.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.widgets.source_1.0.0.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.workbench.addons.swt.source_1.0.1.v20130823-1518.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.workbench.renderers.swt.source_0.11.1.v20130812-1345.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.workbench.source_1.0.1.v20130910-2014.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.workbench.swt.source_0.12.1.v20130815-1438.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.workbench3.source_0.12.0.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ecf.filetransfer.source_5.0.0.v20130604-1622.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ecf.identity.source_3.2.0.v20130604-1622.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ecf.provider.filetransfer.httpclient4.source_1.0.300.v20130604-1622.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ecf.provider.filetransfer.httpclient4.ssl.source_1.0.0.v20130604-1622.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ecf.provider.filetransfer.source_3.2.0.v20130604-1622.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ecf.provider.filetransfer.ssl.source_1.0.0.v20130604-1622.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ecf.source_3.2.0.v20130604-1622.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ecf.ssl.source_1.1.0.v20130604-1622.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.app.source_1.3.100.v20130327-1442.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.bidi.source_0.10.0.v20130327-1442.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.common.source_3.6.200.v20130402-1505.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.console.source_1.0.100.v20130429-0953.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.ds.source_1.4.101.v20130813-1853.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.event.source_1.3.0.v20130327-1442.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.frameworkadmin.equinox.source_1.0.500.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.frameworkadmin.source_2.0.100.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.http.jetty.source_3.0.100.v20130327-1442.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.http.registry.source_1.1.300.v20130402-1529.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.http.servlet.source_1.1.400.v20130418-1354.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.jsp.jasper.registry.source_1.0.300.v20130327-1442.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.jsp.jasper.source_1.0.400.v20130327-1442.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.artifact.repository.source_1.1.200.v20130515-2028.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.console.source_1.0.300.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.core.source_2.3.0.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.director.app.source_1.0.300.v20130819-1621.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.director.source_2.3.0.v20130526-0335.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.directorywatcher.source_1.0.300.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.engine.source_2.3.0.v20130526-2122.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.extensionlocation.source_1.2.100.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.garbagecollector.source_1.0.200.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.jarprocessor.source_1.0.300.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.metadata.repository.source_1.2.100.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.metadata.source_2.2.0.v20130523-1557.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.operations.source_2.3.0.v20130711-1809.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.publisher.eclipse.source_1.1.200.v20130516-1953.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.publisher.source_1.3.0.v20130509-0110.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.ql.source_2.0.100.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.reconciler.dropins.source_1.1.200.v20130419-1850.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.repository.source_2.3.0.v20130412-2032.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.repository.tools.source_2.1.0.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.touchpoint.eclipse.source_2.1.200.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.touchpoint.natives.source_1.1.100.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.transport.ecf.source_1.1.0.v20130516-1858.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.ui.importexport.source_1.1.0.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.ui.sdk.scheduler.source_1.2.0.v20130828-0031.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.ui.sdk.source_1.0.300.v20130503-1750.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.ui.source_2.3.0.v20130819-1623.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.updatechecker.source_1.1.200.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.updatesite.source_1.0.400.v20130515-2028.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.preferences.source_3.5.100.v20130422-1538.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.registry.source_3.5.301.v20130717-1549.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.security.source_1.2.0.v20130424-1801.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.security.ui.source_1.1.100.v20130327-1442.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.security.win32.x86_64.source_1.0.100.v20130327-1442.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.simpleconfigurator.manipulator.source_2.0.0.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.simpleconfigurator.source_1.0.400.v20130327-2119.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.equinox.util.source_1.0.500.v20130404-1337.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.help.base.source_4.0.0.v20130911-1000.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.help.source_3.6.0.v20130326-1254.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.help.ui.source_4.0.1.v20130708-1201.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.help.webapp.source_3.6.200.v20130514-1258.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.annotation.source_1.1.0.v20130513-1648.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.apt.core.source_3.3.500.v20120516-0617.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.apt.pluggable.core.source_1.0.400.v20120516-0617.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.apt.ui.source_3.3.300.v20120516-0617.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.compiler.apt.source_1.0.600.v20130530-1010.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.compiler.tool.source_1.0.200.v20130530-1010.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.core.manipulation.source_1.5.0.v20130605-1748.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.core.source_3.9.1.v20130905-0837.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.debug.source_3.8.0.v20130514-0841.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.debug.ui.source_3.6.200.v20130514-0841.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.junit.core.source_3.7.200.v20130514-1154.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.junit.runtime.source_3.4.400.v20130514-0733.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.junit.source_3.7.200.v20130514-0733.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.junit4.runtime.source_1.1.300.v20130514-0733.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.launching.source_3.7.0.v20130515-1451.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jdt.ui.source_3.9.1.v20130820-1427.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jetty.continuation.source_8.1.10.v20130312.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jetty.http.source_8.1.10.v20130312.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jetty.io.source_8.1.10.v20130312.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jetty.security.source_8.1.10.v20130312.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jetty.server.source_8.1.10.v20130312.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jetty.servlet.source_8.1.10.v20130312.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jetty.util.source_8.1.10.v20130312.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jface.databinding.source_1.6.200.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jface.source_3.9.1.v20130725-1141.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jface.text.source_3.8.101.v20130802-1147.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jsch.core.source_1.1.400.v20111202-1616.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.jsch.ui.source_1.1.400.v20111007-1310.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ltk.core.refactoring.source_3.6.100.v20130605-1748.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ltk.ui.refactoring.source_3.7.100.v20130605-1748.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.osgi.services.source_3.3.100.v20130513-1956.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.osgi.source_3.9.1.v20130814-1242.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.osgi.util.source_3.2.300.v20130513-1956.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.api.tools.source_1.0.501.v20130807-1634.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.api.tools.ui.source_1.0.401.v20130730-1957.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.build.source_3.8.100.v20130514-1028.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.core.source_3.9.1.v20130628-1111.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.ds.core.source_1.0.300.v20130514-1232.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.ds.ui.source_1.0.300.v20130507-2057.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.junit.runtime.source_3.4.300.v20130422-2046.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.launching.source_3.6.101.v20130807-1445.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.runtime.source_3.4.400.v20130402-1757.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.ua.core.source_1.0.300.v20130402-1757.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.ua.ui.source_1.0.300.v20130508-1926.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.ui.source_3.8.0.v20130515-1659.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.pde.ui.templates.source_3.4.600.v20130507-2057.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.platform.source_4.3.1.v20130911-1000.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.search.source_3.9.0.v20130312-1625.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.swt.win32.win32.x86_64.source_3.102.1.v20130827-2048.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.team.core.source_3.7.0.v20130514-1224.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.team.cvs.core.source_3.3.500.v20130515-2011.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.team.cvs.ssh2.source_3.2.300.v20111007-1310.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.team.cvs.ui.source_3.3.600.v20130514-1224.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.team.ui.source_3.7.1.v20130729-1104.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.text.source_3.5.300.v20130515-1451.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.browser.source_3.4.100.v20130527-1656.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.cheatsheets.source_3.4.200.v20130326-1254.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.console.source_3.5.200.v20130514-0954.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.editors.source_3.8.100.v20130513-1637.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.externaltools.source_3.2.200.v20130508-2007.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.forms.source_3.6.1.v20130822-1117.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.ide.application.source_1.0.400.v20130326-1250.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.ide.source_3.9.1.v20130704-1828.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.intro.source_3.4.200.v20130326-1254.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.intro.universal.source_3.2.600.v20130326-1254.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.navigator.resources.source_3.4.500.v20130516-1049.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.navigator.source_3.5.300.v20130517-0139.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.net.source_1.2.200.v20120807-0927.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.source_3.105.0.v20130522-1122.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.trace.source_1.0.100.v20130508-1926.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.views.log.source_1.0.400.v20130515-2009.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.views.properties.tabbed.source_3.6.0.v20130515-1857.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.views.source_3.6.100.v20130326-1250.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.win32.source_3.2.400.v20130516-1056.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.workbench.source_3.105.1.v20130821-1411.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.ui.workbench.texteditor.source_3.8.101.v20130729-1318.jar
+Contains: File does not exist: C:\eclipse\plugins\org.eclipse.update.configurator.source_3.3.200.v20130326-1319.jar
+Contains: File does not exist: C:\eclipse\plugins\org.hamcrest.core.source_1.3.0.v201303031735.jar
+Contains: File does not exist: C:\eclipse\plugins\org.junit.source_4.11.0.v201303080030.jar
+Contains: File does not exist: C:\eclipse\plugins\org.objectweb.asm.source_3.3.1.v201105211655.jar
+!SUBENTRY 1 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.385
+!MESSAGE Problems occurred getting the plug-ins in this container
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.385
+!MESSAGE File does not exist: C:\eclipse\plugins\com.ibm.icu.source_50.1.1.v201304230130.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.385
+!MESSAGE File does not exist: C:\eclipse\plugins\com.jcraft.jsch.source_0.1.46.v201205102330.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.385
+!MESSAGE File does not exist: C:\eclipse\plugins\com.sun.el.source_2.2.0.v201303151357.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.385
+!MESSAGE File does not exist: C:\eclipse\plugins\javax.annotation.source_1.1.0.v201209060031.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.385
+!MESSAGE File does not exist: C:\eclipse\plugins\javax.el.source_2.2.0.v201303151357.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.385
+!MESSAGE File does not exist: C:\eclipse\plugins\javax.inject.source_1.0.0.v20091030.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\javax.servlet.jsp.source_2.2.0.v201112011158.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\javax.servlet.source_3.0.0.v201112011016.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.ant.source_1.8.4.v201303080030.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.commons.codec.source_1.4.0.v201209201156.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.commons.logging.source_1.1.1.v201101211721.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.felix.gogo.command.source_0.10.0.v201209301215.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.felix.gogo.runtime.source_0.10.0.v201209301036.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.felix.gogo.shell.source_0.10.0.v201212101605.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.httpcomponents.httpclient.source_4.1.3.v201209201135.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.httpcomponents.httpcore.source_4.1.4.v201203221030.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.386
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.jasper.glassfish.source_2.2.2.v201205150955.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.lucene.analysis.source_3.5.0.v20120725-1805.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.apache.lucene.core.source_3.5.0.v20120725-1805.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ant.core.source_3.2.500.v20130402-1746.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ant.launching.source_1.0.300.v20130514-1341.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ant.ui.source_3.5.400.v20130514-1341.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.compare.core.source_3.5.300.v20130514-1224.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.compare.source_3.5.401.v20130709-1308.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.compare.win32.source_1.0.200.v20130514-1224.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.commands.source_3.6.100.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.contenttype.source_3.4.200.v20130326-1255.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.databinding.beans.source_1.2.200.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.387
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.databinding.observable.source_1.4.1.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.388
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.databinding.property.source_1.4.200.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.388
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.databinding.source_1.4.1.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.388
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.expressions.source_3.4.500.v20130515-1343.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.388
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.externaltools.source_1.0.200.v20130402-1741.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.388
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.filebuffers.source_3.5.300.v20130225-1821.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.388
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.filesystem.source_1.4.0.v20130514-1240.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.388
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.jobs.source_3.5.300.v20130429-1813.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.388
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.net.source_1.2.200.v20130430-1352.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.388
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.resources.source_3.8.101.v20130717-0806.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.388
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.runtime.compatibility.registry.source_3.5.200.v20130514-1256.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.389
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.runtime.compatibility.source_3.2.200.v20130326-1255.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.389
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.runtime.source_3.9.0.v20130326-1255.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.389
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.core.variables.source_3.2.700.v20130402-1741.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.389
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.debug.core.source_3.8.0.v20130514-0954.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.389
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.debug.ui.source_3.9.0.v20130516-1713.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.389
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.core.commands.source_0.10.2.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.389
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.core.contexts.source_1.3.1.v20130905-0905.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.389
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.core.di.extensions.source_0.11.100.v20130514-1256.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.core.di.source_1.3.0.v20130514-1256.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.core.services.source_1.1.0.v20130515-1343.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.bindings.source_0.10.101.v20130801-2002.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.css.core.source_0.10.100.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.css.swt.source_0.11.0.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.css.swt.theme.source_0.9.100.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.di.source_1.0.0.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.model.workbench.source_1.0.1.v20130909-1436.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.services.source_1.0.1.v20130909-1436.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.widgets.source_1.0.0.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.workbench.addons.swt.source_1.0.1.v20130823-1518.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.390
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.workbench.renderers.swt.source_0.11.1.v20130812-1345.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.workbench.source_1.0.1.v20130910-2014.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.workbench.swt.source_0.12.1.v20130815-1438.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.e4.ui.workbench3.source_0.12.0.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ecf.filetransfer.source_5.0.0.v20130604-1622.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ecf.identity.source_3.2.0.v20130604-1622.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ecf.provider.filetransfer.httpclient4.source_1.0.300.v20130604-1622.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ecf.provider.filetransfer.httpclient4.ssl.source_1.0.0.v20130604-1622.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ecf.provider.filetransfer.source_3.2.0.v20130604-1622.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ecf.provider.filetransfer.ssl.source_1.0.0.v20130604-1622.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ecf.source_3.2.0.v20130604-1622.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ecf.ssl.source_1.1.0.v20130604-1622.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.391
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.app.source_1.3.100.v20130327-1442.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.bidi.source_0.10.0.v20130327-1442.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.common.source_3.6.200.v20130402-1505.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.console.source_1.0.100.v20130429-0953.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.ds.source_1.4.101.v20130813-1853.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.event.source_1.3.0.v20130327-1442.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.frameworkadmin.equinox.source_1.0.500.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.frameworkadmin.source_2.0.100.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.http.jetty.source_3.0.100.v20130327-1442.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.http.registry.source_1.1.300.v20130402-1529.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.http.servlet.source_1.1.400.v20130418-1354.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.jsp.jasper.registry.source_1.0.300.v20130327-1442.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.jsp.jasper.source_1.0.400.v20130327-1442.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.392
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.artifact.repository.source_1.1.200.v20130515-2028.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.393
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.console.source_1.0.300.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.393
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.core.source_2.3.0.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.393
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.director.app.source_1.0.300.v20130819-1621.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.393
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.director.source_2.3.0.v20130526-0335.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.393
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.directorywatcher.source_1.0.300.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.393
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.engine.source_2.3.0.v20130526-2122.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.394
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.extensionlocation.source_1.2.100.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.394
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.garbagecollector.source_1.0.200.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.394
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.jarprocessor.source_1.0.300.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.394
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.metadata.repository.source_1.2.100.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.394
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.metadata.source_2.2.0.v20130523-1557.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.394
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.operations.source_2.3.0.v20130711-1809.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.394
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.publisher.eclipse.source_1.1.200.v20130516-1953.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.394
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.publisher.source_1.3.0.v20130509-0110.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.ql.source_2.0.100.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.reconciler.dropins.source_1.1.200.v20130419-1850.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.repository.source_2.3.0.v20130412-2032.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.repository.tools.source_2.1.0.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.touchpoint.eclipse.source_2.1.200.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.touchpoint.natives.source_1.1.100.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.transport.ecf.source_1.1.0.v20130516-1858.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.ui.importexport.source_1.1.0.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.ui.sdk.scheduler.source_1.2.0.v20130828-0031.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.ui.sdk.source_1.0.300.v20130503-1750.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.ui.source_2.3.0.v20130819-1623.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.395
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.updatechecker.source_1.1.200.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.p2.updatesite.source_1.0.400.v20130515-2028.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.preferences.source_3.5.100.v20130422-1538.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.registry.source_3.5.301.v20130717-1549.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.security.source_1.2.0.v20130424-1801.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.security.ui.source_1.1.100.v20130327-1442.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.security.win32.x86_64.source_1.0.100.v20130327-1442.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.simpleconfigurator.manipulator.source_2.0.0.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.simpleconfigurator.source_1.0.400.v20130327-2119.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.equinox.util.source_1.0.500.v20130404-1337.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.help.base.source_4.0.0.v20130911-1000.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.help.source_3.6.0.v20130326-1254.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.396
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.help.ui.source_4.0.1.v20130708-1201.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.help.webapp.source_3.6.200.v20130514-1258.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.annotation.source_1.1.0.v20130513-1648.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.apt.core.source_3.3.500.v20120516-0617.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.apt.pluggable.core.source_1.0.400.v20120516-0617.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.apt.ui.source_3.3.300.v20120516-0617.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.compiler.apt.source_1.0.600.v20130530-1010.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.compiler.tool.source_1.0.200.v20130530-1010.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.core.manipulation.source_1.5.0.v20130605-1748.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.core.source_3.9.1.v20130905-0837.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.debug.source_3.8.0.v20130514-0841.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.debug.ui.source_3.6.200.v20130514-0841.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.junit.core.source_3.7.200.v20130514-1154.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.397
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.junit.runtime.source_3.4.400.v20130514-0733.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.398
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.junit.source_3.7.200.v20130514-0733.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.398
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.junit4.runtime.source_1.1.300.v20130514-0733.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.398
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.launching.source_3.7.0.v20130515-1451.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.398
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jdt.ui.source_3.9.1.v20130820-1427.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.398
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jetty.continuation.source_8.1.10.v20130312.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.398
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jetty.http.source_8.1.10.v20130312.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.398
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jetty.io.source_8.1.10.v20130312.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.398
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jetty.security.source_8.1.10.v20130312.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.398
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jetty.server.source_8.1.10.v20130312.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jetty.servlet.source_8.1.10.v20130312.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jetty.util.source_8.1.10.v20130312.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jface.databinding.source_1.6.200.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jface.source_3.9.1.v20130725-1141.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jface.text.source_3.8.101.v20130802-1147.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jsch.core.source_1.1.400.v20111202-1616.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.jsch.ui.source_1.1.400.v20111007-1310.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ltk.core.refactoring.source_3.6.100.v20130605-1748.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ltk.ui.refactoring.source_3.7.100.v20130605-1748.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.osgi.services.source_3.3.100.v20130513-1956.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.osgi.source_3.9.1.v20130814-1242.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.osgi.util.source_3.2.300.v20130513-1956.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.api.tools.source_1.0.501.v20130807-1634.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.399
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.api.tools.ui.source_1.0.401.v20130730-1957.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.build.source_3.8.100.v20130514-1028.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.core.source_3.9.1.v20130628-1111.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.ds.core.source_1.0.300.v20130514-1232.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.ds.ui.source_1.0.300.v20130507-2057.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.junit.runtime.source_3.4.300.v20130422-2046.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.launching.source_3.6.101.v20130807-1445.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.runtime.source_3.4.400.v20130402-1757.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.ua.core.source_1.0.300.v20130402-1757.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.ua.ui.source_1.0.300.v20130508-1926.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.ui.source_3.8.0.v20130515-1659.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.pde.ui.templates.source_3.4.600.v20130507-2057.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.platform.source_4.3.1.v20130911-1000.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.search.source_3.9.0.v20130312-1625.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.swt.win32.win32.x86_64.source_3.102.1.v20130827-2048.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.team.core.source_3.7.0.v20130514-1224.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.400
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.team.cvs.core.source_3.3.500.v20130515-2011.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.team.cvs.ssh2.source_3.2.300.v20111007-1310.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.team.cvs.ui.source_3.3.600.v20130514-1224.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.team.ui.source_3.7.1.v20130729-1104.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.text.source_3.5.300.v20130515-1451.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.browser.source_3.4.100.v20130527-1656.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.cheatsheets.source_3.4.200.v20130326-1254.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.console.source_3.5.200.v20130514-0954.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.editors.source_3.8.100.v20130513-1637.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.externaltools.source_3.2.200.v20130508-2007.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.forms.source_3.6.1.v20130822-1117.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.401
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.ide.application.source_1.0.400.v20130326-1250.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.ide.source_3.9.1.v20130704-1828.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.intro.source_3.4.200.v20130326-1254.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.intro.universal.source_3.2.600.v20130326-1254.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.navigator.resources.source_3.4.500.v20130516-1049.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.navigator.source_3.5.300.v20130517-0139.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.net.source_1.2.200.v20120807-0927.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.source_3.105.0.v20130522-1122.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.trace.source_1.0.100.v20130508-1926.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.views.log.source_1.0.400.v20130515-2009.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.views.properties.tabbed.source_3.6.0.v20130515-1857.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.views.source_3.6.100.v20130326-1250.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.win32.source_3.2.400.v20130516-1056.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.workbench.source_3.105.1.v20130821-1411.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.402
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.ui.workbench.texteditor.source_3.8.101.v20130729-1318.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.403
+!MESSAGE File does not exist: C:\eclipse\plugins\org.eclipse.update.configurator.source_3.3.200.v20130326-1319.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.403
+!MESSAGE File does not exist: C:\eclipse\plugins\org.hamcrest.core.source_1.3.0.v201303031735.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.403
+!MESSAGE File does not exist: C:\eclipse\plugins\org.junit.source_4.11.0.v201303080030.jar
+!SUBENTRY 2 org.eclipse.pde.core 4 0 2015-02-26 11:07:19.403
+!MESSAGE File does not exist: C:\eclipse\plugins\org.objectweb.asm.source_3.3.1.v201105211655.jar
