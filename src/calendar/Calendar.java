@@ -2,6 +2,8 @@ package calendar;
 
 import java.util.ArrayList;
 
+import Appointment.Appointment;
+
 public class Calendar {
 
 	public ArrayList<Appointment> appointment;
