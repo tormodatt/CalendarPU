@@ -1,6 +1,8 @@
-package calendar;
+package user;
 
 import java.util.ArrayList;
+
+import calendar.Calendar;
 
 public class User {
 	

@@ -1,4 +1,4 @@
-package calendar;
+package user;
 
 public abstract class Group {
 

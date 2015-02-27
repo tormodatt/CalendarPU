@@ -2,6 +2,7 @@ package calendar;
 
 import java.util.ArrayList;
 
+import user.User;
 import Appointment.Appointment;
 
 public class Calendar {
