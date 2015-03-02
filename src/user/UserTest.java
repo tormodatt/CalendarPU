@@ -8,28 +8,57 @@ import calendar.PersonalCalendar;
 
 public class UserTest {
 
-	@Test
-	public void testSetUser1() {
-		User testbruker = new User("Ola", "Nordmann", "olnord", "12a34b56c78d90e", "ola.nordmann@bedrift.no"); 
-			
+	@Test //et helt lovlig brukernavn
+	public void testSetUser1() throws Exception {
+		User testbruker = new User("olnord"); 
+
 	}
-	 @Test
+	@Test //det skal ikke være lov med tall i brukernavnet
 	public void testSetUser2(){
-		
-	}//kommentar
-	 
-	@Test
-	public void testChangeName(){
-		User testbruker = new User("Ola", "Nordmann", "olnord", "12a34b56c78d90e", "ola.nordmann@bedrift.no");
-				)
-		
-	@Test
-	public voir testChangeEmail(){
-		User testbruker = new User("Ola", "Nordmann", "olnord", "12a34b56c78d90e", "ola.nordmann@bedrift.no");
-		testbruker.setMail("brodskrive@polegg@src.no");
-		
+		try{
+			User testbruker = new User("bh1nn");	
+		}catch (Exception e){
+		}
 	}
-		
+	@Test //spesielle symboler er ikke lov i et brukernavn
+	public void testSetUser3(){
+		try {
+			User testbruker = new User("??br");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test //et brukernavn skal være sammenhengende
+	public void testSetUser4(){
+		try {
+			User testbruker = new User("ab  vd");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 		 
+	}
+
+	@Test
+	public void testSetCrendentials(){
+		User testbruker;
+		try {
+			testbruker = new User("olnord");
+			testbruker.setCredencials("Ola", "Nordmann", "olnord", "password", "mail@mail.com");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Test
+	public void testChangeEmail(){
+
+		testbruker.setMail("brodskrive@polegg@src.no");
+
+	}
+
 
 
 }
