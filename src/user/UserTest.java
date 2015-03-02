@@ -16,7 +16,7 @@ public class UserTest {
 	 @Test
 	public void testSetUser2(){
 		
-	}
+	}//kommentar
 	 
 	@Test
 	public void testChangeName(){
