@@ -11,8 +11,6 @@ public class UserTest {
 		User testuser = new User(null, null, null, null, null);
 		String navn = "petter"; 
 		assertTrue(navn.equals(testuser.setNavn(navn))); 
-		
-
 	
 	}
 	
