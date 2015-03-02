@@ -21,8 +21,7 @@ public class UserTest {
 	@Test
 	public void testChangeName(){
 		User testbruker = new User("Ola", "Nordmann", "olnord", "12a34b56c78d90e", "ola.nordmann@bedrift.no");
-		
-		)
+				)
 		
 	@Test
 	public voir testChangeEmail(){
