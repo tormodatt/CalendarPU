@@ -1,9 +1,9 @@
-package user;
-
+package tests;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import user.User;
 import calendar.PersonalCalendar;
 
 public class UserTest {
@@ -40,23 +40,31 @@ public class UserTest {
 		} 		 
 	}
 
-	@Test
+	@Test //her sendes det kun inn lovlige verdiier. 
 	public void testSetCrendentials(){
 		User testbruker;
 		try {
 			testbruker = new User("olnord");
 			testbruker.setCredencials("Ola", "Nordmann", "olnord", "password", "mail@mail.com");
+			testbruker = new User("olnord");
+			testbruker.setCredencials("Ola", "Nordmann", "olnord", "password", "mail@mail.com");
+			assertEquals("Ola Normann", testbruker.getName()); 
+			assertEquals("olnord", testbruker.getUsername()); 
+			assertEquals("mail@mail.com", testbruker.getMail()); 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			fail("All the credentials are valid");
+		} 
 	}
 
-	@Test
-	public void testChangeEmail(){
-
-		testbruker.setMail("brodskrive@polegg@src.no");
-
+	@Test //navn med tall i skal ikke aksepteres
+	public void testSetName(){
+		User testbruker; 
+		try{
+			testbruker = new User("olnord");
+			testbruker.setCredencials("Ola", "Nordmann", "olnord", "password", "mail@mail.com");
+		}catch (Exception e){
+			
+		}
 	}
 
 
