@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Database {
 	
-	  private Connection connect = null;
+	  public Connection connect = null;
 	  private Statement statement = null;
 	  //private PreparedStatement preparedStatement = null;
 	  private ResultSet resultSet = null;
