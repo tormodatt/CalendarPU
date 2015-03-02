@@ -1,9 +1,14 @@
 package calendar;
 
 import calendar.Database;
+import user.User;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
+		User user = new User("ola");
+		user.getName();
+		/*
+		
 		Database db = new Database();
 		try {
 			// Koble til databasen
@@ -16,6 +21,7 @@ public class Main {
 			//Lukke koblingen
 			db.closeConn();
 		}
+		*/
 	}
 }
 /*
