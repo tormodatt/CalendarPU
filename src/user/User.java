@@ -26,7 +26,7 @@ public class User extends Database{
 			this.username = username;
 			try {
 				openConn();
-				preparedStatement = connect.prepareStatement("select * from all_s_gr46_calendar.User WHERE Username='"+username+"'");
+				preparedStatement = connect.prepareStatement("select * from User WHERE Username='"+username+"'");
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
 					this.firstname = resultSet.getString("First_name");
@@ -38,48 +38,39 @@ public class User extends Database{
 					closeConn();
 				}
 		}
-		/*this.username = username; 
-		this.password = password; 
-		this.firstname = firstname; 
-		this.mail = mail; 
-		this.personalCalendar = new Calendar(null); 
-		this.groups = new ArrayList<Group>(); 
-		try {
-		openConn();
-		preparedStatement = connect.prepareStatement("insert into  all_s_gr46_calendar.User values (?,?, ?, ?, ?)");
-		preparedStatement.setString(1,username);
-		preparedStatement.setString(2,firstname);
-		preparedStatement.setString(3,lastname);
-		preparedStatement.setString(4,mail);
-		preparedStatement.setString(5,password);
-		preparedStatement.executeUpdate();
-		} finally {
-		closeConn();
-		}
-		*/
-		
+		else System.out.println("Brukernavnet eksisterer ikke!");
+	}
+	public User(String firstname, String lastname, String username, String password,String mail) throws Exception {
+		setCredencials(firstname,lastname,username,password,mail);
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.password = password;
+		this.mail = mail;
 	}
 
-	public String getName() throws Exception {
-		/*try {
-		openConn();
-		preparedStatement = connect.prepareStatement("select First_name,Last_name from all_s_gr46_calendar.User WHERE Username='"+username+"'");
-		resultSet = preparedStatement.executeQuery();
-		while (resultSet.next()) {
-			System.out.println("Fornavn: " + resultSet.getString("First_name") + "\nEtternavn: "+ resultSet.getString("Last_name"));
-		}
-		} finally {
-			closeConn();
-		}
-		*/
-		System.out.println("Fornavn: " + firstname + "\nEtternavn: " +lastname);
+	public String getFirstname() throws Exception {
 		return firstname;
+	}
+	public String getLastname() {
+		return username;
+	}	
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+	
+	public String getMail() {
+		return mail;
 	}
 
 	public void setCredencials(String firstname, String lastname, String username, String password, String mail) throws Exception {
 		try {
 		openConn();
-		preparedStatement = connect.prepareStatement("insert into  all_s_gr46_calendar.User values (?,?, ?, ?, ?)");
+		preparedStatement = connect.prepareStatement("insert into User values (?,?, ?, ?, ?)");
 		preparedStatement.setString(1,username);
 		preparedStatement.setString(2,firstname);
 		preparedStatement.setString(3,lastname);
@@ -99,27 +90,23 @@ public class User extends Database{
 			while (resultSet.next()) {
 				return true;
 			}
-			} finally {
-				closeConn();
-			}
-
-			return false;
+		} finally {
+			closeConn();
+		}
+		return false;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
+	public void setPassword(String password) throws Exception {
 		this.password = password;
-	}
-
-	public String getMail() {
-		return mail;
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("UPDATE User SET Password= ? where Username= ?");
+			preparedStatement.setString(1,password);
+			preparedStatement.setString(2,username);
+			preparedStatement.executeUpdate();
+		} finally {
+			closeConn();
+		}		
 	}
 
 	public void setMail(String mail) {
@@ -149,7 +136,4 @@ public class User extends Database{
 			throw new IllegalArgumentException("Ikke medlem i gruppe");  
 		}
 	}
-	
-	
-
 }
