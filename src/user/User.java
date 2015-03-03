@@ -9,8 +9,6 @@ import java.util.StringTokenizer;
 
 import com.sun.org.apache.xalan.internal.lib.Extensions;
 
-import com.sun.org.apache.xalan.internal.lib.Extensions;
-
 import calendar.Calendar;
 import calendar.Database;
 
@@ -25,11 +23,7 @@ public class User extends Database{
 	public ArrayList<Calendar> aboCal;
 	public ArrayList<Group> groups;
 	private PreparedStatement preparedStatement = null;
-<<<<<<< HEAD
-	private ResultSets resultSet = null;
-=======
 	private ResultSet resultSet = null;
->>>>>>> 5b21f9960a59abff36628ad73478cccb116496bd
 
 	public User(String username) throws Exception {
 		if (userNameExists(username)) {
@@ -79,11 +73,7 @@ public class User extends Database{
 
 	public void setCredencials(String firstname, String lastname, String username, String password, String mail) throws Exception {
 		try {
-<<<<<<< HEAD
-			if(isValidName(firstname) && isValidName(lastname) && isValidUsername(username)){
-=======
 			if(isValidName(firstname) && isValidName(lastname) && isValidUsername(username) && isValidMail(mail)){
->>>>>>> 5b21f9960a59abff36628ad73478cccb116496bd
 
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
 
@@ -196,8 +186,7 @@ public class User extends Database{
 		return true; 
 
 	}
-<<<<<<< HEAD
-=======
+
 	private boolean isValidMail(String mail){
 		if (mail == null ){
 			return false; 
@@ -250,6 +239,5 @@ public class User extends Database{
 
 	}
 
->>>>>>> 5b21f9960a59abff36628ad73478cccb116496bd
 }
 
