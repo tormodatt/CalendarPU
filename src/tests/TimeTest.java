@@ -1,8 +1,10 @@
-package Appointment;
+package tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import Appointment.Time;
 
 public class TimeTest {
 	
