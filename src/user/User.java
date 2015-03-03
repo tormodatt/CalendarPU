@@ -2,8 +2,8 @@ package user;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+//import java.sql.SQLException;
+//import java.sql.Statement;
 import java.util.ArrayList;
 
 import calendar.Calendar;
@@ -17,6 +17,7 @@ public class User extends Database{
 	public String password;
 	public String mail; 
 	public Calendar personalCalendar; 
+	public ArrayList<Calendar> aboCal;
 	public ArrayList<Group> groups;
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -34,9 +35,9 @@ public class User extends Database{
 					this.mail = resultSet.getString("Mail");
 					this.password = resultSet.getString("Password");
 				}
-				} finally {
-					closeConn();
-				}
+			} finally {
+				closeConn();
+			}
 		}
 		else System.out.println("Brukernavnet eksisterer ikke!");
 	}
@@ -48,7 +49,7 @@ public class User extends Database{
 		this.mail = mail;
 	}
 
-	public String getFirstname() throws Exception {
+	public String getFirstname() {
 		return firstname;
 	}
 	public String getLastname() {
@@ -85,7 +86,8 @@ public class User extends Database{
 	public boolean userNameExists(String username) throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select Username from all_s_gr46_calendar.User WHERE Username='"+username+"'");
+			preparedStatement = connect.prepareStatement("select Username from all_s_gr46_calendar.User WHERE Username= ?");
+			preparedStatement.setString(1,username);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				return true;
@@ -97,7 +99,6 @@ public class User extends Database{
 	}
 
 	public void setPassword(String password) throws Exception {
-		this.password = password;
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("UPDATE User SET Password= ? where Username= ?");
@@ -107,9 +108,19 @@ public class User extends Database{
 		} finally {
 			closeConn();
 		}		
+		this.password = password;
 	}
 
-	public void setMail(String mail) {
+	public void setMail(String mail) throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("UPDATE User SET Mail= ? where Username= ?");
+			preparedStatement.setString(1,mail);
+			preparedStatement.setString(2,username);
+			preparedStatement.executeUpdate();
+		} finally {
+			closeConn();
+		}		
 		this.mail = mail;
 	}
 
