@@ -6,11 +6,13 @@ import java.sql.ResultSet;
 //import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.sun.org.apache.xalan.internal.lib.Extensions;
+
 import calendar.Calendar;
 import calendar.Database;
 
 public class User extends Database{
-	
+
 	public String firstname; 
 	public String lastname;
 	public String username; 
@@ -20,8 +22,8 @@ public class User extends Database{
 	public ArrayList<Calendar> aboCal;
 	public ArrayList<Group> groups;
 	private PreparedStatement preparedStatement = null;
-	private ResultSet resultSet = null;
-	
+	private ResultSets resultSet = null;
+
 	public User(String username) throws Exception {
 		if (userNameExists(username)) {
 			this.username = username;
@@ -53,9 +55,9 @@ public class User extends Database{
 		return firstname;
 	}
 	public String getLastname() {
-		return username;
+		return lastname;
 	}	
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -63,26 +65,31 @@ public class User extends Database{
 	public String getPassword() {
 		return password;
 	}
-	
+
 	public String getMail() {
 		return mail;
 	}
 
 	public void setCredencials(String firstname, String lastname, String username, String password, String mail) throws Exception {
 		try {
-		openConn();
-		preparedStatement = connect.prepareStatement("insert into User values (?,?, ?, ?, ?)");
-		preparedStatement.setString(1,username);
-		preparedStatement.setString(2,firstname);
-		preparedStatement.setString(3,lastname);
-		preparedStatement.setString(4,mail);
-		preparedStatement.setString(5,password);
-		preparedStatement.executeUpdate();
+			if(isValidName(firstname) && isValidName(lastname) && isValidUsername(username)){
+
+			}else throw new IllegalArgumentException("Either the name or username is invalid");  
+
+			openConn();
+			preparedStatement = connect.prepareStatement("insert into User values (?,?, ?, ?, ?)");
+			preparedStatement.setString(1,username);
+			preparedStatement.setString(2,firstname);
+			preparedStatement.setString(3,lastname);
+			preparedStatement.setString(4,mail);
+			preparedStatement.setString(5,password);
+			preparedStatement.executeUpdate();
 		} finally {
-		closeConn();
+			closeConn();
 		}
 	}
-	
+
+
 	public boolean userNameExists(String username) throws Exception {
 		try {
 			openConn();
@@ -139,7 +146,7 @@ public class User extends Database{
 			groups.add(group); 
 		}
 	}
-	
+
 	public void removeGroup(Group group) {
 		if (groups.contains(group)) {
 			groups.remove(group); 
@@ -147,4 +154,36 @@ public class User extends Database{
 			throw new IllegalArgumentException("Ikke medlem i gruppe");  
 		}
 	}
+	private boolean isValidName(String name){
+		int index = 0; 
+		String lc = name.toLowerCase(); 
+		for (int i = 0; i < lc.length(); i++) {
+			char c = lc.charAt(i);
+			if( c >= 'a' && c<= 'z' || c =='æ' || c == 'ø' || c == 'å'){
+				index++; 
+			}else return false; 
+		}
+		if( index < 3){
+			return false; 
+		}
+		return true; 
+
+	}
+	private boolean isValidUsername(String name){
+		int index = 0; 
+		String lc = name.toLowerCase(); 
+		for (int i = 0; i < lc.length(); ++i){
+			char c = lc.charAt(i); 
+			if( c >= 'a' && c<= 'z' || c =='æ' || c == 'ø' || c == 'å' || c >= 0 && c <=9){
+				index++; 
+
+			}else return false; 
+		}
+		if( index < 3){
+			return false; 
+		}
+		return true; 
+
+	}
 }
+
