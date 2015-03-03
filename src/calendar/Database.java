@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Database {
 	
-	  private Connection connect = null;
+	  public Connection connect = null;
 	  private Statement statement = null;
 	  //private PreparedStatement preparedStatement = null;
 	  private ResultSet resultSet = null;
@@ -14,7 +14,7 @@ public class Database {
 	      Class.forName("com.mysql.jdbc.Driver");
 	      // Setup the connection with the DB
 	      connect = DriverManager
-	          .getConnection("jdbc:mysql://mysql.stud.ntnu.no:3306/all_s_gr46_test", "all_s_gr46" , "kaffe");
+	          .getConnection("jdbc:mysql://mysql.stud.ntnu.no:3306/all_s_gr46_calendar", "all_s_gr46" , "kaffe");
 	 }
 	  
 	  public void closeConn() {
