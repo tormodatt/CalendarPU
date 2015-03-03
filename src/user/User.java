@@ -5,6 +5,9 @@ import java.sql.ResultSet;
 //import java.sql.SQLException;
 //import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import com.sun.org.apache.xalan.internal.lib.Extensions;
 
 import com.sun.org.apache.xalan.internal.lib.Extensions;
 
@@ -22,7 +25,11 @@ public class User extends Database{
 	public ArrayList<Calendar> aboCal;
 	public ArrayList<Group> groups;
 	private PreparedStatement preparedStatement = null;
+<<<<<<< HEAD
 	private ResultSets resultSet = null;
+=======
+	private ResultSet resultSet = null;
+>>>>>>> 5b21f9960a59abff36628ad73478cccb116496bd
 
 	public User(String username) throws Exception {
 		if (userNameExists(username)) {
@@ -72,7 +79,11 @@ public class User extends Database{
 
 	public void setCredencials(String firstname, String lastname, String username, String password, String mail) throws Exception {
 		try {
+<<<<<<< HEAD
 			if(isValidName(firstname) && isValidName(lastname) && isValidUsername(username)){
+=======
+			if(isValidName(firstname) && isValidName(lastname) && isValidUsername(username) && isValidMail(mail)){
+>>>>>>> 5b21f9960a59abff36628ad73478cccb116496bd
 
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
 
@@ -185,5 +196,60 @@ public class User extends Database{
 		return true; 
 
 	}
+<<<<<<< HEAD
+=======
+	private boolean isValidMail(String mail){
+		if (mail == null ){
+			return false; 
+		}
+		if (mail.indexOf("@") < 0){
+			return false; 
+		}
+		if (mail.indexOf(".") < 0){
+			return false; 
+		}
+		if (endOfMail(mail) == false){
+			return false; 
+		}
+		if (AtAmount(mail) == false){
+			return false; 			
+		}
+		return true; 
+
+	}
+	//Hjelpmetode for å sjekke at det kun er en alfakrøll i en mailadresse
+	private boolean AtAmount(String mail){
+		int teller = 0; 
+		for(int j = 0;j < mail.length(); ++j){
+			if(mail.charAt(j) == '@'){
+				teller++; 
+			}
+		}
+		if(teller > 1){
+			return false; 
+		}
+		return true; 
+	}
+	//Hjelpemetode for å sjekke at slutten på mailadressen er innafor	
+	private boolean endOfMail(String mail){
+		StringTokenizer st = new StringTokenizer(mail,".");
+		String lastToken = null;
+		while ( st.hasMoreTokens() )
+		{
+			lastToken = st.nextToken();
+		}
+
+		if ( lastToken.length() >= 2 )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+
+>>>>>>> 5b21f9960a59abff36628ad73478cccb116496bd
 }
 
