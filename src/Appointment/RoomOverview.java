@@ -1,35 +1,46 @@
 package Appointment;
 
 import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+//import java.sql.SQLException;
+//import java.sql.Statement;
+import java.util.StringTokenizer;
+import java.sql.*;
 
-public class RoomOverview {
+import calendar.Database;
+
+public class RoomOverview extends Database {
 	
 	public ArrayList<Room> allRooms; 
-	public Room room; 
 	
-	public RoomOverview() {
-		this.allRooms = new ArrayList<Room>(); 		
-	}
+	
+	public RoomOverview() throws Exception {
+		this.allRooms = new ArrayList<Room>();
+		
+		try {
+			openConn();
+			PreparedStatement preparedStatement = connect.prepareStatement("SELECT RoomName FROM Room" );
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				
+				this.allRooms.add(resultSet.getString("RoomName"));
+			}
+			} finally {
+				closeConn();
+			}
+		} 
+
+	
 	
 	public ArrayList<Room> getRoom(){
 		return this.allRooms; 
 	}
-
-	public void addRoom(Room room) {
-		if (allRooms.contains(room)) {
-			throw new IllegalArgumentException("Rom er allerede lagt til i oversikten"); 
-		} else {
-			allRooms.add(room); 
-		}
-	}
 	
-	public void removeRom(Room room) {
-		if (allRooms.contains(room)) {
-			allRooms.remove(room); 
-		} else {
-			throw new IllegalArgumentException("Rom finnes ikke i oversikten");
-		}
+	public ArrayList<Room> getFreeRooms(Time time) {
+		ArrayList<Room> freeRooms = new ArrayList<Room>();
+		// Må skrive SQL som henter ut alle rom som er ledige i den aktuelle tidsperioden 
+		return freeRooms; //returnerer liste med ledige rom 
 	}
-	
 
 }
