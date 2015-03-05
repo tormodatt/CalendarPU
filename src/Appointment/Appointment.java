@@ -1,20 +1,27 @@
 package Appointment;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import user.User;
 
 public class Appointment {
 	
-	public String title; 
-	public Time time;  
-	public String description; 
-	public int priority; 
-	public Room place; 
+	private int appointmentID;
+	private int calendarID;
+	private User leader;
+	
+	private String title; 
+	private Time time;
+	private Room room;
+	private int priority;
+	private String description; 
+	private int maxPartisipants;
+	private Date alarm;
+	
 	public ArrayList<User> participants;
 	
-	public Appointment(String title, Time time, String description, int priority, Room place) {
+	public Appointment(int calendarID, User leader, String title, Room room, int priority, String description, int maxPartisipants, Date alarm) {
 	}
 	
 	public Time getTime() {

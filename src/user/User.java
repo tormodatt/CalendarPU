@@ -186,6 +186,7 @@ public class User extends Database{
 		return true; 
 
 	}
+
 	private boolean isValidMail(String mail){
 		if (mail == null ){
 			return false; 
