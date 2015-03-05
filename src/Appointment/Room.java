@@ -6,13 +6,21 @@ public class Room {
 	
 	public String roomName; // skal ikke kunne endres
 	public int capacity;
+	public String location;
 	public ArrayList<Appointment> appointments;
 	
 	
-	public Room(String roomName, int antallPlasser) {
+	public Room(String roomName) { //Konstruktør for å opprette et rom-objekt som allerede eksisterer i databasen 
+		this.roomName = roomName;
+		this.capacity = capacity; // hentes fra databasen
+		this.location = location; // hentes fra databasen
+	}
+	
+	public Room(String roomName, int capacity, String location) {
 		this.roomName = roomName;
 		this.capacity = capacity; // antall plasser 
-		this.appointments = new ArrayList<Appointment>(); // må bruke SQL til å finne alle avtalene som er relatert til rommet, og de legges inn i denne
+		this.location = location;
+		// Må ha kode som legger til rommet i databasen
 	}
 
 	public ArrayList<Appointment> getAppointment() {
@@ -55,6 +63,8 @@ public class Room {
 	
 	public String getLocation() {
 		// Skrive SQL-spørring som henter ut location for dette rommet
+		String loc = null; // hentes fra databasen
+		return loc;
 	}
 	
 	

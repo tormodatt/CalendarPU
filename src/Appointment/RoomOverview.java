@@ -20,11 +20,11 @@ public class RoomOverview extends Database {
 		
 		try {
 			openConn();
-			PreparedStatement preparedStatement = connect.prepareStatement("SELECT RoomName FROM Room" );
+			PreparedStatement preparedStatement = connect.prepareStatement("SELECT * FROM Room" );
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				
-				this.allRooms.add(resultSet.getString("RoomName"));
+				this.allRooms.add( new Room( getString("RoomName") ) );
 			}
 			} finally {
 				closeConn();
@@ -33,6 +33,13 @@ public class RoomOverview extends Database {
 
 	
 	
+	private String getString(String string) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 	public ArrayList<Room> getRoom(){
 		return this.allRooms; 
 	}
