@@ -53,6 +53,10 @@ public class Room {
 		}
 	}
 	
+	public String getLocation() {
+		// Skrive SQL-spørring som henter ut location for dette rommet
+	}
+	
 	
 	
 	

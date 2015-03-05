@@ -1,15 +1,36 @@
 package Appointment;
 
 import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+//import java.sql.SQLException;
+//import java.sql.Statement;
+import java.util.StringTokenizer;
+import java.sql.*;
 
-public class RoomOverview {
+import calendar.Database;
+
+public class RoomOverview extends Database {
 	
 	public ArrayList<Room> allRooms; 
 	
 	
-	public RoomOverview() {
-		this.allRooms = new ArrayList<Room>(); 		
-	}
+	public RoomOverview() throws Exception {
+		this.allRooms = new ArrayList<Room>();
+		
+		try {
+			openConn();
+			PreparedStatement preparedStatement = connect.prepareStatement("SELECT RoomName FROM Room" );
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				
+				this.allRooms.add(resultSet.getString("RoomName"));
+			}
+			} finally {
+				closeConn();
+			}
+		} 
+
 	
 	
 	public ArrayList<Room> getRoom(){
