@@ -22,7 +22,7 @@ public class UserTest {
 			assertEquals(name, testbruker.getUsername()); 
 
 		}catch (Exception e){
-			fail( "is valid username"); 
+			
 
 		}
 
