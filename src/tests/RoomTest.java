@@ -9,27 +9,35 @@ import Appointment.Room;
 public class RoomTest {
 
 	@Test
-	public void MakeRoomTest() {
-		try{
-			String roomID = "RFK"; 
+	public void MakeRoomTest() { 
+		try{//her skal alle verdier være lovlige
+			String roomName = "RFK"; 
 			int capasity = 20; 
-			Room testrom = new Room(roomID, capasity); 
+			String location = "U2-1"; 
+			Room testrom = new Room(roomName, capasity, location); 
 			assertEquals(20, testrom.getCapacity()); 
-			assertEquals("RFK", testrom.getRoomID()); 
+			assertEquals("RFK", testrom.getRoomName()); 
+			assertEquals("U2-1", testrom.getLocation());
 
 		}catch (Exception e){
 		}
 
-		try{
-			Room testrom = new Room("test##", 10); 
-			fail("the roomname is not valdig"); 
+		try{ //det er ikke lov med symboler i romnavnet
+			Room testrom = new Room("test##", 10, "U2-1"); 
+			fail("the roomname is not valid"); 
 		}catch (Exception e){
 			new IllegalArgumentException(); 
 		}
 
-		try{
-			Room testrom = new Room("test", -10); 
+		try{ //kapasiteten til et rom skal ikke være negativ
+			Room testrom = new Room("test", -10, "U2-1"); 
 			fail("the capasity must be positive"); 
+		}catch (Exception e){
+			new IllegalArgumentException(); 
+		}
+		try{ //Location til et rom skal kun bestå av 0-9, a-z og - 
+		Room testrom = new Room("test", 10, "U..3"); 
+		fail("the room location cannot contain signs other than '-'"); 
 		}catch (Exception e){
 			new IllegalArgumentException(); 
 		}
@@ -37,14 +45,14 @@ public class RoomTest {
 	@Test
 	public void CapasityTest(){
 		try{
-			Room testrom = new Room("test", -20); 
+			Room testrom = new Room("test", -10, "U2-1"); 
 			fail("the capasity of a room cannot be negative"); 
 		}catch (Exception e){
 			new IllegalArgumentException(); 
 		}
 
 		try{
-			Room testrom = new Room("test", 20);
+			Room testrom = new Room("test", 20, "U2-1");
 			assertEquals(20,  testrom.getCapacity());
 			testrom.setCapacity(45);
 			assertEquals(45, testrom.getCapacity());
@@ -52,7 +60,7 @@ public class RoomTest {
 
 		}
 		try{
-			Room testrom = new Room("test", 20); 
+			Room testrom = new Room("test", 20, "U2-1"); 
 			testrom.setCapacity(-10);
 			fail("the capasity of a room vannot be negative"); 
 		}catch (Exception e){
@@ -61,20 +69,38 @@ public class RoomTest {
 	}
 
 	@Test
-	public void roomIDTest(){
+	public void roomNameTest(){
 		try{
-			Room testrom = new Room("####???", 20); 
+			Room testrom = new Room("####???", 20, "U2-1"); 
 			fail("a roomID cannot contain other than 0-9 a-z"); 
 		}catch(Exception e){
 			new IllegalArgumentException(); 
 		}
 		try{
-			Room testrom = new Room("lovlig navn", 20); 
-			assertEquals("lovlig navn", testrom.getRoomID());
+			Room testrom = new Room("lovlig navn", 20, "U2-1"); 
+			assertEquals("lovlig navn", testrom.getRoomName());
 		}catch (Exception e){
 
 		}
 	}
+	@Test
+	public void roomLocationTest(){
+		try{
+			Room testrom = new Room("test", 20, "U2-1/"); 
+			fail("the location is not valid");
+		}catch (Exception e){
+			new IllegalArgumentException();  
+		}
+	try{
+		Room testrom = new Room("test", 20, "123ABC"); 
+		assertEquals("123ABC", testrom.getLocation()); 
+	}catch(Exception e){
+		
+	}
+	}
+	
+	
+	
 
 
 }
