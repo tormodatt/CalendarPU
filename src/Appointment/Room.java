@@ -25,12 +25,12 @@ public class Room extends Database {
 
 	public Room(String roomName) throws Exception { //Konstruktør for å opprette et rom-objekt som allerede eksisterer i databasen 
 		if (roomNameExists(roomName)) {
+			this.roomName = roomName;
 			try {
 				openConn();
-				preparedStatement = connect.prepareStatement("select * from Room WHERE Name='"+roomName+"'");
+				preparedStatement = connect.prepareStatement("SELECT * from Room WHERE Name='"+roomName+"'");
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
-					this.roomName = resultSet.getString("Name");
 					this.capacity = resultSet.getInt("Capacity");
 					this.location = resultSet.getString("Location");
 				}
