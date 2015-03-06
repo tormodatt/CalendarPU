@@ -12,7 +12,7 @@ import calendar.Database;
 
 public class RoomOverview extends Database {
 	
-	public ArrayList<Room> allRooms; 
+	private ArrayList<Room> allRooms; 
 	
 	
 	public RoomOverview() throws Exception {
@@ -24,19 +24,14 @@ public class RoomOverview extends Database {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				
-				this.allRooms.add( new Room( getString("RoomName") ) );
+				this.allRooms.add( new Room( resultSet.getString("RoomName") ) );
 			}
 			} finally {
 				closeConn();
 			}
 		} 
 
-	
-	
-	private String getString(String string) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 
 

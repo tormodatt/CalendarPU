@@ -1,28 +1,85 @@
 package Appointment;
 
 import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.StringTokenizer;
+import java.sql.*;
+import java.util.ArrayList;
 
-public class Room {
+import calendar.Database;
+import calendar.Calendar;
 
-	public String roomName; // skal ikke kunne endres
-	public int capacity;
-	public String location;
-	public ArrayList<Appointment> appointments;
+public class Room extends Database {
+
+	private String roomName; // skal ikke kunne endres
+	private int capacity;
+	private String location;
+	private ArrayList<Appointment> appointments;
+	
+	private PreparedStatement preparedStatement; // bruker dette feltet til å skrive til databasen
+	private ResultSet resultSet;
+	
+	
 
 
-	public Room(String roomName) { //Konstruktør for å opprette et rom-objekt som allerede eksisterer i databasen 
-		this.roomName = roomName;
-		this.capacity = capacity; // hentes fra databasen
-		this.location = location; // hentes fra databasen
+	public Room(String roomName) throws Exception { //Konstruktør for å opprette et rom-objekt som allerede eksisterer i databasen 
+		if (roomNameExists(roomName)) {
+			try {
+				openConn();
+				preparedStatement = connect.prepareStatement("select * from Room WHERE Name='"+roomName+"'");
+				resultSet = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					this.roomName = resultSet.getString("Name");
+					this.capacity = resultSet.getInt("Capacity");
+					this.location = resultSet.getString("Location");
+				}
+			} finally {
+				closeConn();
+			}
+		} else {
+			throw new IllegalArgumentException("The room " + roomName + " does not exist." );
+		}
 	}
+	
+	public boolean roomNameExists(String roomName) throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("select Name from all_s_gr46_calendar.Room WHERE Name = ?");
+			preparedStatement.setString(1, roomName);
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				return true;
+			}
+		} finally {
+			closeConn();
+		}
+		return false;
+	}
+		
+	
 
-	public Room(String roomName, int capacity, String location) {
-		if(isValidName(roomName) && isValidLocation(location) && isValidCapasity(capacity)){
+	public Room(String roomName, int capacity, String location) throws Exception { // Konstruktør for å legge til et nytt rom i databasen
+		if(isValidName(roomName) && ! roomNameExists(roomName) && isValidLocation(location) && isValidCapasity(capacity)){
+			setCredencials(roomName, capacity, location);
 			this.roomName = roomName;
-			this.capacity = capacity; // antall plasser 
+			this.capacity = capacity;
 			this.location = location;
-		}else throw new IllegalArgumentException("The input is not valid");
+			}  else throw new IllegalArgumentException("The input is not valid or roomName already exists");
 		// Må ha kode som legger til rommet i databasen
+	}
+	
+	public void setCredencials(String roomName, int capacity, String location) throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("insert into Room values (?,?, ?)");
+			preparedStatement.setString(1, roomName);
+			preparedStatement.setInt(2, capacity);
+			preparedStatement.setString(3, location);
+			preparedStatement.executeUpdate();		
+		} finally {
+			closeConn();
+		}
 	}
 
 	public ArrayList<Appointment> getAppointment() {
