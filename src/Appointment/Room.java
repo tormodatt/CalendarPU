@@ -65,7 +65,7 @@ public class Room extends Database {
 			this.roomName = roomName;
 			this.capacity = capacity;
 			this.location = location;
-			}  else throw new IllegalArgumentException("The input is not valid");
+			}  else throw new IllegalArgumentException("The input is not valid or roomName already exists");
 		// Må ha kode som legger til rommet i databasen
 	}
 	
