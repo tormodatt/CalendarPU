@@ -23,7 +23,7 @@ public class RoomTest {
 		}
 
 		try{ //det er ikke lov med symboler i romnavnet
-			Room testrom = new Room("test##", 10, "U2-1"); 
+			Room testrom = new Room("test22##", 10, "U2-1"); 
 			fail("the roomname is not valid"); 
 		}catch (Exception e){
 			new IllegalArgumentException(); 

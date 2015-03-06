@@ -8,6 +8,7 @@ public class Time {
 	public int startHour; 
 	public int startMin; 
 	public int duration; 
+	Date asdf = new Date();
 	
 	public Time(int year, int month, int date, int startHour, int startMin, int duration) {
 		setDate(year, month, date, startHour, startMin); 
@@ -16,6 +17,7 @@ public class Time {
 
 	public void setDate(int year, int month, int date, int hours, int minutes) {
 			this.dateC = new Date(year, month, date, hours, minutes); 
+			
 	}
 
 	public Date getDate() {
