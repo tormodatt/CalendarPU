@@ -70,9 +70,10 @@ public class Room {
 	}
 
 	private boolean isValidName(String name){ //sjekker at romnavn kune inneholder bokstaver og tall
-		int index = 0; 
-		for (int i = 0 ; i < name.length(); ++i){
-			char c = name.charAt(i); 
+		int index = 0;
+		String str = name.toLowerCase(); 
+		for (int i = 0 ; i < str.length(); ++i){
+			char c = str.charAt(i); 
 			if (c <= 'z' || c >= 'a' || c == 'æ' || c == 'ø' || c == 'å' || c <= 9 || c >=0){ 
 				index++; 
 			}
@@ -83,8 +84,9 @@ public class Room {
 	}
 	private boolean isValidLocation(String location){ //sjekker at lokasjonen kun inneholder bokstaver, tall og bindestrek
 		int index = 0; 
-		for (int i = 0; i<location.length(); ++i){
-			char c = location.charAt(i); 
+		String str = location.toLowerCase(); 
+		for (int i = 0; i<str.length(); ++i){
+			char c = str.charAt(i); 
 			if (c <= 'z' || c >= 'a' || c == 'æ' || c == 'ø' || c == 'å' || c <= 9 || c >=0 || c == '-'){ 
 				index++; 
 			}
