@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.StringTokenizer;
 import java.sql.*;
-
 import java.util.ArrayList;
+
 import calendar.Database;
 import calendar.Calendar;
 
@@ -18,15 +18,40 @@ public class Room extends Database {
 	private ArrayList<Appointment> appointments;
 	
 	private PreparedStatement preparedStatement; // bruker dette feltet til å skrive til databasen
+	private ResultSet resultSet;
 	
 	
 
 
-	public Room(String roomName) { //Konstruktør for å opprette et rom-objekt som allerede eksisterer i databasen 
-		this.roomName = roomName;
-		this.capacity = capacity; // hentes fra databasen
-		this.location = location; // hentes fra databasen
+	public Room(String roomName) throws Exception { //Konstruktør for å opprette et rom-objekt som allerede eksisterer i databasen 
+		if (roomNameExists(roomName)) {
+			try {
+				openConn();
+				
+			} finally {
+				closeConn();
+			}
+		} else {
+			throw new IllegalArgumentException("The room " + roomName + " does not exist." );
+		}
 	}
+	
+	public boolean roomNameExists(String roomName) throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("select Name from all_s_gr46_calendar.Room WHERE Name = ?");
+			preparedStatement.setString(1, roomName);
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				return true;
+			}
+		} finally {
+			closeConn();
+		}
+		return false;
+	}
+		
+	
 
 	public Room(String roomName, int capacity, String location) throws Exception { // Konstruktør for å legge til et nytt rom i databasen
 		if(isValidName(roomName) && isValidLocation(location) && isValidCapasity(capacity)){
