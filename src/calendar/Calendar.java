@@ -2,6 +2,7 @@ package calendar;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import user.*;
@@ -83,12 +84,11 @@ public class Calendar extends Database {
 		this.group = group; 
 	}
 	
-	public void setAppointments() {
+	public void setAppointments() throws Exception {
 		preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE CalendarID = ?");
 		preparedStatement.setInt(1, calendarID);
 		resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
-				//Mangler skikkelig konstrukt¿r i Appointmentklassen
 				this.appointments.add(new Appointment(resultSet.getInt("AppointmentID")));
 		}
 	}
