@@ -2,7 +2,6 @@ package Appointment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.regex.Pattern;
 import java.sql.*;
 
@@ -63,7 +62,7 @@ public class Appointment extends Database {
 		else System.out.println("Brukernavnet eksisterer ikke!");
 	}
 	
-	public Appointment(int calendarID, User owner, String title, String start, String end,  Room room, int priority, String description, int maxPartisipants, String alarm) {
+	public Appointment(int calendarID, User owner, String title, String start, String end,  Room room, int priority, String description, int maxPartisipants, String alarm) throws Exception {
 		try {
 			if(isValidTimestamp(start) && isValidTimestamp(end)){
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
@@ -122,6 +121,9 @@ public class Appointment extends Database {
 	}
 	public int getCalendarID() {
 		return calendarID;
+	}
+	public String getTitle() {
+		return title;
 	}
 	public User getOwner() {
 		return owner;

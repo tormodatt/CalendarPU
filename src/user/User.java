@@ -2,12 +2,8 @@ package user;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-//import java.sql.SQLException;
-//import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-
-import com.sun.org.apache.xalan.internal.lib.Extensions;
 
 import calendar.Calendar;
 import calendar.Database;
