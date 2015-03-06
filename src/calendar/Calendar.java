@@ -6,16 +6,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import user.*;
-import calendar.*;
 import Appointment.*;
 
 public class Calendar extends Database {
 
-	public ArrayList<Appointment> appointments;
-	private User user;
-	private Group group;
 	private int calendarID;
 	private String title;
+	private User user;
+	private Group group;
+	
+	public ArrayList<Appointment> appointments;
 	
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -84,6 +84,21 @@ public class Calendar extends Database {
 		this.group = group; 
 	}
 	
+	//Gettere
+	public int getCalendarID() {
+		return calendarID;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public User getUser() {
+		return user;
+	}
+	public Group getGroup() {
+		return group;
+	}
+	
+	//Settere
 	public void setAppointments() throws Exception {
 		preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE CalendarID = ?");
 		preparedStatement.setInt(1, calendarID);

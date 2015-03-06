@@ -21,6 +21,7 @@ public class User extends Database{
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 
+	//Opprette bruker-instans av bruker som allerede eksisterer i databasen
 	public User(String username) throws Exception {
 		if (userNameExists(username)) {
 			this.username = username;
@@ -34,12 +35,20 @@ public class User extends Database{
 					this.mail = resultSet.getString("Mail");
 					this.password = resultSet.getString("Password");
 				}
+				preparedStatement = connect.prepareStatement("select GroupID from Group_members WHERE Username=?");
+				preparedStatement.setString(1, getUsername());
+				resultSet = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					addGroup(new Group(resultSet.getInt("GroupID")));
+				}
 			} finally {
 				closeConn();
 			}
 		}
 		else System.out.println("Brukernavnet eksisterer ikke!");
 	}
+	
+	//Opprette bruker-instans av ny bruker
 	public User(String firstname, String lastname, String username, String password,String mail) throws Exception {
 		setCredencials(firstname,lastname,username,password,mail);
 		this.firstname = firstname;
@@ -48,25 +57,29 @@ public class User extends Database{
 		this.mail = mail;
 	}
 
+	//Gettere
 	public String getFirstname() {
 		return firstname;
 	}
 	public String getLastname() {
 		return lastname;
 	}	
-
 	public String getUsername() {
 		return username;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public String getMail() {
 		return mail;
 	}
-
+	public Calendar getPersonalCalendar() {
+		return personalCalendar;
+	}
+	public ArrayList<Group> getGroups() {
+		return groups;
+	}
+	
 	public void setCredencials(String firstname, String lastname, String username, String password, String mail) throws Exception {
 		try {
 			if(isValidName(firstname) && isValidName(lastname) && isValidUsername(username) && isValidMail(mail)){
@@ -85,7 +98,6 @@ public class User extends Database{
 			closeConn();
 		}
 	}
-
 
 	public boolean userNameExists(String username) throws Exception {
 		try {
@@ -128,18 +140,19 @@ public class User extends Database{
 		this.mail = mail;
 	}
 
-	public Calendar getPersonalCalendar() {
-		return personalCalendar;
-	}
-
-	public ArrayList<Group> getGroup() {
-		return groups;
-	}
-
 	public void addGroup(Group group) {
 		if (groups.contains(group)) {
 			throw new IllegalArgumentException("Allerede medlem i gruppe"); 
 		} else {
+			try {
+				openConn();
+				preparedStatement = connect.prepareStatement("insert into Group_members values (?,?)");
+				preparedStatement.setString(1, getUsername());
+				preparedStatement.setInt(2, group.getGroupID);
+				preparedStatement.executeUpdate();
+			} finally {
+				closeConn();
+			}
 			groups.add(group); 
 		}
 	}
