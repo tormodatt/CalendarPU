@@ -2,17 +2,11 @@ package user;
 
 import java.util.ArrayList;
 
-import Appointment.Room;
+
 import calendar.Database;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.regex.Pattern;
 import java.sql.*;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
-import calendar.Database;
 import user.User;
 
 
@@ -40,12 +34,12 @@ public class Group extends Database{
 			} finally {
 				closeConn();
 			}
-			this.groupID = getGroupID();
+			this.groupID = getDBGroupID();
 			this.name = name; 
 			this.leader = leader;
 	}
 
-	private int getGroupID() throws Exception {
+	private int getDBGroupID() throws Exception {
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("select GroupID from Group WHERE GroupID=?");
@@ -57,6 +51,10 @@ public class Group extends Database{
 		} finally {
 			closeConn();
 		}
+		return groupID;
+	}
+	
+	public int getGroupID() {
 		return groupID;
 	}
 
@@ -76,49 +74,57 @@ public class Group extends Database{
 		return name;
 	}
 
-	public ArrayList<User> getMembers() {
-		return members;
-	}
-
-	public void setLeader(User leader) { //Finnes i database? 
+	public void setLeader(User leader) throws Exception{
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("insert into Group (Leader) values (?)");
+			preparedStatement.setString(1,leader.getUsername());
+			preparedStatement.executeUpdate();
+			} finally {
+			closeConn();
+			}
 		this.leader = leader;
 	}
 	
-	public void addMember(User user) {
-		if (members == null) {
-			this.members.add(user);
-			setLeader(user); 						//F¿rst deltager (den som oppretter gruppen) blir leder
-		}
-		if (members.contains(user)) {
-			throw new IllegalArgumentException("User already member");
-		} else {
-			this.members.add(user); 
-		}
+	public User getLeader() {
+		return this.leader; 
 	}
 	
-	public void removeMember(User user) {
-		if (members.contains(user)) {
-			this.members.remove(user); 
-		} else {
-			throw new IllegalArgumentException("User not member of group");
+	public void addMember(User user) throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("insert into Group_members (Username) values (?)");
+			preparedStatement.setString(1,user.getUsername());
+			preparedStatement.executeUpdate();
+		} finally {
+			closeConn();	
 		}
-	}
-
-	public Group getMainGroups() {
-		return mainGroup;
+		this.members.add(user);
 	}
 	
-
-	public ArrayList<Group> getSubGroups() {
-		return subGroups;
+	
+	public void removeMember(User user) throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("delete from Group_members (Username) values (?)");
+			preparedStatement.setString(1,user.getUsername());
+			preparedStatement.executeUpdate();
+		} finally {
+			closeConn();	
+		}
+		this.members.remove(user);
+	}
+	
+	public ArrayList<User> getMembers() {
+		return this.members;
 	}
 
-	//MŒ avgj¿re om vi ¿nsker at en gruppe kan v¾re medlem i flere grupper 
+	
 	public void setMainGroup(Group group) throws Exception {
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("UPDATE Group_relation SET Super_group = ? where GroupID= ?");
-			preparedStatement.setString(1,group.getName());
+			preparedStatement.setInt(1,group.getGroupID());
 			preparedStatement.setInt(2,this.groupID);
 			preparedStatement.executeUpdate();
 		} finally {
@@ -126,23 +132,28 @@ public class Group extends Database{
 		}		
 		this.mainGroup = group;
 	}
+	
+	
+	public Group getMainGroups() {
+		return mainGroup;
+	}
 
-	public void addSubGroup(Group group) {
-		if (subGroups.contains(group)) {
-			this.subGroups.add(group); 
-		} else {
-			throw new IllegalArgumentException("Already set as subgroup");
+
+	public void addSubGroup(Group group) throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("insert into Group_relation (Sub_group) values (?)");
+			preparedStatement.setInt(1,group.getGroupID());
+			preparedStatement.executeUpdate();
+		} finally {
+			closeConn();	
 		}
+		this.subGroups.add(group);
 	}
 	
-	public String toString() { 
-		return "Group name: " + this.getName() + "\n" + "Group leader: " + this.getLeaderName() + "\n" + "Members: " +
-				this.getMembers() + "\n" + "Main groups: " + this.getMainGroups() + "\n" + "Sub groups: " + this.getSubGroups(); 
+	public ArrayList<Group> getSubGroups() { 
+		return this.subGroups;
 	}
 
 	
-	
-	
-	
-
 }
