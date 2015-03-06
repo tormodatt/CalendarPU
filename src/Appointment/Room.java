@@ -1,6 +1,7 @@
 package Appointment;
 
 import java.util.ArrayList;
+import calendar.*;
 
 public class Room {
 
@@ -16,13 +17,21 @@ public class Room {
 		this.location = location; // hentes fra databasen
 	}
 
-	public Room(String roomName, int capacity, String location) {
+	public Room(String roomName, int capacity, String location) throws Exeption { // Konstruktør for å legge til et nytt rom i databasen
 		if(isValidName(roomName) && isValidLocation(location) && isValidCapasity(capacity)){
+			setCredencials(roomName, capacity, location);
 			this.roomName = roomName;
-			this.capacity = capacity; // antall plasser 
+			this.capacity = capacity;
 			this.location = location;
-		}else throw new IllegalArgumentException("The input is not valid");
+			}  else throw new IllegalArgumentException("The input is not valid");
 		// Må ha kode som legger til rommet i databasen
+	}
+	
+	public void setCredencials(String roomName, int capacity, String location) throws Exception {
+		try {
+			openConn();
+			
+		}
 	}
 
 	public ArrayList<Appointment> getAppointment() {
