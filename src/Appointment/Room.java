@@ -131,7 +131,7 @@ public class Room extends Database {
 		String str = name.toLowerCase(); 
 		for (int i = 0 ; i < str.length(); ++i){
 			char c = str.charAt(i); 
-			if (c <= 'z' || c >= 'a' || c == 'æ' || c == 'ø' || c == 'å' || c <= 9 || c >=0){ 
+			if (c <= 'z' || c >= 'a' || c == 'æ' || c == 'ø' || c == 'å' || (c <= 9 && c >=0)){ 
 				index++; 
 			}
 			else return false; 
@@ -144,7 +144,7 @@ public class Room extends Database {
 		String str = location.toLowerCase(); 
 		for (int i = 0; i<str.length(); ++i){
 			char c = str.charAt(i); 
-			if (c <= 'z' || c >= 'a' || c == 'æ' || c == 'ø' || c == 'å' || c <= 9 || c >=0 || c == '-'){ 
+			if (c <= 'z' || c >= 'a' || c == 'æ' || c == 'ø' || c == 'å' || (c <= 9 && c >=0) || c == '-'){ 
 				index++; 
 			}
 			else return false; 
@@ -157,5 +157,6 @@ public class Room extends Database {
 		if (capasity < 0) return false; 
 		return true; 
 	}
+
 
 }
