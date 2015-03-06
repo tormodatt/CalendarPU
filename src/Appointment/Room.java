@@ -1,14 +1,23 @@
 package Appointment;
 
 import java.util.ArrayList;
-import calendar.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.StringTokenizer;
+import java.sql.*;
+
+import java.util.ArrayList;
+import calendar.Database;
+import calendar.Calendar;
 
 public class Room {
 
-	public String roomName; // skal ikke kunne endres
-	public int capacity;
-	public String location;
-	public ArrayList<Appointment> appointments;
+	private String roomName; // skal ikke kunne endres
+	private int capacity;
+	private String location;
+	private ArrayList<Appointment> appointments;
+	
+	
 
 
 	public Room(String roomName) { //Konstruktør for å opprette et rom-objekt som allerede eksisterer i databasen 
@@ -17,7 +26,7 @@ public class Room {
 		this.location = location; // hentes fra databasen
 	}
 
-	public Room(String roomName, int capacity, String location) throws Exeption { // Konstruktør for å legge til et nytt rom i databasen
+	public Room(String roomName, int capacity, String location) throws Exception { // Konstruktør for å legge til et nytt rom i databasen
 		if(isValidName(roomName) && isValidLocation(location) && isValidCapasity(capacity)){
 			setCredencials(roomName, capacity, location);
 			this.roomName = roomName;
@@ -31,6 +40,11 @@ public class Room {
 		try {
 			openConn();
 			
+			
+			
+			
+		} finally {
+			closeConn();
 		}
 	}
 

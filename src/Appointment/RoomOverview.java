@@ -12,7 +12,7 @@ import calendar.Database;
 
 public class RoomOverview extends Database {
 	
-	public ArrayList<Room> allRooms; 
+	private ArrayList<Room> allRooms; 
 	
 	
 	public RoomOverview() throws Exception {
