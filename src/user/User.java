@@ -15,9 +15,11 @@ public class User extends Database{
 	public String username; 
 	public String password;
 	public String mail; 
+	
 	public Calendar personalCalendar; 
 	public ArrayList<Calendar> aboCal;
 	public ArrayList<Group> groups;
+	
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 
@@ -41,6 +43,7 @@ public class User extends Database{
 				while (resultSet.next()) {
 					addGroup(new Group(resultSet.getInt("GroupID")));
 				}
+				personalCalendar = new Calendar(this);
 			} finally {
 				closeConn();
 			}
@@ -93,6 +96,11 @@ public class User extends Database{
 			preparedStatement.setString(3,lastname);
 			preparedStatement.setString(4,mail);
 			preparedStatement.setString(5,password);
+			preparedStatement.executeUpdate();
+			//Opprette en personlig kalender
+			preparedStatement = connect.prepareStatement("insert into Calendar values (default,?,?,null)");
+			preparedStatement.setString(1,"Personlig");
+			preparedStatement.setString(2,getUsername());
 			preparedStatement.executeUpdate();
 		} finally {
 			closeConn();
@@ -159,6 +167,15 @@ public class User extends Database{
 
 	public void removeGroup(Group group) {
 		if (groups.contains(group)) {
+			try {
+				openConn();
+				preparedStatement = connect.prepareStatement("delete from Group_members where Username=? and GroupID=?");
+				preparedStatement.setString(1, getUsername());
+				preparedStatement.setInt(2, group.getGroupID);
+				preparedStatement.executeUpdate();
+			} finally {
+				closeConn();
+			}
 			groups.remove(group); 
 		} else {
 			throw new IllegalArgumentException("Ikke medlem i gruppe");  
