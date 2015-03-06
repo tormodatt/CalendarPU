@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import calendar.Database;
 import calendar.Calendar;
 
-public class Room {
+public class Room extends Database {
 
 	private String roomName; // skal ikke kunne endres
 	private int capacity;
 	private String location;
 	private ArrayList<Appointment> appointments;
+	
+	private PreparedStatement preparedStatement; // bruker dette feltet til å skrive til databasen
 	
 	
 
@@ -39,10 +41,10 @@ public class Room {
 	public void setCredencials(String roomName, int capacity, String location) throws Exception {
 		try {
 			openConn();
-			
-			
-			
-			
+			preparedStatement.setString(1, roomName);
+			preparedStatement.setInt(2, capacity);
+			preparedStatement.setString(3, location);
+			preparedStatement.executeUpdate();		
 		} finally {
 			closeConn();
 		}
