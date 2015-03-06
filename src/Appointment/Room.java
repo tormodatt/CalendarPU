@@ -27,7 +27,13 @@ public class Room extends Database {
 		if (roomNameExists(roomName)) {
 			try {
 				openConn();
-				
+				preparedStatement = connect.prepareStatement("select * from Room WHERE Name='"+roomName+"'");
+				resultSet = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					this.roomName = resultSet.getString("Name");
+					this.capacity = resultSet.getInt("Capacity");
+					this.location = resultSet.getString("Location");
+				}
 			} finally {
 				closeConn();
 			}
@@ -54,7 +60,7 @@ public class Room extends Database {
 	
 
 	public Room(String roomName, int capacity, String location) throws Exception { // Konstruktør for å legge til et nytt rom i databasen
-		if(isValidName(roomName) && isValidLocation(location) && isValidCapasity(capacity)){
+		if(isValidName(roomName) && ! roomNameExists(roomName) && isValidLocation(location) && isValidCapasity(capacity)){
 			setCredencials(roomName, capacity, location);
 			this.roomName = roomName;
 			this.capacity = capacity;
