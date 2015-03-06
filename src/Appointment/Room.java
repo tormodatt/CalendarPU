@@ -41,6 +41,7 @@ public class Room extends Database {
 	public void setCredencials(String roomName, int capacity, String location) throws Exception {
 		try {
 			openConn();
+			preparedStatement = connect.prepareStatement("insert into Room values (?,?, ?)");
 			preparedStatement.setString(1, roomName);
 			preparedStatement.setInt(2, capacity);
 			preparedStatement.setString(3, location);
