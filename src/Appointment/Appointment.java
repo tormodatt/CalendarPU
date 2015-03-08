@@ -153,6 +153,7 @@ public class Appointment extends Database {
 		return participants;
 	}
 	
+	//
 
 	//Settere
 	public void setDescription(String description) {

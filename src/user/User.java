@@ -2,6 +2,7 @@ package user;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -148,7 +149,7 @@ public class User extends Database{
 		this.mail = mail;
 	}
 
-	public void addGroup(Group group) {
+	public void addGroup(Group group) throws Exception {
 		if (groups.contains(group)) {
 			throw new IllegalArgumentException("Allerede medlem i gruppe"); 
 		} else {
@@ -156,7 +157,7 @@ public class User extends Database{
 				openConn();
 				preparedStatement = connect.prepareStatement("insert into Group_members values (?,?)");
 				preparedStatement.setString(1, getUsername());
-				preparedStatement.setInt(2, group.getGroupID);
+				preparedStatement.setInt(2, group.getGroupID());
 				preparedStatement.executeUpdate();
 			} finally {
 				closeConn();
@@ -165,13 +166,13 @@ public class User extends Database{
 		}
 	}
 
-	public void removeGroup(Group group) {
+	public void removeGroup(Group group) throws Exception {
 		if (groups.contains(group)) {
 			try {
 				openConn();
 				preparedStatement = connect.prepareStatement("delete from Group_members where Username=? and GroupID=?");
 				preparedStatement.setString(1, getUsername());
-				preparedStatement.setInt(2, group.getGroupID);
+				preparedStatement.setInt(2, group.getGroupID());
 				preparedStatement.executeUpdate();
 			} finally {
 				closeConn();

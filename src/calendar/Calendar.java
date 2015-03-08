@@ -2,7 +2,6 @@ package calendar;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import user.*;
@@ -40,7 +39,7 @@ public class Calendar extends Database {
 			openConn();
 			preparedStatement = connect.prepareStatement("insert into Calendar (Title,Group_GroupID) values (?,?)");
 			preparedStatement.setString(1,title);
-			preparedStatement.setString(2,group.getGroupID());
+			preparedStatement.setInt(2,group.getGroupID());
 			preparedStatement.executeUpdate();
 			} finally {
 			closeConn();
@@ -71,7 +70,7 @@ public class Calendar extends Database {
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("select * from Calendar WHERE Group_GroupID=?");
-			preparedStatement.setString(1,group.getGroupID());
+			preparedStatement.setInt(1,group.getGroupID());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 					this.calendarID = resultSet.getInt("CalendarID");
