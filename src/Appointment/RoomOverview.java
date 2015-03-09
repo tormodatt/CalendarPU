@@ -31,18 +31,34 @@ public class RoomOverview extends Database {
 			}
 		} 
 
-
-
-
-
-	public ArrayList<Room> getRoom(){
+	public ArrayList<Room> getAllRooms(){
 		return this.allRooms; 
 	}
 	
-	public ArrayList<Room> getFreeRooms(Time time) {
+	public ArrayList<Room> getFreeRooms(Time time) throws Exception {
+		
 		ArrayList<Room> freeRooms = new ArrayList<Room>();
-		// Må skrive SQL som henter ut alle rom som er ledige i den aktuelle tidsperioden 
-		return freeRooms; //returnerer liste med ledige rom 
+		// denne metoden kan ikke lages ferdig før vi har funnet ut av hvordan vi skal behandle tid
+		
+//		try {
+//			openConn();
+//			PreparedStatement preparedStatement = connect.preparedStatement(SELECT * From Appointment)
+//			
+//		} finally {
+//			closeConn();
+//		}
+		// Må skrive SQL som henter ut alle rom som er ledige i den aktuelle tidsperioden. 
+		return freeRooms;
+	}
+	
+	
+	public String toString() {
+		String roomString = "";
+		for (Room room : allRooms) {
+			roomString = roomString + room.getRoomName() + " ";
+		}
+		roomString = roomString.substring(0, roomString.length() - 1);
+		return roomString;
 	}
 
 }
