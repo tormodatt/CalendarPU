@@ -15,37 +15,43 @@ public class Group extends Database{
 	private ArrayList<User> members; 
 	private User leader;
 	private Group mainGroup; 
-	private int groupID;
+	public int groupID;
 	private ArrayList<Group> subGroups; 
 	
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
 	public Group(int groupID) throws Exception {
-		try {
-			openConn();
-			preparedStatement = connect.prepareStatement("select * from Group where GroupID=?");
-			preparedStatement.setInt(1,groupID);
-			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
-				this.name = resultSet.getString("Name");
-				this.leader = new User(resultSet.getString("Leader"));
+		if (groupIDExists(groupID)) {
+			try {
+				openConn();
+				preparedStatement = connect.prepareStatement("select * from Group where GroupID=?");
+				preparedStatement.setInt(1,groupID);
+				resultSet = preparedStatement.executeQuery();
+				if (resultSet.next()) {
+					this.name = resultSet.getString("Name");
+					this.leader = new User(resultSet.getString("Leader"));
+				}
+				preparedStatement = connect.prepareStatement("select * from Group_relation where Sub_group=?");
+				preparedStatement.setInt(1,groupID);
+				resultSet = preparedStatement.executeQuery();
+				if (resultSet.next()) {
+					this.mainGroup = new Group(resultSet.getInt("Super_group"));
+				}
+				preparedStatement = connect.prepareStatement("select * from Group_relation where Super_group=?");
+				preparedStatement.setInt(1,groupID);
+				resultSet = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					this.subGroups.add(new Group(resultSet.getInt("Sub_group")));
+				}
+			} finally {
+				closeConn();
 			}
-			preparedStatement = connect.prepareStatement("select * from Group_relation where Sub_group=?");
-			preparedStatement.setInt(1,groupID);
-			resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
-				this.mainGroup = new Group(resultSet.getInt("Super_group"));
-			}
-			preparedStatement = connect.prepareStatement("select * from Group_relation where Super_group=?");
-			preparedStatement.setInt(1,groupID);
-			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				this.subGroups.add(new Group(resultSet.getInt("Sub_group")));
-			}
-		} finally {
-			closeConn();
+		} else {
+			 System.out.println("Group does not exist!");
 		}
+		
+		
 	}
 	
 	public Group(String name, User leader) throws Exception {
@@ -54,13 +60,33 @@ public class Group extends Database{
 			preparedStatement = connect.prepareStatement("insert into Group values (default,?,?)");
 			preparedStatement.setString(1,name);
 			preparedStatement.setString(2,leader.getUsername());
-			
-			} finally {
+			resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.getGeneratedKeys();
+			if (resultSet.next()) {
+				this.groupID = resultSet.getInt("GroupID");
+			} 
+		} finally {
 				closeConn();
 			}
 			this.groupID = getDBGroupID();
 			this.name = name; 
 			this.leader = leader;
+	}
+	
+	
+	private boolean groupIDExists(int groupID) throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("select GroupID from Group WHERE groupID=?");
+			preparedStatement.setInt(1,groupID);
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				return true;
+			}
+		} finally {
+			closeConn();
+		}
+		return false;
 	}
 
 	private int getDBGroupID() throws Exception {
@@ -177,7 +203,5 @@ public class Group extends Database{
 	
 	public ArrayList<Group> getSubGroups() { 
 		return this.subGroups;
-	}
-
-	
+	}	
 }
