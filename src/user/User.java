@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import Appointment.Notification;
 import calendar.Calendar;
 import calendar.Database;
 
@@ -20,6 +21,7 @@ public class User extends Database{
 	public Calendar personalCalendar; 
 	public ArrayList<Calendar> aboCal;
 	public ArrayList<Group> groups;
+	public ArrayList<Notification> notifications;
 	
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;

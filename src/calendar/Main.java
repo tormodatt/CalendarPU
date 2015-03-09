@@ -3,7 +3,7 @@ package calendar;
 import Appointment.Room;
 import user.User;
 import calendar.*;
-import test.*;
+import tests.*;
 
 public class Main {
 	public static void main(String[] args) throws Exception {
