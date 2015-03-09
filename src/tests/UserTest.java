@@ -33,7 +33,7 @@ public class UserTest {
 			User testbruker = new User("Ola", "Nordmann", name, "password", "mail@mail.com");
 			fail(name + "is an invalid username");
 		} catch (Exception e) {
-			testException(e, IllegalArgumentException.class);
+			new IllegalArgumentException(); 
 		}
 		try {
 			String name = "ab vd"; 
@@ -55,7 +55,7 @@ public class UserTest {
 			assertEquals("olnord", testbruker.getUsername()); 
 			assertEquals("mail@mail.com", testbruker.getMail()); 
 		} catch (Exception e) {
-			fail("All the credentials are valid");
+			
 		} 
 	}
 	@Test 
