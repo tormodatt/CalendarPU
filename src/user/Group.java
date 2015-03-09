@@ -15,7 +15,7 @@ public class Group extends Database{
 	private ArrayList<User> members; 
 	private User leader;
 	private Group mainGroup; 
-	private int groupID;
+	public int groupID;
 	private ArrayList<Group> subGroups; 
 	
 	private PreparedStatement preparedStatement = null;
@@ -60,14 +60,19 @@ public class Group extends Database{
 			preparedStatement = connect.prepareStatement("insert into Group values (default,?,?)");
 			preparedStatement.setString(1,name);
 			preparedStatement.setString(2,leader.getUsername());
-			
-			} finally {
+			resultSet = preparedStatement.executeQuery();
+			resultSet = preparedStatement.getGeneratedKeys();
+			if (resultSet.next()) {
+				this.groupID = resultSet.getInt("GroupID");
+			} 
+		} finally {
 				closeConn();
 			}
 			this.groupID = getDBGroupID();
 			this.name = name; 
 			this.leader = leader;
 	}
+	
 	
 	private boolean groupIDExists(int groupID) throws Exception {
 		try {
@@ -198,7 +203,5 @@ public class Group extends Database{
 	
 	public ArrayList<Group> getSubGroups() { 
 		return this.subGroups;
-	}
-
-	
+	}	
 }
