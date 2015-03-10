@@ -18,12 +18,12 @@ public class RoomTest {
 			assertEquals(20, testrom.getCapacity()); 
 			assertEquals("RFK", testrom.getRoomName()); 
 			assertEquals("U2-1", testrom.getLocation());
-
 		}catch (Exception e){
+			new IllegalArgumentException(); 
 		}
 
 		try{ //det er ikke lov med symboler i romnavnet
-			Room testrom = new Room("test22##", 10, "U2-1"); 
+			Room testrom22 = new Room("test22##", 10, "U2-1"); 
 			fail("the roomname is not valid"); 
 		}catch (Exception e){
 			new IllegalArgumentException(); 
@@ -36,8 +36,8 @@ public class RoomTest {
 			new IllegalArgumentException(); 
 		}
 		try{ //Location til et rom skal kun bestå av 0-9, a-z og - 
-		Room testrom = new Room("test", 10, "U..3"); 
-		fail("the room location cannot contain signs other than '-'"); 
+			Room testrom = new Room("test", 10, "U..3"); 
+			fail("the room location cannot contain signs other than '-'"); 
 		}catch (Exception e){
 			new IllegalArgumentException(); 
 		}
@@ -91,24 +91,24 @@ public class RoomTest {
 		}catch (Exception e){
 			new IllegalArgumentException();  
 		}
-	try{
-		Room testrom = new Room("test", 20, "123ABC"); 
-		assertEquals("123ABC", testrom.getLocation()); 
-	}catch(Exception e){
-		
+		try{
+			Room testrom = new Room("test", 20, "123ABC"); 
+			assertEquals("123ABC", testrom.getLocation()); 
+		}catch(Exception e){
+
+		}
 	}
-	}
-	
+
 	@Test
 	public void addAppointmentTest(){
-		
+		fail("not yet implemented"); 
 	}
-	
+
 	@Test
 	public void removeAppointmentTest(){
-		
+		fail("not yet implemented"); 
 	}
-	
+
 
 
 }
