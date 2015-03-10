@@ -52,6 +52,20 @@ public class GroupTest extends Database {
 	}
 	
 	public void testMainGroup() throws Exception {
+		try {
+			String name = "jojo";
+			String name2 = "haha";
+			User testUser = new User(name);
+			User testUser2 = new User(name2);
+			Group testGroup = new Group("Kul gruppe", testUser);
+			Group testGroup2 = new Group("Kulere gruppe", testUser2);
+			testGroup.setMainGroup(testGroup2);
+			preparedStatement = connect.prepareStatement("insert into Group_relation (Super_group) values (?)");
+			preparedStatement.setInt(1,testGroup2.getGroupID());
+			resultSet = preparedStatement.executeQuery();
+			assertEquals(testGroup.getMainGroup().getLeader().getUsername(), "haha");
+		} catch (Exception e) {
+	}
 		
 	}
 	

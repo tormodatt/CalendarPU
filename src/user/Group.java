@@ -16,7 +16,7 @@ public class Group extends Database{
 	private ArrayList<User> members; 
 	private User leader;
 	private Group mainGroup; 
-	public int groupID;
+	private int groupID;
 	private ArrayList<Group> subGroups; 
 	private Calendar calendar; 
 	
@@ -188,7 +188,7 @@ public class Group extends Database{
 	}
 	
 	
-	public Group getMainGroups() {
+	public Group getMainGroup() {
 		return mainGroup;
 	}
 
