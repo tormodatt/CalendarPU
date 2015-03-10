@@ -11,55 +11,68 @@ public class Main {
 	
 	private User user; 
 	
-	
-	public void booking(User user) {
+	public void run() throws Exception {
+		Scanner scan = new Scanner(System.in);  
+		boolean status = false; 
+		while (! status) { 
+			System.out.println("Hello! Do you want to:" + "\n" + "1. Log on" + "\n" + "2. Register new user" + "\n" + "3. Close");
+			int choice = scan.nextInt();
+			if (choice == 1) {
+				logIn(); 
+				status = true; 
+			} else if (choice == 2) {
+				registerNew(); 
+				status = true;
+			} else if (choice == 3) {
+				System.out.println("Program closing, welcome back!"); //Legge inn noe mer? eks. fjerne databasetilgang++? 
+				status = true; 
+			} else {
+				System.out.println("Not valid choice, try again");
+			}
+		}
+	}
 		
+	public void logIn() throws Exception {
+		Scanner input_logIn = new Scanner(System.in);
+		System.out.println("Please enter username");
+		String username = input_logIn.next(); 
+		User existingUser = new User(username);
+		this.user = existingUser; 
 	}
 	
-	
-	public void logOn() throws Exception {
-		
-	}
 	
 	public void registerNew() throws Exception {
-		Scanner input_logOn = new Scanner(System.in); 
+		Scanner input_logIn = new Scanner(System.in); 
 		System.out.println("Please enter firstname"); 
-		String firstName = input_logOn.next(); 
+		String firstName = input_logIn.next(); 
 		System.out.println("Please enter lastname");
-		String lastName = input_logOn.next(); 
+		String lastName = input_logIn.next(); 
 		System.out.println("Please enter username");
-		String userName = input_logOn.next(); 
+		String userName = input_logIn.next(); 
 		System.out.println("Please enter password");
-		String password = input_logOn.next(); 
+		String password = input_logIn.next(); 
 		System.out.println("Please enter email");
-		String email = input_logOn.next(); 
+		String email = input_logIn.next(); 
 		User newUser = new User(firstName, lastName, userName, password, email); 
 		this.user = newUser; 
 	}
 	
-	public static String welcomeToString() {
-		return "Hello! Do you want to:" + "\n" + "1. Log on" + "\n" + "2. Register new user";
+	
+	public void showCalendar() {
+		
 	}
+	
+	public void notSeen() {
+		
+	}
+	
 	
 	public static void main(String[] args) throws Exception {
-		Main run = new Main(); 
-		welcomeToString();
-		Scanner scan = new Scanner(System.in); 
-		int choice = scan.nextInt(); 
-		boolean status = false; 
-		while (! status) { 
-			if (choice == 1) {
-			run.logOn(); 
-			status = true; 
-		} else if (choice == 2) {
-			run.registerNew(); 
-			status = true;
-		} else {
-			
-		}
-	
-		
-		//User user1 = new User("fornavn","etternavn","brukernavn","passord","mail");
-		//System.out.println(user1.getFirstname());
+		Main main = new Main(); 
+		main.run(); //Logger inn med ekstierende bruker/oppretter ny 
+		main.notSeen(); //Sjekker invitasjoner/notifications 
+		main.showCalendar(); //Visning av kalender 
+		main.showChoices(); //Viser liste med mulige valg
 	}
+	
 }
