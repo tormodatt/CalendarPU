@@ -121,9 +121,7 @@ public class Room extends Database {
 	}
 
 	public String getLocation() {
-		// Skrive SQL-spørring som henter ut location for dette rommet
-		String loc = null; // hentes fra databasen
-		return loc;
+		return location;
 	}
 
 	private boolean isValidName(String name){ //sjekker at romnavn kune inneholder bokstaver og tall
