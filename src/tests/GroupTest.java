@@ -5,6 +5,8 @@ import user.Group;
 import user.User;
 import calendar.Database;
 
+import org.junit.Test;
+
 import java.sql.*;
 
 public class GroupTest extends Database {
@@ -12,6 +14,7 @@ public class GroupTest extends Database {
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
+	@Test
 	public void testSetName() {
 		try {
 			String name = "joanna"; 
@@ -24,6 +27,7 @@ public class GroupTest extends Database {
 		}
 	}
 	
+	@Test
 	public void testSetLeader() {
 		try {
 			String name = "hans"; 
@@ -36,6 +40,7 @@ public class GroupTest extends Database {
 		}
 	}
 	
+	@Test
 	public void testGroupID() throws Exception {
 		try {
 			String name = "jojo";
@@ -51,6 +56,7 @@ public class GroupTest extends Database {
 		}
 	}
 	
+	@Test
 	public void testMainGroup() throws Exception {
 		try {
 			String name = "jojo";
@@ -68,6 +74,7 @@ public class GroupTest extends Database {
 		}	
 	}
 	
+	@Test
 	public void testSubGroup() throws Exception {
 		try {
 			String name = "jojo";
