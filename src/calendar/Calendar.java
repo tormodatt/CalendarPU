@@ -1,9 +1,12 @@
 package calendar;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import sun.applet.Main;
 import user.*;
 import Appointment.*;
 
@@ -24,7 +27,7 @@ public class Calendar extends Database {
 		try {
 			if(isValidTitle(title)){
 				openConn();
-				preparedStatement = connect.prepareStatement("insert into Calendar (Title,User_Username) values (?,?)");
+				preparedStatement = connect.prepareStatement("insert into Calendar (Title, Username) values (?,?)");
 				preparedStatement.setString(1,title);
 				preparedStatement.setString(2,user.getUsername());
 				preparedStatement.executeUpdate();
@@ -41,7 +44,7 @@ public class Calendar extends Database {
 		try {
 			if(isValidTitle(title)){
 				openConn();
-				preparedStatement = connect.prepareStatement("insert into Calendar (Title,Group_GroupID) values (?,?)");
+				preparedStatement = connect.prepareStatement("insert into Calendar (Title, GroupID) values (?,?)");
 				preparedStatement.setString(1,title);
 				preparedStatement.setInt(2,group.getGroupID());
 				preparedStatement.executeUpdate();
@@ -56,7 +59,7 @@ public class Calendar extends Database {
 	public Calendar(User user) throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select * from Calendar WHERE User_Username=?");
+			preparedStatement = connect.prepareStatement("select * from Calendar WHERE Username=?");
 			preparedStatement.setString(1,user.getUsername());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -74,7 +77,7 @@ public class Calendar extends Database {
 	public Calendar(Group group) throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select * from Calendar WHERE Group_GroupID=?");
+			preparedStatement = connect.prepareStatement("select * from Calendar WHERE GroupID=?");
 			preparedStatement.setInt(1,group.getGroupID());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -113,15 +116,17 @@ public class Calendar extends Database {
 	}
 
 	//Valideringsmetoder
-	private boolean isValidTitle(String title){
+	private static boolean isValidTitle(String title){
 		String str = title.toLowerCase(); 
 		int index = 0; 
 		for (int i = 0; i < str.length();  ++i){
 			char c = str.charAt(i); 
-			if(c < 'z' && c>'a' || c >= 0 && c <= 9 || c == 'æ' || c == 'ø' || c== 'å' || c == '-' || c == ' '){
+			if((c <= 'z' && c>='a') || (c >= '0' && c <= '9') || c == 'æ' || c == 'ø' || c== 'å' || c == '-' || c == ' '){
 				++index; 
 			}else return false; 
 		}
+		if(index < 3) return false; 
 		return true; 
 	}
+
 }
