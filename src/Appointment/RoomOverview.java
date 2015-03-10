@@ -14,14 +14,17 @@ public class RoomOverview extends Database {
 	
 	private ArrayList<Room> allRooms; 
 	
+	private PreparedStatement preparedStatement = null;
+	private ResultSet resultSet = null;
+	
 	
 	public RoomOverview() throws Exception {
 		this.allRooms = new ArrayList<Room>();
 		
 		try {
 			openConn();
-			PreparedStatement preparedStatement = connect.prepareStatement("SELECT * FROM Room" );
-			ResultSet resultSet = preparedStatement.executeQuery();
+			preparedStatement = connect.prepareStatement("SELECT * FROM Room" );
+			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				
 				this.allRooms.add( new Room( resultSet.getString("RoomName") ) );
@@ -35,20 +38,33 @@ public class RoomOverview extends Database {
 		return this.allRooms; 
 	}
 	
-	public ArrayList<Room> getFreeRooms(Time time) throws Exception {
+	public ArrayList<Room> getFreeRooms(Timestamp startTime, Timestamp endTime, int minimumCapacity) throws Exception {
+		
 		
 		ArrayList<Room> freeRooms = new ArrayList<Room>();
 		// denne metoden kan ikke lages ferdig før vi har funnet ut av hvordan vi skal behandle tid
 		
-//		try {
-//			openConn();
-//			PreparedStatement preparedStatement = connect.preparedStatement(SELECT * From Appointment)
-//			
-//		} finally {
-//			closeConn();
-//		}
-		// Må skrive SQL som henter ut alle rom som er ledige i den aktuelle tidsperioden. 
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement( "SELECT Room_name From Appointment WHERE capacity > (minimumCapacity -1) and ((start > startTime and start > endTime) or (end < startTime and end < endTime))");
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				String name = resultSet.getString("Room_name");
+				for (Room room : allRooms) {
+					if ( room.getRoomName().equals(name) ) {
+						freeRooms.add(room);
+					}
+					
+				}
+			}
+		} finally {
+			closeConn();
+		}
 		return freeRooms;
+	}
+	
+	public void addRoom(Room room) {
+		this.allRooms.add(room);
 	}
 	
 	

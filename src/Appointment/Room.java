@@ -157,9 +157,6 @@ public class Room extends Database {
 		if (capasity < 0) return false; 
 		return true; 
 	}
-public static void main(String[] args) throws Exception{
-	Room polse = new Room("polse##", 10, "U2-1"); 
-	System.out.println(polse.getRoomName());
-}
+
 
 }
