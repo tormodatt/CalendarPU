@@ -10,7 +10,7 @@ import calendar.Database;
 public class Notification extends Database {
 
 	private int notificationID;
-	private User reciever;
+	private User receiver;
 	private String subject;
 	private String message;
 	private Timestamp executed;
@@ -18,6 +18,7 @@ public class Notification extends Database {
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
+	// Hente Notification
 	public Notification(int notificationID) throws Exception {
 		try {
 			openConn();
@@ -25,16 +26,19 @@ public class Notification extends Database {
 			preparedStatement.setInt(1,notificationID);
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				this.reciever = new User(resultSet.getString("Reciever"));
+				this.receiver = new User(resultSet.getString("Reciever"));
 				this.message = resultSet.getString("Message");
 				this.subject = resultSet.getString("Subject");
 				this.executed = resultSet.getTimestamp("Executed");
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			closeConn();
 		}
 	}
 	
+	// Opprette Notification
 	public Notification(String subject, String message, User reciever) throws Exception {
 		//TO DO: databaseting
 		try {
@@ -43,19 +47,23 @@ public class Notification extends Database {
 			preparedStatement.setString(1,reciever.getUsername());
 			preparedStatement.setString(2,subject);
 			preparedStatement.setString(3,message);
-			preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
+			//System.out.println("resultSet: " + resultSet.next());
 			if (resultSet.next()) {
-				this.notificationID = resultSet.getInt("NotificationID");
-				this.executed = resultSet.getTimestamp("Executed");
+				this.notificationID = resultSet.getInt(1);
+				System.out.println(notificationID);
+				this.executed = resultSet.getTimestamp(5);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			closeConn();
 		}
 		
 		this.subject = subject;
 		this.message = message;
-		this.reciever = reciever;
+		this.receiver = reciever;
 	}
 	
 	public void setSeen() throws Exception {
@@ -64,7 +72,11 @@ public class Notification extends Database {
 			preparedStatement = connect.prepareStatement("update Notification set Seen=1 where NotificationID=?");
 			preparedStatement.setInt(1, getNotificationID());
 			preparedStatement.executeQuery();
-		} finally {
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		finally {
 			closeConn();
 		}
 	}
@@ -72,4 +84,35 @@ public class Notification extends Database {
 	public int getNotificationID() {
 		return notificationID;
 	}
+
+	public User getReceiver() {
+		return receiver;
+	}
+
+	public String getSubject() {
+		return subject;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public Timestamp getExecuted() {
+		return executed;
+	}
+	
+	public static void main(String[] args) {
+		
+		try {
+			User perOlsen = new User("perOlsen");
+			Notification n = new Notification("Emne", "Du er invitert til en avtale.", perOlsen);
+			System.out.println(n.getMessage());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 }
