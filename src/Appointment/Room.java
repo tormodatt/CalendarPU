@@ -16,11 +16,11 @@ public class Room extends Database {
 	private int capacity;
 	private String location;
 	private ArrayList<Appointment> appointments;
-	
+
 	private PreparedStatement preparedStatement; // bruker dette feltet til å skrive til databasen
 	private ResultSet resultSet;
-	
-	
+
+
 
 
 	public Room(String roomName) throws Exception { //Konstruktør for å opprette et rom-objekt som allerede eksisterer i databasen 
@@ -41,8 +41,9 @@ public class Room extends Database {
 			throw new IllegalArgumentException("The room " + roomName + " does not exist." );
 		}
 	}
-	
+
 	public boolean roomNameExists(String roomName) throws Exception {
+		roomName = roomName.toLowerCase();
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("select Name from all_s_gr46_calendar.Room WHERE Name = ?");
@@ -56,8 +57,8 @@ public class Room extends Database {
 		}
 		return false;
 	}
-		
-	
+
+
 
 	public Room(String roomName, int capacity, String location) throws Exception { // Konstruktør for å legge til et nytt rom i databasen
 		if(isValidName(roomName) && ! roomNameExists(roomName) && isValidLocation(location) && isValidCapasity(capacity)){
@@ -65,11 +66,11 @@ public class Room extends Database {
 			this.roomName = roomName;
 			this.capacity = capacity;
 			this.location = location;
-			}  else throw new IllegalArgumentException("The input is not valid or roomName already exists");
+		}  else throw new IllegalArgumentException("The input is not valid or roomName already exists");
 		// Må ha kode som legger til rommet i databasen
 	}
-	
-	public void setCredencials(String roomName, int capacity, String location) throws Exception {
+
+	private void setCredencials(String roomName, int capacity, String location) throws Exception {
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("insert into Room values (?,?, ?)");
@@ -124,25 +125,25 @@ public class Room extends Database {
 		return location;
 	}
 
-	private boolean isValidName(String name){ //sjekker at romnavn kune inneholder bokstaver og tall
+	private static boolean isValidName(String name){ //sjekker at romnavn kune inneholder bokstaver og tall
 		int index = 0;
 		String str = name.toLowerCase(); 
 		for (int i = 0 ; i < str.length(); ++i){
 			char c = str.charAt(i); 
-			if ((c <= 'z' && c >= 'a') || c == 'æ' || c == 'ø' || c == 'å' || (c <= 9 && c >=0)){ 
+			if ((c <= 'z' && c >= 'a') || c == 'æ' || c == 'ø' || c == 'å' || (c <= '9' && c >= '0')){ 
 				index++; 
 			}
 			else return false; 
 		}
-		if (index < 3) return false; 
+		if (index < 0) return false; 
 		return true; 
 	}
-	private boolean isValidLocation(String location){ //sjekker at lokasjonen kun inneholder bokstaver, tall og bindestrek
+	private static boolean isValidLocation(String location){ //sjekker at lokasjonen kun inneholder bokstaver, tall og bindestrek
 		int index = 0; 
 		String str = location.toLowerCase(); 
 		for (int i = 0; i<str.length(); ++i){
 			char c = str.charAt(i); 
-			if ((c <= 'z' && c >= 'a') || c == 'æ' || c == 'ø' || c == 'å' || (c <= 9 && c >=0) || c == '-'){ 
+			if ((c <= 'z' && c >= 'a') || c == 'æ' || c == 'ø' || c == 'å' || (c <= '9' && c >='0') || c == '-'){ 
 				index++; 
 			}
 			else return false; 
@@ -151,9 +152,15 @@ public class Room extends Database {
 		return true; 
 
 	}
-	private boolean isValidCapasity(int capasity){ //sjekker at kapasiteten ikke er negativ
+	private static boolean isValidCapasity(int capasity){ //sjekker at kapasiteten ikke er negativ
 		if (capasity < 0) return false; 
 		return true; 
+	}
+
+	public static void main(String[] args) throws Exception {
+		Room k1 = new Room("k1");
+		System.out.println(k1.getLocation());
+		
 	}
 
 
