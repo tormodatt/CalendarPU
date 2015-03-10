@@ -26,13 +26,11 @@ public class Notification extends Database {
 			preparedStatement.setInt(1,notificationID);
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				this.receiver = new User(resultSet.getString("Reciever"));
+				this.receiver = new User(resultSet.getString("Receiver"));
 				this.message = resultSet.getString("Message");
 				this.subject = resultSet.getString("Subject");
 				this.executed = resultSet.getTimestamp("Executed");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
 			closeConn();
 		}
@@ -49,14 +47,16 @@ public class Notification extends Database {
 			preparedStatement.setString(3,message);
 			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
-			//System.out.println("resultSet: " + resultSet.next());
 			if (resultSet.next()) {
 				this.notificationID = resultSet.getInt(1);
-				System.out.println(notificationID);
-				this.executed = resultSet.getTimestamp(5);
+			}			
+			PreparedStatement ps = connect.prepareStatement("select Excecuted from Notification where NotificationID=?");
+			ps.setInt(1,notificationID);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				this.executed = rs.getTimestamp(1);				
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			
 		} finally {
 			closeConn();
 		}
@@ -72,11 +72,7 @@ public class Notification extends Database {
 			preparedStatement = connect.prepareStatement("update Notification set Seen=1 where NotificationID=?");
 			preparedStatement.setInt(1, getNotificationID());
 			preparedStatement.executeQuery();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		finally {
+		} finally {
 			closeConn();
 		}
 	}
@@ -99,20 +95,6 @@ public class Notification extends Database {
 
 	public Timestamp getExecuted() {
 		return executed;
-	}
-	
-	public static void main(String[] args) {
-		
-		try {
-			User perOlsen = new User("perOlsen");
-			Notification n = new Notification("Emne", "Du er invitert til en avtale.", perOlsen);
-			System.out.println(n.getMessage());
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		
 	}
 	
 }
