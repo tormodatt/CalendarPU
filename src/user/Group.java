@@ -2,6 +2,7 @@ package user;
 
 import java.util.ArrayList;
 
+import calendar.Calendar;
 import calendar.Database;
 
 import java.sql.*;
@@ -17,6 +18,7 @@ public class Group extends Database{
 	private Group mainGroup; 
 	public int groupID;
 	private ArrayList<Group> subGroups; 
+	private Calendar calendar; 
 	
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -47,6 +49,7 @@ public class Group extends Database{
 			} finally {
 				closeConn();
 			}
+			this.calendar = new Calendar(this, name + " calendar");
 		} else {
 			 System.out.println("Group does not exist!");
 		}
@@ -71,6 +74,7 @@ public class Group extends Database{
 			this.groupID = getDBGroupID();
 			this.name = name; 
 			this.leader = leader;
+			this.calendar = new Calendar(this, name + " calendar");
 	}
 	
 	
@@ -203,5 +207,12 @@ public class Group extends Database{
 	
 	public ArrayList<Group> getSubGroups() { 
 		return this.subGroups;
-	}	
+	}
+	
+	
+	public Calendar getCalendar() {
+		return this.calendar; 
+	}
+	
+	
 }

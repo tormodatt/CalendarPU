@@ -51,14 +51,20 @@ public class GroupTest extends Database {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
+	public void testMainGroup() throws Exception {
+		
+	}
 	
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 
 
