@@ -26,8 +26,7 @@ public class RoomOverview extends Database {
 			preparedStatement = connect.prepareStatement("SELECT * FROM Room" );
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				
-				this.allRooms.add( new Room( resultSet.getString("RoomName") ) );
+				this.allRooms.add( new Room( resultSet.getString("Name") ) );
 			}
 			} finally {
 				closeConn();
@@ -75,6 +74,11 @@ public class RoomOverview extends Database {
 		}
 		roomString = roomString.substring(0, roomString.length() - 1);
 		return roomString;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		RoomOverview ov = new RoomOverview();
+		System.out.println(ov);
 	}
 
 }

@@ -5,6 +5,8 @@ import user.Group;
 import user.User;
 import calendar.Database;
 
+import org.junit.Test;
+
 import java.sql.*;
 
 public class GroupTest extends Database {
@@ -12,6 +14,7 @@ public class GroupTest extends Database {
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
+	@Test
 	public void testSetName() {
 		try {
 			String name = "joanna"; 
@@ -24,6 +27,7 @@ public class GroupTest extends Database {
 		}
 	}
 	
+	@Test
 	public void testSetLeader() {
 		try {
 			String name = "hans"; 
@@ -36,6 +40,7 @@ public class GroupTest extends Database {
 		}
 	}
 	
+	@Test
 	public void testGroupID() throws Exception {
 		try {
 			String name = "jojo";
@@ -51,6 +56,7 @@ public class GroupTest extends Database {
 		}
 	}
 	
+	@Test
 	public void testMainGroup() throws Exception {
 		try {
 			String name = "jojo";
@@ -65,8 +71,22 @@ public class GroupTest extends Database {
 			resultSet = preparedStatement.executeQuery();
 			assertEquals(testGroup.getMainGroup().getLeader().getUsername(), "haha");
 		} catch (Exception e) {
+		}	
 	}
-		
+	
+	@Test
+	public void testSubGroup() throws Exception {
+		try {
+			String name = "jojo";
+			String name2 = "haha";
+			User testUser = new User(name);
+			User testUser2 = new User(name2);
+			Group testGroup = new Group("Kul gruppe", testUser);
+			Group testGroup2 = new Group("Kulere gruppe", testUser2);
+			testGroup.addSubGroup(testGroup2);
+			assertEquals(testGroup.getSubGroups(), testGroup2);
+		} catch (Exception e) {
+	}
 	}
 	
 }

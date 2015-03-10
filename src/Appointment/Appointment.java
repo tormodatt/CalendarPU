@@ -81,6 +81,10 @@ public class Appointment extends Database {
 			preparedStatement.setInt(8, maxPartisipants);
 			preparedStatement.setTimestamp(9,Timestamp.valueOf(alarm));
 			preparedStatement.executeUpdate();
+			resultSet = preparedStatement.getGeneratedKeys();
+			if (resultSet.next()) {
+				this.appointmentID = resultSet.getInt("NotificationID");
+			}
 			} finally {
 				closeConn();
 			}
@@ -92,7 +96,7 @@ public class Appointment extends Database {
 	}
 	
 	//Endre avtale
-	public void updateAppointment(int calendarID, User owner, String title, String start, String end,  Room room, int priority, String description, int maxPartisipants, String alarm) throws Exception {
+	public void updateAppointment(int calendarID, User owner, String title, String start, String end,  Room room, int priority, String description, int maxParticipants, String alarm) throws Exception {
 		try {
 			if(isValidTimestamp(start) && isValidTimestamp(end)){
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
@@ -106,7 +110,7 @@ public class Appointment extends Database {
 			preparedStatement.setString(5,room.getRoomName());
 			preparedStatement.setInt(6, priority);
 			preparedStatement.setString(7, description);
-			preparedStatement.setInt(8, maxPartisipants);
+			preparedStatement.setInt(8, maxParticipants);
 			preparedStatement.setTimestamp(9,Timestamp.valueOf(alarm));
 			preparedStatement.setInt(10,getAppointmentID());
 			preparedStatement.executeUpdate();
@@ -123,7 +127,11 @@ public class Appointment extends Database {
 			this.description = description;
 			this.maxParticipants = maxParticipants;
 			this.alarm = Timestamp.valueOf(alarm);
-			//TO DO: notify participants
+			
+			//Notify participants
+			for (int i = 0; i < participants.size(); i++) {
+				new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has changed",participants.get(i));
+			}
 	}
 		
 	//Slette avtale
@@ -140,6 +148,17 @@ public class Appointment extends Database {
 		//TO DO: Slette objekt
 	}
 	
+	public void hideAppointment(User user) throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("update Invited set Hidden=1 where User=? and AppointmentID=?");
+			preparedStatement.setString(1,user.getUsername());
+			preparedStatement.setInt(2,appointmentID);
+			preparedStatement.executeUpdate();
+		} finally {
+			closeConn();
+		}
+	}
 	//TO DO: Gjemme avtale
 	
 	public void addParticipant(User user) throws Exception {
@@ -157,7 +176,13 @@ public class Appointment extends Database {
 	
 	public void removeParticipant(User user, boolean owner) throws Exception {
 		if (!owner) {
-			//TO DO: Notify owner and participants
+			String name = user.getFirstname()+" "+user.getLastname();
+			new Notification("A user has declined your appointment","The user "+name+" is no longer availible to your event "+getTitle()+" shcedueled at "+getStartTime(),getOwner());
+			for (int i = 0; i < participants.size(); i++) {
+				if (participants.get(i) != user) {
+					new Notification("A participant opted out form an appointment you are going to","The user, "+name+" is no longer participating at the event "+ getTitle() + " schedueled at " +getStartTime(),participants.get(i));
+				}
+			}
 		};
 		try {
 			openConn();
@@ -244,7 +269,7 @@ public class Appointment extends Database {
 	public String getDescription() {
 		return description;
 	}
-	public int maxParticipants() {
+	public int getMaxParticipants() {
 		return maxParticipants;
 	}
 	public Timestamp getAlarm() {
@@ -254,8 +279,6 @@ public class Appointment extends Database {
 		return participants;
 	}
 	
-	//
-
 	//Settere
 	public void setAlarm(String alarm, User user) throws Exception {
 		if (owner.getUsername()==user.getUsername()) {
