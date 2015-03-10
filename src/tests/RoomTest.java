@@ -99,7 +99,15 @@ public class RoomTest {
 	}
 	}
 	
+	@Test
+	public void addAppointmentTest(){
+		
+	}
 	
+	@Test
+	public void removeAppointmentTest(){
+		
+	}
 	
 
 
