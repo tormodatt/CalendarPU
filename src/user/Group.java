@@ -49,7 +49,7 @@ public class Group extends Database{
 			} finally {
 				closeConn();
 			}
-			this.calendar = new Calendar(this, name + " calendar");
+			this.calendar = new Calendar(this, name + " calendar"); //Lager evt. en metode senere, setCalendar(), tar inn navn fra bruker
 		} else {
 			 System.out.println("Group does not exist!");
 		}
@@ -74,7 +74,7 @@ public class Group extends Database{
 			this.groupID = getDBGroupID();
 			this.name = name; 
 			this.leader = leader;
-			this.calendar = new Calendar(this, name + " calendar");
+			this.calendar = new Calendar(this, name + " calendar"); //Lager evt. en metode senere, setCalendar(), tar inn navn fra bruker
 	}
 	
 	
