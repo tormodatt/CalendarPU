@@ -1,5 +1,7 @@
 package Appointment;
 
+import static org.junit.Assert.assertEquals;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -7,11 +9,12 @@ import java.sql.*;
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
+import calendar.Calendar;
 import calendar.Database;
 import user.User;
 
 public class Appointment extends Database {
-	
+
 	private int appointmentID;
 	private int calendarID;
 	private User owner;
@@ -23,12 +26,12 @@ public class Appointment extends Database {
 	private String description; 
 	private int maxParticipants;
 	private Timestamp alarm;
-	
+
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
-	
+
 	public ArrayList<User> participants;
-	
+
 	//Hente avtale
 	public Appointment(int appointmentID) throws Exception {
 		if (appointmentIdExists(appointmentID)) {
@@ -62,11 +65,11 @@ public class Appointment extends Database {
 		}
 		else System.out.println("Brukernavnet eksisterer ikke!");
 	}
-	
+
 	//Opprette avtale
 	public Appointment(int calendarID, User owner, String title, String start, String end,  Room room, int priority, String description, int maxPartisipants, String alarm) throws Exception {
 		try {
-			if(isValidTimestamp(start) && isValidTimestamp(end)){
+			if(isValidTimestamp(start) && isValidTimestamp(end) && isValidTitle(title)){
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
 
 			openConn();
@@ -85,20 +88,20 @@ public class Appointment extends Database {
 			if (resultSet.next()) {
 				this.appointmentID = resultSet.getInt("NotificationID");
 			}
-			} finally {
-				closeConn();
-			}
-			this.calendarID = calendarID;
-			this.owner = owner;
-			this.title = title;
-			this.start = Timestamp.valueOf(start);
-			this.start = Timestamp.valueOf(end);
+		} finally {
+			closeConn();
+		}
+		this.calendarID = calendarID;
+		this.owner = owner;
+		this.title = title;
+		this.start = Timestamp.valueOf(start);
+		this.start = Timestamp.valueOf(end);
 	}
-	
+
 	//Endre avtale
 	public void updateAppointment(int calendarID, User owner, String title, String start, String end,  Room room, int priority, String description, int maxParticipants, String alarm) throws Exception {
 		try {
-			if(isValidTimestamp(start) && isValidTimestamp(end)){
+			if(isValidTimestamp(start) && isValidTimestamp(end)&& isValidTitle(title)){
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
 
 			openConn();
@@ -114,26 +117,26 @@ public class Appointment extends Database {
 			preparedStatement.setTimestamp(9,Timestamp.valueOf(alarm));
 			preparedStatement.setInt(10,getAppointmentID());
 			preparedStatement.executeUpdate();
-			} finally {
-				closeConn();
-			}
-			this.calendarID = calendarID;
-			this.owner = owner;
-			this.title = title;
-			this.start = Timestamp.valueOf(start);
-			this.end = Timestamp.valueOf(end);
-			this.room = room;
-			this.priority = priority;
-			this.description = description;
-			this.maxParticipants = maxParticipants;
-			this.alarm = Timestamp.valueOf(alarm);
-			
-			//Notify participants
-			for (int i = 0; i < participants.size(); i++) {
-				new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has changed",participants.get(i));
-			}
+		} finally {
+			closeConn();
+		}
+		this.calendarID = calendarID;
+		this.owner = owner;
+		this.title = title;
+		this.start = Timestamp.valueOf(start);
+		this.end = Timestamp.valueOf(end);
+		this.room = room;
+		this.priority = priority;
+		this.description = description;
+		this.maxParticipants = maxParticipants;
+		this.alarm = Timestamp.valueOf(alarm);
+
+		//Notify participants
+		for (int i = 0; i < participants.size(); i++) {
+			new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has changed",participants.get(i));
+		}
 	}
-		
+
 	//Slette avtale
 	public void deleteAppointment() throws Exception {
 		try {
@@ -147,7 +150,7 @@ public class Appointment extends Database {
 		}
 		//TO DO: Slette objekt
 	}
-	
+
 	public void hideAppointment(User user) throws Exception {
 		try {
 			openConn();
@@ -160,7 +163,7 @@ public class Appointment extends Database {
 		}
 	}
 	//TO DO: Gjemme avtale
-	
+
 	public void addParticipant(User user) throws Exception {
 		try {
 			openConn();
@@ -173,7 +176,7 @@ public class Appointment extends Database {
 		}
 		participants.add(user);
 	}
-	
+
 	public void removeParticipant(User user, boolean owner) throws Exception {
 		if (!owner) {
 			String name = user.getFirstname()+" "+user.getLastname();
@@ -195,10 +198,10 @@ public class Appointment extends Database {
 		}
 		participants.remove(user);
 	}
-	
+
 	public String getParticipantsStatus() throws Exception {
 		int unseen=0,rejected=0,confirmed=0;
-		
+
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("select sum(Confirmed=1) as Confirmed, sum(Confirmed=0) as Rejected, sum(Confirmed is null) as Unseen from Invited where AppointmentID=?");
@@ -214,18 +217,18 @@ public class Appointment extends Database {
 		}
 		return "Unseen: "+unseen+"\nRejected: "+rejected+"\nConfirmed: "+confirmed;
 	}
-	
+
 	public boolean isValidTimestamp(String time) throws java.text.ParseException {
-	    SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
-	       try {
-	    	   format.parse(time);
-	           Pattern p = Pattern.compile("^\\d{4}[-]?\\d{1,2}[-]?\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}[.]?\\d{1,6}$");
-	           return p.matcher(time).matches();
-	       } catch (ParseException e) {
-	           return false;
-	       }
+		SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
+		try {
+			format.parse(time);
+			Pattern p = Pattern.compile("^\\d{4}[-]?\\d{1,2}[-]?\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}[.]?\\d{1,6}$");
+			return p.matcher(time).matches();
+		} catch (ParseException e) {
+			return false;
+		}
 	}
-	
+
 	public boolean appointmentIdExists(int appointmentID) throws Exception {
 		try {
 			openConn();
@@ -240,7 +243,7 @@ public class Appointment extends Database {
 		}
 		return false;
 	}
-	
+
 	//Gettere
 	public int getAppointmentID() {
 		return appointmentID;
@@ -278,7 +281,7 @@ public class Appointment extends Database {
 	public ArrayList<User> getParticipants() {
 		return participants;
 	}
-	
+
 	//Settere
 	public void setAlarm(String alarm, User user) throws Exception {
 		if (owner.getUsername()==user.getUsername()) {
@@ -304,7 +307,7 @@ public class Appointment extends Database {
 			}
 		}
 	}
-	
+
 	public void setParticipants(ArrayList<User> participants) throws Exception {
 		try {
 			openConn();
@@ -318,5 +321,14 @@ public class Appointment extends Database {
 			closeConn();	
 		}
 		this.participants = participants;
+	}
+	private boolean isValidTitle(String title){
+		title = title.toLowerCase(); 
+		for (int i = 0 ; i <title.length(); ++i){
+			char c = title.charAt(i); 
+			if((c >= 'a' && c <= 'z') || c == 'æ' || c == 'ø' || c == 'å'|| c <= '9' && c >= '0'); 
+			else return false; 
+
+		}return true; 
 	}
 }

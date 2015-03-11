@@ -36,6 +36,7 @@ public class Calendar extends Database {
 			closeConn();
 		}
 		this.user = user; 
+		this.title = title; 
 	}
 
 	//Opprette gruppekalender
@@ -53,6 +54,7 @@ public class Calendar extends Database {
 			closeConn();
 		}
 		this.group = group; 
+		this.title = title; 
 	}
 
 	//Hente personlig kalender

@@ -3,6 +3,7 @@ package Appointment;
 import java.util.ArrayList;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 //import java.sql.SQLException;
 //import java.sql.Statement;
 import java.util.StringTokenizer;
@@ -45,12 +46,12 @@ public class RoomOverview extends Database {
 		
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement( "SELECT Room_name From Appointment WHERE capacity > (minimumCapacity -1) and ((start > startTime and start > endTime) or (end < startTime and end < endTime))");
+			preparedStatement = connect.prepareStatement( "SELECT Room_name From Appointment WHERE (((start > '"+startTime+"') and (start > '"+endTime+"')) or ((end < '"+startTime+"') and (end < '"+endTime+"')))");
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				String name = resultSet.getString("Room_name");
 				for (Room room : allRooms) {
-					if ( room.getRoomName().equals(name) ) {
+					if ( room.getRoomName().equals(name) && room.getCapacity() >= minimumCapacity ) {
 						freeRooms.add(room);
 					}
 					
@@ -79,6 +80,9 @@ public class RoomOverview extends Database {
 	public static void main(String[] args) throws Exception {
 		RoomOverview ov = new RoomOverview();
 		System.out.println(ov);
+		Timestamp start = Timestamp.valueOf("2010-01-01 12:55:00.000000");
+		Timestamp end = Timestamp.valueOf("2010-01-02 10:00:00.000000");
+		ov.getFreeRooms(start, end, 4);
 	}
 
 }
