@@ -34,14 +34,4 @@ public class Database {
 
 		    }
 	}
-	 
-	  public void viewTable(String table) throws Exception {
-		  statement = connect.createStatement();
-		  resultSet = statement
-		          .executeQuery("select * from " + table);
-		  //Skrive ut det man har hentet til konsollen
-	      while (resultSet.next()) {
-              System.out.println(resultSet.getString("fornavn") + " " + resultSet.getString("etternavn"));
-          }
-	  }
 }
