@@ -128,9 +128,14 @@ public class Main {
 		
 	}
 	
-	public void showFreeRooms() {
+	public void showFreeRooms() throws Exception {
 		Scanner scanner = new Scanner(System.in); 
-		
+		System.out.println("Choose period you want to show free rooms." + "\n" + "Please enter start time: ");
+		Timestamp startTime = Timestamp.valueOf(scanner.next()); 
+		System.out.println("Please enter end time: ");
+		Timestamp endTime = Timestamp.valueOf(scanner.next());  
+		System.out.println("Please enter room capacity: ");
+		int minimumCapacity = scanner.nextInt(); 
 		roomOverview.getFreeRooms(startTime, endTime, minimumCapacity);
 	}
 	
