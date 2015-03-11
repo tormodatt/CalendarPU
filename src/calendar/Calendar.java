@@ -1,12 +1,9 @@
 package calendar;
 
-import static org.junit.Assert.assertEquals;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import sun.applet.Main;
 import user.*;
 import Appointment.*;
 
@@ -17,7 +14,7 @@ public class Calendar extends Database {
 	private User user;
 	private Group group;
 
-	public ArrayList<Appointment> appointments;
+	private ArrayList<Appointment> appointments;
 
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -27,7 +24,7 @@ public class Calendar extends Database {
 		try {
 			if(isValidTitle(title)){
 				openConn();
-				preparedStatement = connect.prepareStatement("insert into Calendar (Title, Username) values (?,?)");
+				preparedStatement = connect.prepareStatement("insert into Calendar (Title, Username, GroupID) values (?,?,null)");
 				preparedStatement.setString(1,title);
 				preparedStatement.setString(2,user.getUsername());
 				preparedStatement.executeUpdate();
@@ -45,7 +42,7 @@ public class Calendar extends Database {
 		try {
 			if(isValidTitle(title)){
 				openConn();
-				preparedStatement = connect.prepareStatement("insert into Calendar (Title, GroupID) values (?,?)");
+				preparedStatement = connect.prepareStatement("insert into Calendar (Title, Username,GroupID) values (?,null,?)");
 				preparedStatement.setString(1,title);
 				preparedStatement.setInt(2,group.getGroupID());
 				preparedStatement.executeUpdate();
@@ -64,7 +61,7 @@ public class Calendar extends Database {
 			preparedStatement = connect.prepareStatement("select * from Calendar WHERE Username=?");
 			preparedStatement.setString(1,user.getUsername());
 			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
+			if (resultSet.next()) {
 				this.calendarID = resultSet.getInt("CalendarID");
 				this.title = resultSet.getString("Title");
 			}
@@ -82,7 +79,7 @@ public class Calendar extends Database {
 			preparedStatement = connect.prepareStatement("select * from Calendar WHERE GroupID=?");
 			preparedStatement.setInt(1,group.getGroupID());
 			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
+			if (resultSet.next()) {
 				this.calendarID = resultSet.getInt("CalendarID");
 				this.title = resultSet.getString("Title");
 			}
@@ -93,6 +90,24 @@ public class Calendar extends Database {
 		this.group = group; 
 	}
 
+	public Calendar(int calendarID) throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("select * from Calendar WHERE CalendarID=?");
+			preparedStatement.setInt(1,calendarID);
+			resultSet = preparedStatement.executeQuery();
+			if (resultSet.next()) {
+				this.calendarID = calendarID;
+				this.title = resultSet.getString("Title");
+				this.user = new User(resultSet.getString("Username"));
+				this.group = new Group(resultSet.getInt("GroupID"));
+			}
+			setAppointments();
+		} finally {
+			closeConn();
+		}
+	}
+	
 	//Gettere
 	public int getCalendarID() {
 		return calendarID;
@@ -106,6 +121,10 @@ public class Calendar extends Database {
 	public Group getGroup() {
 		return group;
 	}
+	
+	public ArrayList<Appointment> getAppointment() {
+		return appointments;
+	}
 
 	//Settere
 	public void setAppointments() throws Exception {
@@ -115,6 +134,15 @@ public class Calendar extends Database {
 		while (resultSet.next()) {
 			this.appointments.add(new Appointment(resultSet.getInt("AppointmentID")));
 		}
+	}
+	
+	//asdf
+	public void addAppointment(Appointment appointment) {
+		appointments.add(appointment);
+	}
+	
+	public void removeAppointment(Appointment appointment) {
+		appointments.remove(appointment);
 	}
 
 	//Valideringsmetoder
