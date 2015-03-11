@@ -94,14 +94,14 @@ public class Main {
 		}
 	}
 	
-	public void showChoices() {
-		Scanner scanner = new Scanner(System.in); 
-		int choice = scanner.nextInt(); 
+	public void showChoices() throws Exception {
+		Scanner scanner = new Scanner(System.in);
 		boolean flag = false; 
 		while (! flag) {
 			System.out.println("What do you want to do?");
 			System.out.println("1. Show your groups" + "\n" + "2. Show your appointments"
 			+ "\n" + "3. Show free timeslots" + "\n" + "4. Book room");
+			int choice = scanner.nextInt();
 			if (choice == 1) {
 				showGroups(); 
 				flag = true; 
