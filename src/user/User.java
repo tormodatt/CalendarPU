@@ -2,7 +2,6 @@ package user;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
@@ -19,7 +18,6 @@ public class User extends Database{
 	public String mail; 
 	
 	public Calendar personalCalendar; 
-	public ArrayList<Calendar> aboCal;
 	public ArrayList<Group> groups;
 	public ArrayList<Notification> notifications;
 	
@@ -34,7 +32,7 @@ public class User extends Database{
 				openConn();
 				preparedStatement = connect.prepareStatement("select * from User WHERE Username='"+username+"'");
 				resultSet = preparedStatement.executeQuery();
-				while (resultSet.next()) {
+				if (resultSet.next()) {
 					this.firstname = resultSet.getString("First_name");
 					this.lastname = resultSet.getString("Last_name");
 					this.mail = resultSet.getString("Mail");
@@ -61,6 +59,7 @@ public class User extends Database{
 		this.lastname = lastname;
 		this.password = password;
 		this.mail = mail;
+		this.personalCalendar = new Calendar(this,"Personal");
 	}
 
 	//Gettere
@@ -116,7 +115,7 @@ public class User extends Database{
 			preparedStatement = connect.prepareStatement("select Username from all_s_gr46_calendar.User WHERE Username= ?");
 			preparedStatement.setString(1,username);
 			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
+			if (resultSet.next()) {
 				return true;
 			}
 		} finally {
