@@ -55,24 +55,28 @@ public class Main {
 		String email = input_logIn.next(); 
 		User newUser = new User(firstName, lastName, userName, password, email); 
 		this.user = newUser; 
+		System.out.println("User '" + this.user + "' is now added");
 	}
 	
-	
 	public void showCalendar() {
-		
+		//Kaller visning 
 	}
 	
 	public void notSeen() {
 		
 	}
 	
+	public void showChoices() {
+		
+	}
+	
 	
 	public static void main(String[] args) throws Exception {
 		Main main = new Main(); 
-		main.run(); //Logger inn med ekstierende bruker/oppretter ny 
-		main.notSeen(); //Sjekker invitasjoner/notifications 
-		main.showCalendar(); //Visning av kalender 
-		main.showChoices(); //Viser liste med mulige valg
+		main.run(); //Logger inn med eksisterende bruker/oppretter ny 
+		//main.notSeen(); //Sjekker invitasjoner/notifications 
+		//main.showCalendar(); //Visning av kalender 
+		//main.showChoices(); //Viser liste med mulige valg
 	}
 	
 }
