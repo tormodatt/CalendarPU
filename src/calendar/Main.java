@@ -1,15 +1,31 @@
 package calendar;
 
+import Appointment.Notification;
 import Appointment.Room;
+import Appointment.RoomOverview;
 import user.User;
-import calendar.*;
 import tests.*;
+import calendar.Calendar;
+import calendar.Database;
+import static org.junit.Assert.assertEquals;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+import java.sql.*;
+
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import java.util.Scanner; 
 
 public class Main {
 	
-	private User user; 
+	private User user;
+	private RoomOverview roomOverview; 
+	private ArrayList<Notification> unseenNotifications; 
+	
+	private PreparedStatement preparedStatement = null;
+	private ResultSet resultSet = null;
 	
 	public void run() throws Exception {
 		Scanner scan = new Scanner(System.in);  
@@ -62,21 +78,73 @@ public class Main {
 		//Kaller visning 
 	}
 	
-	public void notSeen() {
-		
+	public void notSeen() throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("select * from Notification WHERE Receiver=?");
+			preparedStatement.setString(1, this.user.getUsername());
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				// Notification notification = 
+				// if (unseen)
+				unseenNotifications.add(notification); 
+			}
+		} finally {
+			closeConn();
+		}
 	}
 	
 	public void showChoices() {
+		Scanner scanner = new Scanner(System.in); 
+		int choice = scanner.nextInt(); 
+		boolean flag = false; 
+		while (! flag) {
+			System.out.println("What do you want to do?");
+			System.out.println("1. Show your groups" + "\n" + "2. Show your appointments"
+			+ "\n" + "3. Show free timeslots" + "\n" + "4. Book room");
+			if (choice == 1) {
+				showGroups(); 
+				flag = true; 
+			} else if (choice == 2) {
+				showAppointments(); 
+				flag = true; 
+			} else if (choice == 3) {
+				showFreeRooms();
+				flag = true; 
+			} else if (choice == 4) {
+				booking(); 
+				flag = true; 
+			} else {
+				System.out.println("Not valid choice, try again!");
+			}
+		}
+	}
+	
+	public void showGroups() {
+		 
+	}
+	
+	public void showAppointments() {
+		
+	}
+	
+	public void showFreeRooms() {
+		Scanner scanner = new Scanner(System.in); 
+		
+		roomOverview.getFreeRooms(startTime, endTime, minimumCapacity);
+	}
+	
+	public void booking() {
 		
 	}
 	
 	
 	public static void main(String[] args) throws Exception {
 		Main main = new Main(); 
-		main.run(); //Logger inn med eksisterende bruker/oppretter ny 
+		//main.run(); //Logger inn med eksisterende bruker/oppretter ny 
 		//main.notSeen(); //Sjekker invitasjoner/notifications 
 		//main.showCalendar(); //Visning av kalender 
-		//main.showChoices(); //Viser liste med mulige valg
+		main.showChoices(); //Viser liste med mulige valg
 	}
 	
 }
