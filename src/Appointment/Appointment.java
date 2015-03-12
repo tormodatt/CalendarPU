@@ -23,7 +23,6 @@ public class Appointment extends Database {
 	private int priority;
 	private String description; 
 	private int maxParticipants;
-	private Timestamp alarm;
 
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -48,9 +47,8 @@ public class Appointment extends Database {
 					this.priority = resultSet.getInt("Priority");
 					this.description = resultSet.getString("Description");
 					this.maxParticipants = resultSet.getInt("Max_participants");
-					this.alarm = resultSet.getTimestamp("Alarm");
 				}
-				preparedStatement = connect.prepareStatement("select User from Invited WHERE appoinmentID=?");
+				preparedStatement = connect.prepareStatement("select User from Invited WHERE AppointmentID=?");
 				preparedStatement.setInt(1,appointmentID);
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
@@ -65,22 +63,22 @@ public class Appointment extends Database {
 	}
 
 	//Opprette avtale
-	public Appointment(Calendar calendar, User owner, String title, String start, String end,  Room room, int priority, String description, int maxPartisipants, String alarm) throws Exception {
+	public Appointment(Calendar calendar, User owner, String title, String start, String end,  Room room, int priority, String description, int maxPartisipants) throws Exception {
 		try {
 			if(isValidTimestamp(start) && isValidTimestamp(end) && isValidTitle(title)){
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
 
 			openConn();
-			preparedStatement = connect.prepareStatement("insert into Appointment values (default,?,?,?,?,?,?,?,?,?)");
+			preparedStatement = connect.prepareStatement("insert into Appointment values (default,?,?,?,?,?,?,?,?,?,?)");
 			preparedStatement.setInt(1,calendar.getCalendarID());
 			preparedStatement.setString(2,owner.getUsername());
-			preparedStatement.setTimestamp(3,Timestamp.valueOf(start));
-			preparedStatement.setTimestamp(4,Timestamp.valueOf(end));
-			preparedStatement.setString(5,room.getRoomName());
-			preparedStatement.setInt(6, priority);
-			preparedStatement.setString(7, description);
-			preparedStatement.setInt(8, maxPartisipants);
-			preparedStatement.setTimestamp(9,Timestamp.valueOf(alarm));
+			preparedStatement.setString(3, title);
+			preparedStatement.setTimestamp(4,Timestamp.valueOf(start));
+			preparedStatement.setTimestamp(5,Timestamp.valueOf(end));
+			preparedStatement.setString(6,room.getRoomName());
+			preparedStatement.setInt(7, priority);
+			preparedStatement.setString(8, description);
+			preparedStatement.setInt(9, maxPartisipants);
 			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
 			if (resultSet.next()) {
@@ -94,27 +92,26 @@ public class Appointment extends Database {
 		this.owner = owner;
 		this.title = title;
 		this.start = Timestamp.valueOf(start);
-		this.start = Timestamp.valueOf(end);
+		this.end = Timestamp.valueOf(end);
 	}
 
 	//Endre avtale
-	public void updateAppointment(Calendar calendar, User owner, String title, String start, String end,  Room room, int priority, String description, int maxParticipants, String alarm) throws Exception {
+	public void updateAppointment(Calendar calendar, User owner, String title, String start, String end,  Room room, int priority, String description, int maxParticipants) throws Exception {
 		try {
 			if(isValidTimestamp(start) && isValidTimestamp(end)&& isValidTitle(title)){
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
 
 			openConn();
-			preparedStatement = connect.prepareStatement("update Appointment SET CalendarID=?,Username=?,Start=?,End=?,Room_name=?,Priority=?,Description=?,Max_participants=?,Alarm=? WHERE AppointmentID=?");
+			preparedStatement = connect.prepareStatement("update Appointment SET CalendarID=?,Username=?,Start=?,End=?,Room_name=?,Priority=?,Description=?,Max_participants=? WHERE AppointmentID=?");
 			preparedStatement.setInt(1,calendar.getCalendarID());
 			preparedStatement.setString(2,owner.getUsername());
-			preparedStatement.setTimestamp(3,Timestamp.valueOf(start));
-			preparedStatement.setTimestamp(4,Timestamp.valueOf(end));
-			preparedStatement.setString(5,room.getRoomName());
-			preparedStatement.setInt(6, priority);
-			preparedStatement.setString(7, description);
-			preparedStatement.setInt(8, maxParticipants);
-			preparedStatement.setTimestamp(9,Timestamp.valueOf(alarm));
-			preparedStatement.setInt(10,getAppointmentID());
+			preparedStatement.setString(3, title);
+			preparedStatement.setTimestamp(4,Timestamp.valueOf(start));
+			preparedStatement.setTimestamp(5,Timestamp.valueOf(end));
+			preparedStatement.setString(6,room.getRoomName());
+			preparedStatement.setInt(7, priority);
+			preparedStatement.setString(8, description);
+			preparedStatement.setInt(9, maxParticipants);
 			preparedStatement.executeUpdate();
 		} finally {
 			closeConn();
@@ -130,7 +127,6 @@ public class Appointment extends Database {
 		this.priority = priority;
 		this.description = description;
 		this.maxParticipants = maxParticipants;
-		this.alarm = Timestamp.valueOf(alarm);
 
 		//Notify participants
 		for (int i = 0; i < participants.size(); i++) {
@@ -277,14 +273,13 @@ public class Appointment extends Database {
 	public int getMaxParticipants() {
 		return maxParticipants;
 	}
-	public Timestamp getAlarm() {
-		return alarm;
-	}
+
 	public ArrayList<User> getParticipants() {
 		return participants;
 	}
 
 	//Settere
+	/*
 	public void setAlarm(String alarm, User user) throws Exception {
 		if (owner.getUsername()==user.getUsername()) {
 			try {
@@ -309,7 +304,7 @@ public class Appointment extends Database {
 			}
 		}
 	}
-
+*/
 	public void setParticipants(ArrayList<User> participants) throws Exception {
 		try {
 			openConn();
