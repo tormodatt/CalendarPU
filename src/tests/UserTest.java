@@ -16,14 +16,19 @@ public class UserTest {
 	public void testSetUser1(){
 		try{
 			String name = "bh1nn"; 
-			User testbruker = new User("Thomas", "pettersen",name, "password", "tiss@promp.no");
-			User testbruker1 = new User(name);
-			assertEquals("Thomas", testbruker.getFirstname()); 
-			assertEquals(name, testbruker.getUsername()); 
-
-		}catch (Exception e){
 			
-
+			//Opprette bruker
+			User testbruker = new User("Thomas", "pettersen", name, "password", "tiss@promp.no");
+			
+			//Hente bruker
+			User testbruker1 = new User(name);
+			
+			assertEquals("Thomas", testbruker.getFirstname()); 
+			assertEquals(name, testbruker.getUsername());
+			assertEquals(name, testbruker1.getUsername());
+		}
+		catch (Exception e){
+			fail("Det kastes en Exception.");
 		}
 
 	}
