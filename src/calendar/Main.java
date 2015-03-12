@@ -1,5 +1,6 @@
 package calendar;
 
+import Appointment.Appointment;
 import Appointment.Notification;
 import Appointment.Room;
 import Appointment.RoomOverview;
@@ -151,8 +152,33 @@ public class Main {
 	}
 	
 	public void booking() {
+		Scanner scan = new Scanner(System.in);
+		try {
+			System.out.println("Add new appointment!");
+			System.out.println("Please enter appointment name: ");
+			String name = scan.next(); 
+			System.out.println("Please enter start time: ");
+			String start = scan.next();
+			System.out.println("Please enter end time: ");
+			String end = scan.next();
+			showFreeRooms(); 
+			System.out.println("Please enter room name: ");
+			String roomName = scan.next(); 
+			Room bookRoom = new Room(roomName);
+			System.out.println("Please enter priority: ");
+			int pri = scan.nextInt(); 
+			System.out.println("Please enter short description: ");
+			String des = scan.next(); 
+			System.out.println("Please enter maxium partisipants: ");
+			int maxParti = scan.nextInt(); 
+			Appointment appointment = new Appointment(this.user.getPersonalCalendar(), this.user, name, start, end, bookRoom, pri, des, maxParti, null);
+			this.user.getPersonalCalendar().addAppointment(appointment); 
+			} catch (Exception e) {
+				System.out.println("Not valid input");
+			}
+		}
+			
 		
-	}
 	
 	
 	public static void main(String[] args) throws Exception {
@@ -160,7 +186,8 @@ public class Main {
 		//main.run(); //Logger inn med eksisterende bruker/oppretter ny 
 		//main.notSeen(); //Sjekker invitasjoner/notifications 
 		//main.showCalendar(); //Visning av kalender 
-		main.showChoices(); //Viser liste med mulige valg
+		//main.showChoices(); //Viser liste med mulige valg
+		main.booking();
 	}
 	
 }
