@@ -4,6 +4,7 @@ import Appointment.Appointment;
 import Appointment.Notification;
 import Appointment.Room;
 import Appointment.RoomOverview;
+import user.Group;
 import user.User;
 import tests.*;
 import calendar.Calendar;
@@ -121,6 +122,23 @@ public class Main {
 		}
 	}
 	
+	public void joinGroup() throws Exception {
+		Scanner scan = new Scanner(System.in); 
+		System.out.println("Please enter group ID: "); //Evt endre til gruppenavn
+		int groupID = scan.nextInt(); 
+		try {
+			Group group = new Group(groupID); 
+			this.user.addGroup(group);
+		} catch (Exception e) {
+			System.out.println("Not valid ID");
+		}
+	}
+	
+	public void createNewGroup() {
+		
+		
+	}
+	
 	public void showGroups() {
 		 
 	}
@@ -151,7 +169,7 @@ public class Main {
 		roomOverview.getFreeRooms(startTime, endTime, minimumCapacity);
 	}
 	
-	public void booking() {
+	public void booking() throws Exception {
 		Scanner scan = new Scanner(System.in);
 		try {
 			System.out.println("Add new appointment!");
