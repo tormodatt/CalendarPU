@@ -1,8 +1,10 @@
 package calendar;
 
+import Appointment.Appointment;
 import Appointment.Notification;
 import Appointment.Room;
 import Appointment.RoomOverview;
+import user.Group;
 import user.User;
 import tests.*;
 import calendar.Calendar;
@@ -120,12 +122,52 @@ public class Main {
 		}
 	}
 	
+	public void joinGroup() throws Exception {
+		Scanner scan = new Scanner(System.in); 
+		System.out.println("Please enter group ID: "); //Evt endre til gruppenavn
+		int groupID = scan.nextInt(); 
+		try {
+			Group group = new Group(groupID); 
+			this.user.addGroup(group);
+			group.addMember(this.user);
+		} catch (Exception e) {
+			System.out.println("Not valid ID");
+		}
+	}
+	
+	public void createNewGroup() throws Exception {
+		System.out.println("Create new group!");
+		Scanner scan = new Scanner(System.in); 
+		try { 
+			System.out.println("Please enter prefered group name: ");
+			String groupName = scan.next(); 
+			Group newGroup = new Group(groupName, this.user); 
+			this.user.addGroup(newGroup);
+			newGroup.addMember(this.user);
+			System.out.println("Group created, you are the leader of the group.");
+		} catch (Exception e) {
+			System.out.println("Error"); 
+		}
+		
+	}
+	
 	public void showGroups() {
-		 
+		 //Evt. metode for Œ vise alle tilgjengelige grupper som man kan bli medlem i. 
 	}
 	
 	public void showAppointments() {
-		
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("select * from Appointment WHERE CalendarID=?");
+			preparedStatement.setInt(1, this.user.getPersonalCalendar().getCalendarID());
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				// Appointment appointment = 
+				unseenNotifications.add(appointment); 
+			}
+		} finally {
+			closeConn();
+		}
 	}
 	
 	public void showFreeRooms() throws Exception {
@@ -139,9 +181,34 @@ public class Main {
 		roomOverview.getFreeRooms(startTime, endTime, minimumCapacity);
 	}
 	
-	public void booking() {
+	public void booking() throws Exception {
+		Scanner scan = new Scanner(System.in);
+		try {
+			System.out.println("Add new appointment!");
+			System.out.println("Please enter appointment name: ");
+			String name = scan.next(); 
+			System.out.println("Please enter start time: ");
+			String start = scan.next();
+			System.out.println("Please enter end time: ");
+			String end = scan.next();
+			showFreeRooms(); 
+			System.out.println("Please enter room name: ");
+			String roomName = scan.next(); 
+			Room bookRoom = new Room(roomName);
+			System.out.println("Please enter priority: ");
+			int pri = scan.nextInt(); 
+			System.out.println("Please enter short description: ");
+			String des = scan.next(); 
+			System.out.println("Please enter maxium partisipants: ");
+			int maxParti = scan.nextInt(); 
+			Appointment appointment = new Appointment(this.user.getPersonalCalendar(), this.user, name, start, end, bookRoom, pri, des, maxParti);
+			this.user.getPersonalCalendar().addAppointment(appointment); 
+			} catch (Exception e) {
+				System.out.println("Not valid input");
+			}
+		}
+			
 		
-	}
 	
 	
 	public static void main(String[] args) throws Exception {
@@ -149,7 +216,8 @@ public class Main {
 		//main.run(); //Logger inn med eksisterende bruker/oppretter ny 
 		//main.notSeen(); //Sjekker invitasjoner/notifications 
 		//main.showCalendar(); //Visning av kalender 
-		main.showChoices(); //Viser liste med mulige valg
+		//main.showChoices(); //Viser liste med mulige valg
+		main.booking();
 	}
 	
 }

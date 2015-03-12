@@ -34,6 +34,7 @@ public class Group extends Database{
 					this.name = resultSet.getString("Name");
 					this.leader = new User(resultSet.getString("Leader"));
 				}
+				this.groupID = groupID;
 				preparedStatement = connect.prepareStatement("select * from Group_relation where Sub_group=?");
 				preparedStatement.setInt(1,groupID);
 				resultSet = preparedStatement.executeQuery();
@@ -71,7 +72,6 @@ public class Group extends Database{
 		} finally {
 				closeConn();
 			}
-			this.groupID = getDBGroupID();
 			this.name = name; 
 			this.leader = leader;
 			this.calendar = new Calendar(this, name + " calendar"); //Lager evt. en metode senere, setCalendar(), tar inn navn fra bruker
@@ -91,21 +91,6 @@ public class Group extends Database{
 			closeConn();
 		}
 		return false;
-	}
-
-	private int getDBGroupID() throws Exception {
-		try {
-			openConn();
-			preparedStatement = connect.prepareStatement("select GroupID from Group WHERE GroupID=?");
-			preparedStatement.setInt(1,groupID);
-			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				return resultSet.getInt("GroupID");
-			}
-		} finally {
-			closeConn();
-		}
-		return groupID;
 	}
 	
 	public int getGroupID() {
