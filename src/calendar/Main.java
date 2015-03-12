@@ -125,7 +125,18 @@ public class Main {
 	}
 	
 	public void showAppointments() {
-		
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("select * from Appointment WHERE CalendarID=?");
+			preparedStatement.setInt(1, this.user.getPersonalCalendar().getCalendarID());
+			resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				// Appointment appointment = 
+				unseenNotifications.add(appointment); 
+			}
+		} finally {
+			closeConn();
+		}
 	}
 	
 	public void showFreeRooms() throws Exception {
