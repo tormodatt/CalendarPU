@@ -112,6 +112,7 @@ public class Appointment extends Database {
 			preparedStatement.setInt(7, priority);
 			preparedStatement.setString(8, description);
 			preparedStatement.setInt(9, maxParticipants);
+			preparedStatement.setInt(10, getAppointmentID());
 			preparedStatement.executeUpdate();
 		} finally {
 			closeConn();
