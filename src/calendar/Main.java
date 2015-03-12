@@ -129,18 +129,30 @@ public class Main {
 		try {
 			Group group = new Group(groupID); 
 			this.user.addGroup(group);
+			group.addMember(this.user);
 		} catch (Exception e) {
 			System.out.println("Not valid ID");
 		}
 	}
 	
-	public void createNewGroup() {
-		
+	public void createNewGroup() throws Exception {
+		System.out.println("Create new group!");
+		Scanner scan = new Scanner(System.in); 
+		try { 
+			System.out.println("Please enter prefered group name: ");
+			String groupName = scan.next(); 
+			Group newGroup = new Group(groupName, this.user); 
+			this.user.addGroup(newGroup);
+			newGroup.addMember(this.user);
+			System.out.println("Group created, you are the leader of the group.");
+		} catch (Exception e) {
+			System.out.println("Error"); 
+		}
 		
 	}
 	
 	public void showGroups() {
-		 
+		 //Evt. metode for Œ vise alle tilgjengelige grupper som man kan bli medlem i. 
 	}
 	
 	public void showAppointments() {
@@ -189,7 +201,7 @@ public class Main {
 			String des = scan.next(); 
 			System.out.println("Please enter maxium partisipants: ");
 			int maxParti = scan.nextInt(); 
-			Appointment appointment = new Appointment(this.user.getPersonalCalendar(), this.user, name, start, end, bookRoom, pri, des, maxParti, null);
+			Appointment appointment = new Appointment(this.user.getPersonalCalendar(), this.user, name, start, end, bookRoom, pri, des, maxParti);
 			this.user.getPersonalCalendar().addAppointment(appointment); 
 			} catch (Exception e) {
 				System.out.println("Not valid input");
