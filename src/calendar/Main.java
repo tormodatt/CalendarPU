@@ -25,6 +25,7 @@ public class Main {
 	private User user;
 	private RoomOverview roomOverview; 
 	private ArrayList<Notification> unseenNotifications; 
+	private ArrayList<Appointment> appointments; 
 	
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -50,7 +51,7 @@ public class Main {
 		}
 	}
 		
-	public void logIn() throws Exception {
+	private void logIn() throws Exception {
 		Scanner input_logIn = new Scanner(System.in);
 		System.out.println("Please enter username");
 		String username = input_logIn.next(); 
@@ -59,7 +60,7 @@ public class Main {
 	}
 	
 	
-	public void registerNew() throws Exception {
+	private void registerNew() throws Exception {
 		Scanner input_logIn = new Scanner(System.in); 
 		System.out.println("Please enter firstname"); 
 		String firstName = input_logIn.next(); 
@@ -76,11 +77,11 @@ public class Main {
 		System.out.println("User '" + this.user + "' is now added");
 	}
 	
-	public void showCalendar() {
+	private void showCalendar() {
 		//Kaller visning 
 	}
 	
-	public void notSeen() throws Exception {
+	private void notSeen() throws Exception {
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("select * from Notification WHERE Receiver=?");
@@ -96,12 +97,12 @@ public class Main {
 		}
 	}
 	
-	public void showChoices() throws Exception {
+	private void showChoices() throws Exception {
 		Scanner scanner = new Scanner(System.in);
 		boolean flag = false; 
 		while (! flag) {
 			System.out.println("What do you want to do?");
-			System.out.println("1. Show your groups" + "\n" + "2. Show your appointments"
+			System.out.println("1. Show your groups" + "\n" + "2. Show your confirmed appointments"
 			+ "\n" + "3. Show free timeslots" + "\n" + "4. Book room");
 			int choice = scanner.nextInt();
 			if (choice == 1) {
@@ -122,7 +123,7 @@ public class Main {
 		}
 	}
 	
-	public void joinGroup() throws Exception {
+	private void joinGroup() throws Exception {
 		Scanner scan = new Scanner(System.in); 
 		System.out.println("Please enter group ID: "); //Evt endre til gruppenavn
 		int groupID = scan.nextInt(); 
@@ -135,7 +136,7 @@ public class Main {
 		}
 	}
 	
-	public void createNewGroup() throws Exception {
+	private void createNewGroup() throws Exception {
 		System.out.println("Create new group!");
 		Scanner scan = new Scanner(System.in); 
 		try { 
@@ -151,7 +152,7 @@ public class Main {
 		
 	}
 	
-	public void showGroups() {
+	private void showGroups() throws Exception {
 		 //Metode for Œ vise alle tilgjengelige grupper som man kan bli medlem i HER
 		Scanner scanner = new Scanner(System.in); 
 		boolean flag = false; 
@@ -160,16 +161,13 @@ public class Main {
 					+ "2. Create new group" + "\n" + "3. Leave group"); //+ Evt. vise alle avtaler til en av gruppene
 			int choice = scanner.nextInt();
 			if (choice == 1) {
-				showGroups(); 
+				joinGroup(); 
 				flag = true; 
 			} else if (choice == 2) {
-				showAppointments(); 
+				createNewGroup(); 
 				flag = true; 
 			} else if (choice == 3) {
-				showFreeRooms();
-				flag = true; 
-			} else if (choice == 4) {
-				booking(); 
+				leaveGroup();
 				flag = true; 
 			} else {
 				System.out.println("Not valid choice, try again!");
@@ -178,7 +176,21 @@ public class Main {
 		
 	}
 	
-	public void showAppointments() {
+	private void leaveGroup() {
+		Scanner scan = new Scanner(System.in); 
+		System.out.println("Please enter group ID: "); //Evt endre til gruppenavn
+		int groupID = scan.nextInt(); 
+		try {
+			Group group = new Group(groupID); 
+			this.user.removeGroup(group);
+			group.removeMember(this.user);
+		} catch (Exception e) {
+			System.out.println("Not valid ID");
+		}
+		
+	}
+
+	private void showAppointments() { //MŒ gj¿res noe 
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("select * from Appointment WHERE CalendarID=?");
@@ -186,15 +198,20 @@ public class Main {
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				// Appointment appointment = 
-				unseenNotifica
-				tions.add(appointment); 
+				appointments.add(appointment); 
 			}
 		} finally {
 			closeConn();
 		}
+		System.out.println("What do you want to do?" + "\n" + "1. Cancel appointment" + "\n" 
+		+ "2. Change appointment information");
+		Scanner scan = new Scanner(System.in); 
+		
 	}
 	
-	public void showFreeRooms() throws Exception {
+	
+	
+	private void showFreeRooms() throws Exception {
 		Scanner scanner = new Scanner(System.in); 
 		System.out.println("Choose period you want to show free rooms." + "\n" + "Please enter start time: ");
 		Timestamp startTime = Timestamp.valueOf(scanner.next()); 
@@ -205,7 +222,7 @@ public class Main {
 		roomOverview.getFreeRooms(startTime, endTime, minimumCapacity);
 	}
 	
-	public void booking() throws Exception {
+	private void booking() throws Exception {
 		Scanner scan = new Scanner(System.in);
 		try {
 			System.out.println("Add new appointment!");
