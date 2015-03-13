@@ -20,7 +20,7 @@ import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import java.util.Scanner; 
 
-public class Main {
+public class Main extends Database{
 	
 	private User user;
 	private RoomOverview roomOverview; 
@@ -84,13 +84,11 @@ public class Main {
 	private void notSeen() throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select * from Notification WHERE Receiver=?");
+			preparedStatement = connect.prepareStatement("select NotificationID from Notification WHERE Receiver=? and Seen = 0");
 			preparedStatement.setString(1, this.user.getUsername());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				// Notification notification = 
-				// if (unseen)
-				unseenNotifications.add(notification); 
+				unseenNotifications.add(new Notification(resultSet.getInt("NotificationID"))); 
 			}
 		} finally {
 			closeConn();
