@@ -188,15 +188,14 @@ public class Main extends Database{
 		
 	}
 
-	private void showAppointments() { //MŒ gj¿res noe 
+	private void showAppointments() throws Exception { //MŒ gj¿res noe 
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select * from Appointment WHERE CalendarID=?");
+			preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE CalendarID=?");
 			preparedStatement.setInt(1, this.user.getPersonalCalendar().getCalendarID());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				// Appointment appointment = 
-				appointments.add(appointment); 
+				appointments.add(new Appointment(resultSet.getInt("AppointmentID"))); 
 			}
 		} finally {
 			closeConn();
@@ -204,6 +203,7 @@ public class Main extends Database{
 		System.out.println("What do you want to do?" + "\n" + "1. Cancel appointment" + "\n" 
 		+ "2. Change appointment information");
 		Scanner scan = new Scanner(System.in); 
+		//Fullf¿re her 
 		
 	}
 	
