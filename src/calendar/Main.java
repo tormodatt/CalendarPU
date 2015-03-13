@@ -152,7 +152,30 @@ public class Main {
 	}
 	
 	public void showGroups() {
-		 //Evt. metode for Œ vise alle tilgjengelige grupper som man kan bli medlem i. 
+		 //Metode for Œ vise alle tilgjengelige grupper som man kan bli medlem i HER
+		Scanner scanner = new Scanner(System.in); 
+		boolean flag = false; 
+		while (! flag) {
+			System.out.println("Do you want to: " + "\n" + "1. Join a group" + "\n" 
+					+ "2. Create new group" + "\n" + "3. Leave group"); //+ Evt. vise alle avtaler til en av gruppene
+			int choice = scanner.nextInt();
+			if (choice == 1) {
+				showGroups(); 
+				flag = true; 
+			} else if (choice == 2) {
+				showAppointments(); 
+				flag = true; 
+			} else if (choice == 3) {
+				showFreeRooms();
+				flag = true; 
+			} else if (choice == 4) {
+				booking(); 
+				flag = true; 
+			} else {
+				System.out.println("Not valid choice, try again!");
+			}
+		}
+		
 	}
 	
 	public void showAppointments() {
@@ -163,7 +186,8 @@ public class Main {
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				// Appointment appointment = 
-				unseenNotifications.add(appointment); 
+				unseenNotifica
+				tions.add(appointment); 
 			}
 		} finally {
 			closeConn();
