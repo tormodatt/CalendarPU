@@ -20,7 +20,7 @@ import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import java.util.Scanner; 
 
-public class Main {
+public class Main extends Database{
 	
 	private User user;
 	private RoomOverview roomOverview; 
@@ -84,13 +84,11 @@ public class Main {
 	private void notSeen() throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select * from Notification WHERE Receiver=?");
+			preparedStatement = connect.prepareStatement("select NotificationID from Notification WHERE Receiver=? and Seen = 0");
 			preparedStatement.setString(1, this.user.getUsername());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				// Notification notification = 
-				// if (unseen)
-				unseenNotifications.add(notification); 
+				unseenNotifications.add(new Notification(resultSet.getInt("NotificationID"))); 
 			}
 		} finally {
 			closeConn();
@@ -190,15 +188,14 @@ public class Main {
 		
 	}
 
-	private void showAppointments() { //MŒ gj¿res noe 
+	private void showAppointments() throws Exception { //MŒ gj¿res noe 
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select * from Appointment WHERE CalendarID=?");
+			preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE CalendarID=?");
 			preparedStatement.setInt(1, this.user.getPersonalCalendar().getCalendarID());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				// Appointment appointment = 
-				appointments.add(appointment); 
+				appointments.add(new Appointment(resultSet.getInt("AppointmentID"))); 
 			}
 		} finally {
 			closeConn();
@@ -206,6 +203,7 @@ public class Main {
 		System.out.println("What do you want to do?" + "\n" + "1. Cancel appointment" + "\n" 
 		+ "2. Change appointment information");
 		Scanner scan = new Scanner(System.in); 
+		//Fullf¿re her 
 		
 	}
 	
