@@ -1,5 +1,6 @@
 package view;
 
+import user.*;
 import Appointment.*;
 
 public class AppointmentView {
@@ -16,6 +17,12 @@ public class AppointmentView {
 				+ "Time: " + appointment.getStartTime().toString() + " to " + appointment.getEndTime() + "\n"
 				+ "Place: " + appointment.getRoom().getRoomName() + "\n" + "\n"
 				+ "Description: " + appointment.getDescription();
+		// Vise deltagere:
+		for (User user : appointment.getParticipants()) {
+			view += user.getFirstname() + " " + user.getLastname() + ", ";
+		}
+		view.substring(0, view.length() - 2);
+		
 		return view;
 	}
 	
