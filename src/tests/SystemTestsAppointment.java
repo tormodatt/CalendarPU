@@ -161,7 +161,7 @@ public class SystemTestsAppointment extends Database {
 	@Test
 	// A5d: 
 	public void testA5c() throws Exception {
-		
+		Appointment a1 = new Appointment(u1.getPersonalCalendar(), u1, "Møte", "2015-03-13 12:00:00", "2015-03-13 14:00:00", r1, 1, "Møte med forretningsforbindelser.", 10);
 	}
 	
 	@Test
