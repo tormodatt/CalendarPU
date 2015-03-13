@@ -161,10 +161,4 @@ public class SystemTestsGeneral {
 	
 	
 	
-	@Test
-	// Beskrivelse
-	public void testMal() throws Exception {			
-	}
-	
-	
 }
