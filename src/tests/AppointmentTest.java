@@ -13,26 +13,24 @@ import user.User;
 public class AppointmentTest {
 
 	@Test
-	public void setAppointmentTest() {
-		try{
-			User ola = new User("Ola", "Kristiansen", "olakul", "kuleste123", "ola.kri@gmail.com");
-			Calendar ok2015 = new Calendar(ola, "testkalender"); 
-			Room kantinen = new Room("Kantinen", 22, "K-101"); 
-			Appointment kiltfest = new Appointment(ok2015.getCalendarID(), ola, "Kiltfest", "2015-03-15 17:00:00.0" , "2015-03-15 18:00:00.0", kantinen, 2, "Kiltfest for å feire at de nye har fått kilt.",160, "2015-03-15 15:45:00.0");
-			assertEquals("olakul", kiltfest.getOwner().getUsername()); 
-			assertEquals("Kantinen", kiltfest.getRoom().getRoomName()); 
-			assertEquals(ok2015.getCalendarID(), kiltfest.getCalendarID()); 
-		}catch(Exception e){
-		}
+	public void setAppointmentTest() throws Exception {
+		User ola = new User("Ola", "Kristiansen", "olakul", "kuleste123", "ola.kri@gmail.com");
+		Calendar ok2015 = new Calendar(ola, "testkalender"); 
+		Room kantinen = new Room("Kantinen", 22, "K-101"); 
+		Appointment kiltfest = new Appointment(ok2015, ola, "Kiltfest", "2015-03-15 17:00:00.0" , "2015-03-15 18:00:00.0", kantinen, 2, "Kiltfest for å feire at de nye har fått kilt.",160);
+		assertEquals("olakul", kiltfest.getOwner().getUsername()); 
+		assertEquals("Kantinen", kiltfest.getRoom().getRoomName()); 
+		assertEquals(ok2015.getCalendarID(), kiltfest.getCalendar().getCalendarID()); 
 
-		try{
-			User ola = new User("olakul"); 
-			Calendar ok2015 = new Calendar(ola, "testkalender"); 
-			Room soverommet = new Room("Soverommet", 2, "S2"); 
-			Appointment beis = new Appointment(ok2015.getCalendarID(), ola, "Beis&&", "2015-04-01 22:15:00.0", "2015-04-01 22:45:00.0", soverommet, 3,"Fordi beis er bra. Alltid", 2, null ); 
+		ola = new User("olakul"); 
+		ok2015 = new Calendar(ola, "testkalender"); 
+		Room soverommet = new Room("Soverommet", 2, "S2"); 
+		try {
+			Appointment beis = new Appointment(ok2015, ola, "Beis&&", "2015-04-01 22:15:00.0", "2015-04-01 22:45:00.0", soverommet, 3,"Fordi beis er bra. Alltid", 2); 			
 			fail("The title is not valid"); 
-		}catch(Exception e){
-			new IllegalArgumentException(); 
+		}
+		catch (Exception e) {
+			// Her vil vi havne.
 		}
 
 	}
@@ -44,15 +42,16 @@ public class AppointmentTest {
 			Calendar steph15 = new Calendar(stephanie, "partykalender"); 
 			Room lesesal = new Room("lesesalen", 6, "GK-01"); 
 			Room hjemme = new Room("hjemme",22, "RFKK"); 
-			Appointment bursdag = new Appointment(steph15.getCalendarID(), stephanie, "bursdag", "2015-06-16 22:00:00.0", "2015-06-17 03:00:00.0", lesesal, 1, "Nå skal det feires bursdag", 20, null); 
-			assertEquals(steph15.getCalendarID(), bursdag.getCalendarID()); 
+			Appointment bursdag = new Appointment(steph15, stephanie, "bursdag", "2015-06-16 22:00:00.0", "2015-06-17 03:00:00.0", lesesal, 1, "Nå skal det feires bursdag", 20); 
+			assertEquals(steph15.getCalendarID(), bursdag.getCalendar().getCalendarID()); 
 			assertEquals("lesesalen", bursdag.getRoom().getRoomName()); 
 			assertEquals("bursdag", bursdag.getTitle()); 
-			bursdag.updateAppointment(steph15.getCalendarID(), stephanie, "flæææ", "2015-06-16 22:00:00.0", "2015-06-17 03:00:00.0", hjemme, 3, "det skal bli fylla!!", 10, null);
+			bursdag.updateAppointment(steph15, stephanie, "flæææ", "2015-06-16 22:00:00.0", "2015-06-17 03:00:00.0", hjemme, 3, "det skal bli fylla!!", 10);
 			assertEquals("flæææ", bursdag.getTitle()); 
 			assertEquals("hjemme", bursdag.getRoom().getRoomName()); 
-		}catch(Exception e){
+		} catch(Exception e){
 			e.printStackTrace();
+			fail("Det ble kastet en exception.");
 		} 	
 	}
 	
