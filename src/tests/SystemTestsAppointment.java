@@ -156,6 +156,11 @@ public class SystemTestsAppointment extends Database {
 		while (rs.next()) {
 			confirmed = rs.getBoolean(3);
 		}
+	}
+	
+	@Test
+	// A5d: 
+	public void testA5c() throws Exception {
 		
 	}
 	
