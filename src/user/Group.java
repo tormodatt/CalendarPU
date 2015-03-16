@@ -199,5 +199,17 @@ public class Group extends Database{
 		return this.calendar; 
 	}
 	
+	public void deleteGroup() throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("delete from Appointment where GroupID=?");
+			preparedStatement.setInt(1,getGroupID());
+			preparedStatement.executeUpdate();
+		}
+		finally {
+			closeConn();
+		}
+		//TO DO: Slette objekt
+	}
 	
 }

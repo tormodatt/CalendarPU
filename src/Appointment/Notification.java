@@ -13,7 +13,7 @@ public class Notification extends Database {
 	private User receiver;
 	private String subject;
 	private String message;
-	private Timestamp executed;
+	private Timestamp excecuted;
 		
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -29,7 +29,7 @@ public class Notification extends Database {
 				this.receiver = new User(resultSet.getString("Receiver"));
 				this.message = resultSet.getString("Message");
 				this.subject = resultSet.getString("Subject");
-				this.executed = resultSet.getTimestamp("Executed");
+				this.excecuted = resultSet.getTimestamp("Executed");
 			}
 		} finally {
 			closeConn();
@@ -54,7 +54,7 @@ public class Notification extends Database {
 			ps.setInt(1,notificationID);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				this.executed = rs.getTimestamp(1);				
+				this.excecuted = rs.getTimestamp(1);				
 			}
 			
 		} finally {
@@ -93,8 +93,8 @@ public class Notification extends Database {
 		return message;
 	}
 
-	public Timestamp getExecuted() {
-		return executed;
+	public Timestamp getExcecuted() {
+		return excecuted;
 	}
 	
 }

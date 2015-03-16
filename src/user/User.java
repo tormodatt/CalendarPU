@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import Appointment.Notification;
+import Appointment.Room;
 import calendar.Calendar;
 import calendar.Database;
 
@@ -19,10 +20,11 @@ public class User extends Database{
 	
 	public Calendar personalCalendar; 
 	public ArrayList<Group> groups;
-	public ArrayList<Notification> notifications;
 	
 	private PreparedStatement preparedStatement = null;
+	private PreparedStatement ps = null;
 	private ResultSet resultSet = null;
+	private ResultSet rs = null;
 
 	//Opprette bruker-instans av bruker som allerede eksisterer i databasen
 	public User(String username) throws Exception {
@@ -30,7 +32,8 @@ public class User extends Database{
 			this.username = username;
 			try {
 				openConn();
-				preparedStatement = connect.prepareStatement("select * from User WHERE Username='"+username+"'");
+				preparedStatement = connect.prepareStatement("select * from User WHERE Username=?");
+				preparedStatement.setString(1, getUsername());
 				resultSet = preparedStatement.executeQuery();
 				if (resultSet.next()) {
 					this.firstname = resultSet.getString("First_name");
@@ -42,7 +45,7 @@ public class User extends Database{
 				preparedStatement.setString(1, getUsername());
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
-					addGroup(new Group(resultSet.getInt("GroupID")));
+					groups.add(new Group(resultSet.getInt("GroupID")));
 				}
 				personalCalendar = new Calendar(this);
 			} finally {
@@ -57,6 +60,7 @@ public class User extends Database{
 		setCredencials(firstname,lastname,username,password,mail);
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.username = username;
 		this.password = password;
 		this.mail = mail;
 		this.personalCalendar = new Calendar(this,"Personal");
@@ -109,6 +113,56 @@ public class User extends Database{
 		}
 	}
 
+	//update
+	
+	public void updateFirstName(String firstname) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update User set Firstname=? where Username=?");
+		ps.setString(1, firstname);
+		ps.setString(2, getUsername());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+	}
+	
+	public void updateLastName(String firstname) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update User set Lastname=? where Username=?");
+		ps.setString(1, lastname);
+		ps.setString(2, getUsername());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+	}
+	
+	public void updatePassword(String password) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update User set Password=? where Username=?");
+		ps.setString(1, password);
+		ps.setString(2, getUsername());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+	}
+	
+	public void updateMail(String mail) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update User set Mail=? where Username=?");
+		ps.setString(1, mail);
+		ps.setString(2, getUsername());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+	}
+
 	public boolean userNameExists(String username) throws Exception {
 		try {
 			openConn();
@@ -122,6 +176,17 @@ public class User extends Database{
 			closeConn();
 		}
 		return false;
+	}
+	
+	public void setAllSeen() throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("update Notification set Seen=1 where Reciever=?");
+			preparedStatement.setString(1, getUsername());
+			preparedStatement.executeQuery();
+		} finally {
+			closeConn();
+		}
 	}
 
 	public void setPassword(String password) throws Exception {

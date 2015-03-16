@@ -21,6 +21,8 @@ public class Calendar extends Database {
 
 	//Opprette personlig kalender
 	public Calendar(User user, String title) throws Exception {
+		this.user = user; 
+		this.title = title; 
 		try {
 			if(isValidTitle(title)){
 				openConn();
@@ -32,13 +34,12 @@ public class Calendar extends Database {
 		} finally {
 			closeConn();
 		}
-		this.user = user; 
-		this.title = title; 
 	}
 
 	//Opprette gruppekalender
 	public Calendar(Group group, String title) throws Exception {
-
+		this.group = group;
+		this.title = title; 
 		try {
 			if(isValidTitle(title)){
 				openConn();
@@ -50,12 +51,11 @@ public class Calendar extends Database {
 		}finally {
 			closeConn();
 		}
-		this.group = group; 
-		this.title = title; 
 	}
 
 	//Hente personlig kalender
 	public Calendar(User user) throws Exception {
+		this.user = user;
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("select * from Calendar WHERE Username=?");
@@ -69,7 +69,6 @@ public class Calendar extends Database {
 		} finally {
 			closeConn();
 		}
-		this.user = user;
 	}
 
 	//Hente gruppekalender
@@ -128,11 +127,11 @@ public class Calendar extends Database {
 
 	//Settere
 	public void setAppointments() throws Exception {
-		preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE CalendarID = ?");
-		preparedStatement.setInt(1, calendarID);
+		preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE CalendarID=?");
+		preparedStatement.setInt(1, getCalendarID());
 		resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
-			this.appointments.add(new Appointment(resultSet.getInt("AppointmentID")));
+			appointments.add(new Appointment(resultSet.getInt("AppointmentID")));
 		}
 	}
 	

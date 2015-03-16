@@ -25,13 +25,13 @@ public class Appointment extends Database {
 	private int maxParticipants;
 
 	private PreparedStatement preparedStatement = null;
+	private PreparedStatement ps = null;
 	private ResultSet resultSet = null;
 
 	private ArrayList<User> participants;
 
 	//Hente avtale
 	public Appointment(int appointmentID) throws Exception {
-		if (appointmentIdExists(appointmentID)) {
 			try {
 				openConn();
 				preparedStatement = connect.prepareStatement("select * from Appointment WHERE AppointmentID=?");
@@ -58,23 +58,21 @@ public class Appointment extends Database {
 				closeConn();
 			}
 			this.appointmentID = appointmentID;
-		}
-		else System.out.println("Brukernavnet eksisterer ikke!");
 	}
 
 	//Opprette avtale
-	public Appointment(Calendar calendar, User owner, String title, String start, String end,  Room room, int priority, String description, int maxPartisipants) throws Exception {
+	public Appointment(User owner, String title, Timestamp start, Timestamp end,  Room room, int priority, String description, int maxPartisipants) throws Exception {
 		try {
 			if(isValidTimestamp(start) && isValidTimestamp(end) && isValidTitle(title)){
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
 
 			openConn();
 			preparedStatement = connect.prepareStatement("insert into Appointment values (default,?,?,?,?,?,?,?,?,?,?)");
-			preparedStatement.setInt(1,calendar.getCalendarID());
+			preparedStatement.setInt(1,owner.getPersonalCalendar().getCalendarID());
 			preparedStatement.setString(2,owner.getUsername());
 			preparedStatement.setString(3, title);
-			preparedStatement.setTimestamp(4,Timestamp.valueOf(start));
-			preparedStatement.setTimestamp(5,Timestamp.valueOf(end));
+			preparedStatement.setTimestamp(4,start);
+			preparedStatement.setTimestamp(5,end);
 			preparedStatement.setString(6,room.getRoomName());
 			preparedStatement.setInt(7, priority);
 			preparedStatement.setString(8, description);
@@ -87,16 +85,15 @@ public class Appointment extends Database {
 		} finally {
 			closeConn();
 		}
-		this.calendar = calendar;
 		calendar.addAppointment(this);
 		this.owner = owner;
 		this.title = title;
-		this.start = Timestamp.valueOf(start);
-		this.end = Timestamp.valueOf(end);
+		this.start = start;
+		this.end = end;
 	}
 
 	//Endre avtale
-	public void updateAppointment(Calendar calendar, User owner, String title, String start, String end,  Room room, int priority, String description, int maxParticipants) throws Exception {
+	public void updateAppointment(Calendar calendar, User owner, String title, Timestamp start, Timestamp end,  Room room, int priority, String description, int maxParticipants) throws Exception {
 		try {
 			if(isValidTimestamp(start) && isValidTimestamp(end)&& isValidTitle(title)){
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
@@ -106,8 +103,8 @@ public class Appointment extends Database {
 			preparedStatement.setInt(1,calendar.getCalendarID());
 			preparedStatement.setString(2,owner.getUsername());
 			preparedStatement.setString(3, title);
-			preparedStatement.setTimestamp(4,Timestamp.valueOf(start));
-			preparedStatement.setTimestamp(5,Timestamp.valueOf(end));
+			preparedStatement.setTimestamp(4,start);
+			preparedStatement.setTimestamp(5,end);
 			preparedStatement.setString(6,room.getRoomName());
 			preparedStatement.setInt(7, priority);
 			preparedStatement.setString(8, description);
@@ -122,8 +119,8 @@ public class Appointment extends Database {
 		this.calendar = calendar;
 		this.owner = owner;
 		this.title = title;
-		this.start = Timestamp.valueOf(start);
-		this.end = Timestamp.valueOf(end);
+		this.start = start;
+		this.end = end;
 		this.room = room;
 		this.priority = priority;
 		this.description = description;
@@ -134,7 +131,112 @@ public class Appointment extends Database {
 			new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has changed",participants.get(i));
 		}
 	}
-
+	
+	public void updateTitle(String title) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update Appointment set Title=? where AppointmentID=?");
+		ps.setString(1, title);
+		ps.setInt(2, getAppointmentID());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+		this.title = title;
+	}
+	
+	public void updateStart(Timestamp start) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update Appointment set Start=? where AppointmentID=?");
+		ps.setTimestamp(1, start);
+		ps.setInt(2, getAppointmentID());
+		ps.executeUpdate();
+		ps = connect.prepareStatement("update Invited set Confirmed=0 where AppointmentID=?");
+		ps.setInt(2, getAppointmentID());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+		this.start = start;
+		for (int i = 0; i < participants.size(); i++) {
+			new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has changed its start time to "+getStartTime(),participants.get(i));
+		}
+	}
+	
+	public void updateEnd(Timestamp end) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update Appointment set End=? where AppointmentID=?");
+		ps.setTimestamp(1, end);
+		ps.setInt(2, getAppointmentID());
+		ps.executeUpdate();
+		ps = connect.prepareStatement("update Invited set Confirmed=0 where AppointmentID=?");
+		ps.setInt(2, getAppointmentID());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+		this.end = end;
+		for (int i = 0; i < participants.size(); i++) {
+			new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has changed its end time to "+getStartTime(),participants.get(i));
+		}
+	}
+	
+	public void updateRoom(Room room) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update Appointment set Room_name=? where AppointmentID=?");
+		ps.setString(1, room.getRoomName());
+		ps.setInt(2, getAppointmentID());
+		ps.executeUpdate();
+		ps = connect.prepareStatement("update Invited set Confirmed=0 where AppointmentID=?");
+		ps.setInt(2, getAppointmentID());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+		this.room = room;
+		for (int i = 0; i < participants.size(); i++) {
+			new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has moved to "+room.getRoomName(),participants.get(i));			
+		}
+	}
+	public void updatePriority(int priority) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update Appointment set Priority=? where AppointmentID=?");
+		ps.setInt(1, priority);
+		ps.setInt(2, getAppointmentID());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+		this.priority = priority;
+	}
+	public void updateDescription(String description) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update Appointment set Description=? where AppointmentID=?");
+		ps.setString(1, description);
+		ps.setInt(2, getAppointmentID());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+		this.description = description;
+	}
+	public void updateMaxParticipants(int maxParticipants) throws Exception {
+		try {
+		openConn();
+		ps = connect.prepareStatement("update Appointment set Max_participants=? where AppointmentID=?");
+		ps.setInt(1, maxParticipants);
+		ps.setInt(2, getAppointmentID());
+		ps.executeUpdate();
+		} finally {
+			closeConn();
+		}
+		this.maxParticipants = maxParticipants;
+	}
 	//Slette avtale
 	public void deleteAppointment() throws Exception {
 		try {
@@ -217,12 +319,12 @@ public class Appointment extends Database {
 		return "Unseen: "+unseen+"\nRejected: "+rejected+"\nConfirmed: "+confirmed;
 	}
 
-	public boolean isValidTimestamp(String time) throws java.text.ParseException {
+	public boolean isValidTimestamp(Timestamp time) throws java.text.ParseException {
 		SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
 		try {
-			format.parse(time);
+			format.parse(time.toString());
 			Pattern p = Pattern.compile("^\\d{4}[-]?\\d{1,2}[-]?\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}[.]?\\d{1,6}$");
-			return p.matcher(time).matches();
+			return p.matcher(time.toString()).matches();
 		} catch (ParseException e) {
 			return false;
 		}
@@ -231,7 +333,7 @@ public class Appointment extends Database {
 	public boolean appointmentIdExists(int appointmentID) throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE appoinmentID=?");
+			preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE AppointmentID=?");
 			preparedStatement.setInt(1,appointmentID);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
