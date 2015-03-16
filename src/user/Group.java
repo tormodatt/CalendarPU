@@ -17,7 +17,7 @@ public class Group extends Database{
 	private User leader;
 	private Group mainGroup; 
 	private int groupID;
-	private ArrayList<Group> subGroups; 
+	private ArrayList<Group> subGroups = new ArrayList<Group>();
 	private Calendar calendar; 
 	
 	private PreparedStatement preparedStatement = null;
@@ -27,7 +27,7 @@ public class Group extends Database{
 		if (groupIDExists(groupID)) {
 			try {
 				openConn();
-				preparedStatement = connect.prepareStatement("select * from Group where GroupID=?");
+				preparedStatement = connect.prepareStatement("select * from `Group` where GroupID=?");
 				preparedStatement.setInt(1,groupID);
 				resultSet = preparedStatement.executeQuery();
 				if (resultSet.next()) {
@@ -38,8 +38,14 @@ public class Group extends Database{
 				preparedStatement = connect.prepareStatement("select * from Group_relation where Sub_group=?");
 				preparedStatement.setInt(1,groupID);
 				resultSet = preparedStatement.executeQuery();
+				// DEBUG START
+				System.out.println("Utenfor");
+				// DEBUG END
 				if (resultSet.next()) {
 					this.mainGroup = new Group(resultSet.getInt("Super_group"));
+					// DEBUG START
+					System.out.println("Inni");
+					// DEBUG END
 				}
 				preparedStatement = connect.prepareStatement("select * from Group_relation where Super_group=?");
 				preparedStatement.setInt(1,groupID);
@@ -61,13 +67,13 @@ public class Group extends Database{
 	public Group(String name, User leader) throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("insert into Group values (default,?,?)");
+			preparedStatement = connect.prepareStatement("insert into `Group` values (default,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setString(1,name);
 			preparedStatement.setString(2,leader.getUsername());
-			resultSet = preparedStatement.executeQuery();
+			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
 			if (resultSet.next()) {
-				this.groupID = resultSet.getInt("GroupID");
+				this.groupID = resultSet.getInt(1);
 			} 
 		} finally {
 				closeConn();
@@ -78,10 +84,10 @@ public class Group extends Database{
 	}
 	
 	
-	private boolean groupIDExists(int groupID) throws Exception {
+	public boolean groupIDExists(int groupID) throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select GroupID from Group WHERE groupID=?");
+			preparedStatement = connect.prepareStatement("select GroupID from `Group` WHERE GroupID=?");
 			preparedStatement.setInt(1,groupID);
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
@@ -179,10 +185,14 @@ public class Group extends Database{
 
 
 	public void addSubGroup(Group group) throws Exception {
+		if (this.groupID == group.getGroupID()) {
+			throw new IllegalArgumentException("Kan ikke legge til seg selv som subgruppe.");
+		}
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("insert into Group_relation (Sub_group) values (?)");
+			preparedStatement = connect.prepareStatement("insert into Group_relation (Sub_group, Super_group) values (?, ?)");
 			preparedStatement.setInt(1,group.getGroupID());
+			preparedStatement.setInt(2, this.getGroupID());
 			preparedStatement.executeUpdate();
 		} finally {
 			closeConn();	

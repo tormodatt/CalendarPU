@@ -89,10 +89,14 @@ public class SystemTestsGeneral {
 	public void testG2_1() throws Exception {
 		gruppe1.addSubGroup(gruppe2);
 		Group subGroup = gruppe1.getSubGroups().get(0);
+		int gid = subGroup.getGroupID();
 		assertNotNull(subGroup);
 		assertEquals(gruppe2, subGroup);
 		
-		Group gruppe1copy = new Group(1);
+		Group gruppe1copy = new Group(gid);
+		// DEBUG START
+		System.out.println(gruppe1copy.getSubGroups());
+		// DEBUG END
 		subGroup = gruppe1copy.getSubGroups().get(0);
 		assertNotNull(subGroup);
 		assertEquals(gruppe2, subGroup);
