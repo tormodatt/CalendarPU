@@ -5,13 +5,17 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import user.Group;
 import user.User;
 import calendar.Calendar;
+import calendar.Database;
 
 /* Følgende skal finnes:
  * User perOlsen
@@ -32,15 +36,21 @@ import calendar.Calendar;
  * GroupID: "-1"
  */
 
-public class SystemTestsGeneral {
+public class SystemTestsGeneral extends Database {
 	
-	static User perOlsen;
-	static User torNilsen;
-	static Group gruppe1;
-	static Group gruppe2;
-	static Group gruppe3;
+	User perOlsen;
+	User torNilsen;
+	Group gruppe1;
+	Group gruppe2;
+	Group gruppe3;
 	
-	public static void oneTimeSetUp() throws Exception {
+	@Before
+	public void oneTimeSetUp() throws Exception {
+		deleteUser("perOlsen");
+		deleteUser("torNilsen");
+		deleteGroup("gruppe1");
+		deleteGroup("gruppe2");
+		deleteGroup("gruppe3");
 		perOlsen = new User("Per", "Olsen", "perOlsen", "pass", "per.olsen@mail.com");
 		torNilsen = new User("Tor", "Nilsen", "torNilsen", "pass", "tor.nilsen@mail.com");
 		gruppe1 = new Group("gruppe1", perOlsen);
@@ -48,8 +58,25 @@ public class SystemTestsGeneral {
 		gruppe3 = new Group("gruppe3", perOlsen);
 	}
 	
-	public static void oneTimeTearDown() throws Exception {
+	@After
+	public void oneTimeTearDown() throws Exception {
 		// Slett brukere og grupper
+	}
+	
+	public void deleteUser(String username) throws Exception {
+		openConn();
+		PreparedStatement ps = connect.prepareStatement("DELETE FROM `all_s_gr46_calendar`.`User` WHERE `Username`=?;");
+		ps.setString(1, username);
+		ps.executeUpdate();
+		closeConn();
+	}
+	
+	public void deleteGroup(String groupName) throws Exception {
+		openConn();
+		PreparedStatement ps = connect.prepareStatement("DELETE FROM `all_s_gr46_calendar`.`Group` WHERE `Name`=?;");
+		ps.setString(1, groupName);
+		ps.executeUpdate();
+		closeConn();
 	}
 	
 	@Test
@@ -58,17 +85,18 @@ public class SystemTestsGeneral {
 		User user = new User("perOlsen");
 		Calendar cal = user.getPersonalCalendar();
 		assertNotNull(cal);
-		assertEquals(user, cal);
+		assertEquals(user, cal.getUser());
 	}
 	
 	@Test
 	// Teste om en personlig kalender legges til ny bruker.
 	public void testG1_2() throws Exception {
+		deleteUser("olaNordmann");
 		User user = new User("Ola", "Nordmann", "olaNordmann", "pass", "ola.nordmann@mail.com");
 		Calendar cal  = user.getPersonalCalendar();
 		assertNotNull(cal);
 		assertEquals(user, cal.getUser());
-		// Slett brukeren.
+		deleteUser("olaNordmann");
 	}
 	
 	@Test
