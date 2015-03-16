@@ -23,8 +23,11 @@ import java.util.Scanner;
 public class Main extends Database{
 	
 	private User user;
+	private User member;
 	private RoomOverview roomOverview; 
 	private ArrayList<Notification> unseenNotifications; 
+	private Appointment appointment;
+	private Group group;
 	private ArrayList<Appointment> appointments; 
 	
 	private PreparedStatement preparedStatement = null;
@@ -52,11 +55,14 @@ public class Main extends Database{
 	}
 		
 	private void logIn() throws Exception {
-		Scanner input_logIn = new Scanner(System.in);
-		System.out.println("Please enter username");
-		String username = input_logIn.next(); 
+		Scanner input = new Scanner(System.in);
+		System.out.println("Please enter username:");
+		String username = input.next(); 
 		User existingUser = new User(username);
 		this.user = existingUser; 
+		System.out.println("Please enter password:");
+		while (input.next().equals(user.getPassword())==false) System.out.println("Wrong password! Try again");
+		System.out.println("Successfully logged in!"); 
 	}
 	
 	
@@ -74,7 +80,7 @@ public class Main extends Database{
 		String email = input_logIn.next(); 
 		User newUser = new User(firstName, lastName, userName, password, email); 
 		this.user = newUser; 
-		System.out.println("User '" + this.user + "' is now added");
+		System.out.println("User '" + user.getUsername() + "' is now added");
 	}
 	
 	private void showCalendar() {
@@ -84,8 +90,8 @@ public class Main extends Database{
 	private void notSeen() throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select NotificationID from Notification WHERE Receiver=? and Seen = 0");
-			preparedStatement.setString(1, this.user.getUsername());
+			preparedStatement = connect.prepareStatement("select NotificationID from Notification WHERE Receiver=? and Seen=0");
+			preparedStatement.setString(1, user.getUsername());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				unseenNotifications.add(new Notification(resultSet.getInt("NotificationID"))); 
@@ -93,27 +99,131 @@ public class Main extends Database{
 		} finally {
 			closeConn();
 		}
+		if (unseenNotifications != null) {
+			System.out.println("Unseen notifications:\n");
+			
+			for (int i = 0; i < unseenNotifications.size(); i++) {
+				System.out.println("Subject: "+unseenNotifications.get(i).getSubject());
+				System.out.println("Message: "+unseenNotifications.get(i).getMessage());
+				System.out.println("Excecuted: "+unseenNotifications.get(i).getExcecuted()+"\n");
+			}
+			Scanner scan = new Scanner(System.in);
+			System.out.println("Press any key to continue...");
+			scan.next();
+			user.setAllSeen(); 
+		}
 	}
 	
 	private void showChoices() throws Exception {
-		Scanner scanner = new Scanner(System.in);
+		Scanner scan = new Scanner(System.in);
+		String answer;
 		boolean flag = false; 
 		while (! flag) {
 			System.out.println("What do you want to do?");
-			System.out.println("1. Show your groups" + "\n" + "2. Show your confirmed appointments"
-			+ "\n" + "3. Show free timeslots" + "\n" + "4. Book room");
-			int choice = scanner.nextInt();
+			System.out.println(
+			"1. Show my calendar\n" +
+			"2. Update my credencials\n" +
+			"3. Administrate my appointments\n"+
+			"4. Show or administrate my groups\n");
+			int choice = scan.nextInt();
 			if (choice == 1) {
-				showGroups(); 
-				flag = true; 
-			} else if (choice == 2) {
-				showAppointments(); 
-				flag = true; 
-			} else if (choice == 3) {
-				showFreeRooms();
+				//agendaView()
+			} else if (choice==2) {
+				System.out.println("What do you want to update?\n"+
+				"1. Firstname\n"+
+				"2. LastName\n"+
+				"3. Password\n"+
+				"4. Email\n");
+				int choice2 = scan.nextInt();
+				if (choice2==1) {
+					System.out.println("Please enter Firstname\n");
+					String newvalue = scan.next();
+					user.updateFirstName(newvalue);;
+				} else if (choice2==2) {
+					System.out.println("Please enter Lastname\n");
+					String newvalue = scan.next();
+					user.updateLastName(newvalue);
+				} else if (choice2==3) {
+					System.out.println("Please enter Password\n");
+					String newvalue = scan.next();
+					user.updatePassword(newvalue);
+				} else if (choice2==4) {
+					System.out.println("Please enter mail\n");
+					String newvalue = scan.next();
+					user.updateMail(newvalue);
+				} else {
+					System.out.println("Not valid chioce!");
+				}
+			} else if (choice==3) {
+				System.out.println("Do wan't to: \n"+
+				"1. Add new appointment\n"+
+				"2. Update appointment/book room\n" +
+				"3. Delete appointment" +
+				"4. Show free timeslots");
+				choice = scan.nextInt();
+				if (choice==1) {
+					addAppointment();
+				} else if (choice==2) {
+					selectAppointment();
+					System.out.println("What do you want to update in this appointment?\n" +
+					"1. Title\n"+
+					"2. Start\n"+
+					"3. End\n"+
+					"4. Room\n"+
+					"5. Priority\n"+
+					"6. Description\n"+
+					"7. Maximum participants\n");
+					choice = scan.nextInt();
+					System.out.println("Please enter the new value:");
+					answer = scan.next();
+					if (choice==1) appointment.updateTitle(answer);
+					else if (choice==2) appointment.updateStart(Timestamp.valueOf(answer));
+					else if (choice==3) appointment.updateEnd(Timestamp.valueOf(answer));
+					else if (choice==4) booking(appointment);
+					else if (choice==5) appointment.updateDescription(answer);
+					else if (choice==6) appointment.updateMaxParticipants(answer.toCharArray()[0]);
+					else System.out.println("Not a valid choice!");
+					System.out.println("The appointment has been updated!");
+				} else if (choice==3) {
+					selectAppointment();
+					appointment.deleteAppointment();
+					System.out.println("The appointment has been successfully deleted!");
+				} else if (choice==4) {
+					showFreeRooms();
+				} else {
+					System.out.println("Not valid chioce!");
+				}
 				flag = true; 
 			} else if (choice == 4) {
-				booking(); 
+				System.out.println("Do wan't to: \n"+
+				"1. Show groups\n"+
+				"2. Create a new group\n" +
+				"3. Add member\n" +
+				"4. Remove member\n"+
+				"5. Delete group");
+						int choice2 = scan.nextInt();
+						if (choice2==1) {
+							showGroups();
+						} else if (choice==2) {
+							createNewGroup();
+						} else if (choice==3) {
+							selectUser();
+							selectGroup();
+							member.addGroup(group);
+							group.addMember(member);
+						} else if (choice==4) {
+							selectUser();
+							selectGroup();
+							member.removeGroup(group);
+							group.removeMember(member);
+						} else if (choice==5) {
+							selectGroup();
+							group.deleteGroup();
+							user.removeGroup(group);
+						}
+						else {
+							System.out.println("Not valid chioce!");
+						} 
 				flag = true; 
 			} else {
 				System.out.println("Not valid choice, try again!");
@@ -121,19 +231,58 @@ public class Main extends Database{
 		}
 	}
 	
+	private void selectUser() {
+		/* TO DO: usersView()
+		 * users = getUsers();
+		 * System.out.println("Which user?");
+		 * for (int i = 0; i < users.size(); i++) {
+				System.out.println((i+1) + ": "+ users.get(i).getFirstname()+ " "+user.get(i).getLastname());
+			} 
+		 * Scanner scan = new Scanner(System.in);
+		 * member = users.get(scan.nextInt());
+		 * */
+	}
+	
+	private void selectAppointment() {
+		/* TO DO: agendaView()
+		 * appointments = agendaView().getAppointments()
+		 * System.out.println("Which appointment?");
+		 * for (int i = 0; i < appointments.size(); i++) {
+				System.out.println((i+1) + ": "+ appointments.get(i).getTitle());
+			} 
+		 * Scanner scan = new Scanner(System.in);
+		 * appointment = appointments.get(scan.nextInt());
+		 * */		
+	}
+	
+	private void selectGroup() throws Exception {
+		 showGroups(); 
+		
+		 /* TO DO:* groups = user.getGroups();
+		 * System.out.println("Which group?");
+		 * for (int i = 0; i < groups.size(); i++) {
+				System.out.println((i+1) + ": "+ groups.get(i).getName());
+			} 
+		 * Scanner scan = new Scanner(System.in);
+		 * group = groups.get(scan.nextInt());
+		 * */		
+	}
+	
 	private void joinGroup() throws Exception {
 		Scanner scan = new Scanner(System.in); 
 		System.out.println("Please enter group ID: "); //Evt endre til gruppenavn
 		int groupID = scan.nextInt(); 
 		try {
+			 
 			Group group = new Group(groupID); 
 			this.user.addGroup(group);
 			group.addMember(this.user);
 		} catch (Exception e) {
 			System.out.println("Not valid ID");
 		}
+		
 	}
-	
+	//denne sender ut error så fort gruppenavn er skrevet inn
 	private void createNewGroup() throws Exception {
 		System.out.println("Create new group!");
 		Scanner scan = new Scanner(System.in); 
@@ -151,6 +300,15 @@ public class Main extends Database{
 	}
 	
 	private void showGroups() throws Exception {
+		ArrayList<Group> groups = user.getGroups();
+		if (groups==null) System.out.println("You aren't part of any group yet");
+		else {
+			System.out.println("Groups you are member of:\n");
+			for (int i = 0; i < groups.size(); i++) {
+				System.out.println((i+1) + ". "+groups.get(i).getName());
+		}
+
+		}
 		 //Metode for Œ vise alle tilgjengelige grupper som man kan bli medlem i HER
 		Scanner scanner = new Scanner(System.in); 
 		boolean flag = false; 
@@ -210,53 +368,67 @@ public class Main extends Database{
 	
 	
 	private void showFreeRooms() throws Exception {
-		Scanner scanner = new Scanner(System.in); 
-		System.out.println("Choose period you want to show free rooms." + "\n" + "Please enter start time: ");
-		Timestamp startTime = Timestamp.valueOf(scanner.next()); 
-		System.out.println("Please enter end time: ");
-		Timestamp endTime = Timestamp.valueOf(scanner.next());  
-		System.out.println("Please enter room capacity: ");
-		int minimumCapacity = scanner.nextInt(); 
-		roomOverview.getFreeRooms(startTime, endTime, minimumCapacity);
-	}
-	
-	private void booking() throws Exception {
-		Scanner scan = new Scanner(System.in);
-		try {
-			System.out.println("Add new appointment!");
-			System.out.println("Please enter appointment name: ");
-			String name = scan.next(); 
-			System.out.println("Please enter start time: ");
-			String start = scan.next();
-			System.out.println("Please enter end time: ");
-			String end = scan.next();
-			showFreeRooms(); 
-			System.out.println("Please enter room name: ");
-			String roomName = scan.next(); 
-			Room bookRoom = new Room(roomName);
-			System.out.println("Please enter priority: ");
-			int pri = scan.nextInt(); 
-			System.out.println("Please enter short description: ");
-			String des = scan.next(); 
-			System.out.println("Please enter maxium partisipants: ");
-			int maxParti = scan.nextInt(); 
-			Appointment appointment = new Appointment(this.user.getPersonalCalendar(), this.user, name, start, end, bookRoom, pri, des, maxParti);
-			this.user.getPersonalCalendar().addAppointment(appointment); 
-			} catch (Exception e) {
-				System.out.println("Not valid input");
+		roomOverview = new RoomOverview(appointment.getStartTime(),appointment.getEndTime(),appointment.getMaxParticipants());
+		ArrayList<Room> rooms = roomOverview.getFreeRooms();
+		if (rooms.size()==0) System.out.println("No room are avalible at the time and capacity given!");
+		else {
+			System.out.println("These rooms are availible: \n");
+			for (int i = 0; i < rooms.size(); i++) {
+				System.out.println((i+1) + ": "+ rooms.get(i).getRoomName());
 			}
 		}
+	}
+	//denne metoden failer etter at man skal skrevet inn start og sluttidspunkt
+	private void addAppointment() throws Exception {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("Please enter a title for your appointment \1"
+				+ "n");
+		String title = scan.next();
+		System.out.println("Please enter start time in the format [YYYY-MM-DD HH:MM:SS.S] ");
+		String start = scan.next(); 
+		System.out.println("Please enter end time in the format [YYYY-MM-DD HH:MM:SS.S] ");
+		String end = scan.next();
+		System.out.println("Please enter priority:");
+		int priority = scan.next().toCharArray()[0];
+		System.out.println("Please enter a short description:");
+		String description = scan.next();
+		System.out.println("Please enter maximum number of participants: ");
+		int capacity = scan.nextInt(); 
+		appointment = new Appointment(user,title,Timestamp.valueOf(start),Timestamp.valueOf(end),null,priority,description,capacity);
+		System.out.println("Appointment added! Do you wan't to book a room now?\n1. Yes!\n2. No, I'll do that later");
+		int answer = scan.nextInt();
+		if (answer==1) {
+			booking(appointment);
+		}
+		
+	}
+	
+	private void booking(Appointment appointment) throws Exception {
+		roomOverview = new RoomOverview(appointment.getStartTime(),appointment.getEndTime(),appointment.getMaxParticipants());
+		ArrayList<Room> rooms = roomOverview.getFreeRooms();
+		if (rooms.size()==0) System.out.println("No room are avalible at the time and capacity given!");
+		else {
+			System.out.println("These rooms are availible: \n");
+			for (int i = 0; i < rooms.size(); i++) {
+				System.out.println((i+1) + ": "+ rooms.get(i).getRoomName());
+			}
+			Scanner scan = new Scanner(System.in);
+			System.out.println("Please enter the number of the choosen room:");
+			int roomnr = scan.nextInt();
+			appointment.updateRoom(rooms.get(roomnr));
+			System.out.println("The Room " + rooms.get(roomnr) + " is booked!");
+		}
+	}
 			
 		
 	
 	
 	public static void main(String[] args) throws Exception {
 		Main main = new Main(); 
-		//main.run(); //Logger inn med eksisterende bruker/oppretter ny 
-		//main.notSeen(); //Sjekker invitasjoner/notifications 
+		main.run(); //Logger inn med eksisterende bruker/oppretter ny 
+		main.notSeen(); //Sjekker invitasjoner/notifications 
 		//main.showCalendar(); //Visning av kalender 
-		//main.showChoices(); //Viser liste med mulige valg
-		main.booking();
+		main.showChoices(); //Viser liste med mulige valg
 	}
 	
 }
