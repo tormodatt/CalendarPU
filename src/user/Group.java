@@ -17,7 +17,7 @@ public class Group extends Database{
 	private User leader;
 	private Group mainGroup; 
 	private int groupID;
-	private ArrayList<Group> subGroups = new ArrayList<Group>(); 
+	private ArrayList<Group> subGroups = new ArrayList<Group>();
 	private Calendar calendar; 
 	
 	private PreparedStatement preparedStatement = null;
@@ -38,8 +38,14 @@ public class Group extends Database{
 				preparedStatement = connect.prepareStatement("select * from Group_relation where Sub_group=?");
 				preparedStatement.setInt(1,groupID);
 				resultSet = preparedStatement.executeQuery();
+				// DEBUG START
+				System.out.println("Utenfor");
+				// DEBUG END
 				if (resultSet.next()) {
 					this.mainGroup = new Group(resultSet.getInt("Super_group"));
+					// DEBUG START
+					System.out.println("Inni");
+					// DEBUG END
 				}
 				preparedStatement = connect.prepareStatement("select * from Group_relation where Super_group=?");
 				preparedStatement.setInt(1,groupID);
@@ -179,6 +185,9 @@ public class Group extends Database{
 
 
 	public void addSubGroup(Group group) throws Exception {
+		if (this.groupID == group.getGroupID()) {
+			throw new IllegalArgumentException("Kan ikke legge til seg selv som subgruppe.");
+		}
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("insert into Group_relation (Sub_group, Super_group) values (?, ?)");
