@@ -79,6 +79,7 @@ public class Appointment extends Database {
 			preparedStatement.setInt(7, priority);
 			preparedStatement.setString(8, description);
 			preparedStatement.setInt(9, maxPartisipants);
+			preparedStatement.setTimestamp(10, null);
 			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
 			if (resultSet.next()) {
