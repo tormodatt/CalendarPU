@@ -19,7 +19,7 @@ public class User extends Database{
 	public String mail; 
 	
 	public Calendar personalCalendar; 
-	public ArrayList<Group> groups;
+	public ArrayList<Group> groups = new ArrayList<Group>();
 	
 	private PreparedStatement preparedStatement = null;
 	private PreparedStatement ps = null;
