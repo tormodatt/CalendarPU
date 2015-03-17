@@ -28,7 +28,7 @@ public class Appointment extends Database {
 	private PreparedStatement ps = null;
 	private ResultSet resultSet = null;
 
-	private ArrayList<User> participants;
+	private ArrayList<User> participants = new ArrayList<User>();
 
 	//Hente avtale
 	public Appointment(int appointmentID, User owner) throws Exception {
@@ -436,4 +436,5 @@ public class Appointment extends Database {
 
 		}return true; 
 	}
+
 }

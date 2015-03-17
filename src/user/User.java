@@ -16,11 +16,11 @@ public class User extends Database{
 	public String username; 
 	public String password;
 	public String mail; 
-	
+
 	public Calendar personalCalendar; 
 	public ArrayList<Group> groups = new ArrayList<Group>();
 	public ArrayList<Notification> notifications = new ArrayList<Notification>();
-	
+
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 
@@ -51,7 +51,7 @@ public class User extends Database{
 		}
 		else System.out.println("Brukernavnet eksisterer ikke!");
 	}
-	
+
 	//Opprette bruker-instans av ny bruker
 	public User(String firstname, String lastname, String username, String password,String mail) throws Exception {
 		setCredencials(firstname,lastname,username,password,mail);
@@ -59,7 +59,7 @@ public class User extends Database{
 		this.lastname = lastname;
 		this.password = password;
 		this.mail = mail;
-		this.personalCalendar = new Calendar(this,"Personal");
+		this.personalCalendar = new Calendar(this,"Personal Calendar");
 	}
 
 	//Gettere
@@ -84,7 +84,7 @@ public class User extends Database{
 	public ArrayList<Group> getGroups() {
 		return groups;
 	}
-	
+
 	public void setCredencials(String firstname, String lastname, String username, String password, String mail) throws Exception {
 		try {
 			if(isValidName(firstname) && isValidName(lastname) && isValidUsername(username) && isValidMail(mail)){
@@ -108,50 +108,50 @@ public class User extends Database{
 			closeConn();
 		}
 	}
-	
+
 	public void updateFirstName(String firstname) throws Exception {
 		try {
-		openConn();
-		preparedStatement = connect.prepareStatement("update User set Firstname=? where Username=?");
-		preparedStatement.setString(1, firstname);
-		preparedStatement.setString(2, getUsername());
-		preparedStatement.executeUpdate();
+			openConn();
+			preparedStatement = connect.prepareStatement("update User set First_name=? where Username=?");
+			preparedStatement.setString(1, firstname);
+			preparedStatement.setString(2, getUsername());
+			preparedStatement.executeUpdate();
 		} finally {
 			closeConn();
 		}
 	}
-	
+
 	public void updateLastName(String firstname) throws Exception {
 		try {
-		openConn();
-		preparedStatement = connect.prepareStatement("update User set Lastname=? where Username=?");
-		preparedStatement.setString(1, lastname);
-		preparedStatement.setString(2, getUsername());
-		preparedStatement.executeUpdate();
+			openConn();
+			preparedStatement = connect.prepareStatement("update User set Last_name=? where Username=?");
+			preparedStatement.setString(1, lastname);
+			preparedStatement.setString(2, getUsername());
+			preparedStatement.executeUpdate();
 		} finally {
 			closeConn();
 		}
 	}
-	
+
 	public void updatePassword(String password) throws Exception {
 		try {
-		openConn();
-		preparedStatement = connect.prepareStatement("update User set Password=? where Username=?");
-		preparedStatement.setString(1, password);
-		preparedStatement.setString(2, getUsername());
-		preparedStatement.executeUpdate();
+			openConn();
+			preparedStatement = connect.prepareStatement("update User set Password=? where Username=?");
+			preparedStatement.setString(1, password);
+			preparedStatement.setString(2, getUsername());
+			preparedStatement.executeUpdate();
 		} finally {
 			closeConn();
 		}
 	}
-	
+
 	public void updateMail(String mail) throws Exception {
 		try {
-		openConn();
-		preparedStatement = connect.prepareStatement("update User set Mail=? where Username=?");
-		preparedStatement.setString(1, mail);
-		preparedStatement.setString(2, getUsername());
-		preparedStatement.executeUpdate();
+			openConn();
+			preparedStatement = connect.prepareStatement("update User set Mail=? where Username=?");
+			preparedStatement.setString(1, mail);
+			preparedStatement.setString(2, getUsername());
+			preparedStatement.executeUpdate();
 		} finally {
 			closeConn();
 		}
@@ -231,7 +231,7 @@ public class User extends Database{
 			throw new IllegalArgumentException("Ikke medlem i gruppe");  
 		}
 	}
-	
+
 	public void setAllSeen() throws Exception {
 		try {
 			openConn();
@@ -325,6 +325,10 @@ public class User extends Database{
 		}
 
 	}
-
+	public static void main(String[] args) throws Exception {
+		User s = new User("Petter", "Olsen", "perrols", "22334455", "mail@mail.com"); 
+		System.out.println(s.getFirstname()); 
+		System.out.println(s.getUsername()); 
+	}
 }
 
