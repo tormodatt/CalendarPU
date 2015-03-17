@@ -261,7 +261,7 @@ public class Main extends Database{
 
 	private void selectAppointment() {
 		AgendaView av = new AgendaView(this.user); 
-
+		
 		System.out.println("Which appointment?");
 		for (int i = 0; i < appointments.size(); i++) {
 			System.out.println((i+1) + ": "+ appointments.get(i).getTitle());
