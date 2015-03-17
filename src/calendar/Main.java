@@ -7,6 +7,7 @@ import Appointment.RoomOverview;
 import user.Group;
 import user.User;
 import view.AgendaView;
+import sun.security.krb5.internal.APOptions;
 import tests.*;
 import calendar.Calendar;
 import calendar.Database;
@@ -184,9 +185,10 @@ public class Main extends Database{
 							"4. Priority\n"+
 							"5. Description\n"+
 							"6. Maximum participants\n");
-					choice = scan.nextInt();
+					choice = scan.nextInt();scan.nextLine(); 
 					System.out.println("Please enter the new value:");
-					answer = scan.next();
+					answer = scan.nextLine();
+					
 					if (choice==1) appointment.updateTitle(answer);
 					else if (choice==2) appointment.updateStart(Timestamp.valueOf(answer));
 					else if (choice==3) appointment.updateEnd(Timestamp.valueOf(answer));
@@ -194,9 +196,10 @@ public class Main extends Database{
 					else if (choice==5) appointment.updateMaxParticipants(answer.toCharArray()[0]);
 					else System.out.println("Not a valid choice!");
 					System.out.println("The appointment has been updated!");
-					flag1 = true; 
+					flag1 = false; 
 				} else if (choice==3) {
-					selectAppointment();
+					selectAppointment(); 
+					System.out.println(appointment.getCalendar());
 					appointment.deleteAppointment();
 					System.out.println("The appointment has been successfully deleted!");flag1 = true; 
 				} else if (choice==4) {
@@ -214,7 +217,7 @@ public class Main extends Database{
 						"3. Add member\n" +
 						"4. Remove member\n"+
 						"5. Delete group");
-				choice = scan.nextInt();
+				choice = Integer.parseInt(scan.nextLine());
 				if (choice==1) {
 					showGroups(); 
 				} else if (choice==2) {
@@ -259,16 +262,18 @@ public class Main extends Database{
 		 */
 	}
 
-	private void selectAppointment() {
+	private void selectAppointment()throws Exception {
 		AgendaView av = new AgendaView(this.user); 
-		
-		System.out.println("Which appointment?");
+
+		System.out.println("Here are all your appointments:");
+		ArrayList<Appointment> appointments = av.returnAgenda(); 
 		for (int i = 0; i < appointments.size(); i++) {
 			System.out.println((i+1) + ": "+ appointments.get(i).getTitle());
 		} 
-		// Scanner scan = new Scanner(System.in);
-		//		 appointment = appointments.get(scan.nextInt());
-
+		System.out.println("Please pick an appointment:");
+		Scanner scan = new Scanner(System.in);
+		int answer = Integer.parseInt(scan.nextLine()); 
+		appointment = appointments.get(answer -1);
 	}
 
 	private void selectGroup() throws Exception {
@@ -339,6 +344,7 @@ public class Main extends Database{
 	}
 
 	private void addAppointment() throws Exception {
+
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Please enter a title for your appointment:");
 		String title = scan.nextLine();
@@ -347,11 +353,11 @@ public class Main extends Database{
 		System.out.println("Please enter end time in the format: [YYYY-MM-DD HH:MM:SS.S] ");
 		String end = scan.nextLine();
 		System.out.println("Please enter priority: [1 is very important. 3 is the least important] :");
-		int priority = scan.nextInt();
+		int priority = Integer.parseInt(scan.nextLine());
 		System.out.println("Please enter maximum number of participants: ");        
-		int maxParticipants = scan.nextInt();  
+		int maxParticipants = Integer.parseInt(scan.nextLine());  
 		System.out.println("Please enter a short description:");
-		String description = scan.next();
+		String description = scan.nextLine();
 
 
 		appointment = new Appointment(this.user,title,Timestamp.valueOf(start),Timestamp.valueOf(end),priority,description,maxParticipants);

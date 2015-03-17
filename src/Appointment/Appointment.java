@@ -64,7 +64,7 @@ public class Appointment extends Database {
 	public Appointment(User owner, String title, Timestamp start, Timestamp end, int priority, String description, int maxParticipants) throws Exception {
 		try {
 			if(isValidTimestamp(start) && isValidTimestamp(end) && isValidTitle(title)){
-			}else throw new IllegalArgumentException("Either the name or username is invalid");  
+			}else throw new IllegalArgumentException("Either the time or the title is invalid");  
 
 			openConn();
 			preparedStatement = connect.prepareStatement("insert into Appointment values (default,?,?,?,?,?,?,?,?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
@@ -427,11 +427,11 @@ public class Appointment extends Database {
 		}
 		this.participants = participants;
 	}
-	private boolean isValidTitle(String title){
+	public static boolean isValidTitle(String title){
 		title = title.toLowerCase(); 
 		for (int i = 0 ; i <title.length(); ++i){
 			char c = title.charAt(i); 
-			if((c >= 'a' && c <= 'z') || c == 'æ' || c == 'ø' || c == 'å'|| c <= '9' && c >= '0'); 
+			if((c >= 'a' && c <= 'z') || c == 'æ' ||c == 'ø' || c == 'å'|| c <= '9' && c >= '0' || c == ' '); 
 			else return false; 
 
 		}return true; 
