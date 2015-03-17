@@ -210,8 +210,8 @@ public class Group extends Database{
 	public void deleteGroup() throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("delete from Appointment where GroupID=?");
-			preparedStatement.setInt(1,getGroupID());
+			preparedStatement = connect.prepareStatement("delete from Appointment where CalendarID=?");
+			preparedStatement.setInt(1,getCalendar().getCalendarID());
 			preparedStatement.executeUpdate();
 		}
 		finally {

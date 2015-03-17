@@ -217,7 +217,7 @@ public class Main extends Database{
 						"3. Add member\n" +
 						"4. Remove member\n"+
 						"5. Delete group");
-				choice = Integer.parseInt(scan.nextLine());
+				choice = scan.nextInt(); scan.nextLine(); 
 				if (choice==1) {
 					showGroups(); 
 				} else if (choice==2) {
@@ -237,7 +237,9 @@ public class Main extends Database{
 				} else if (choice==5) {
 					selectGroup();
 					group.deleteGroup();
+					//må ikke gruppen slettes hos alle andre medlemmer og??
 					user.removeGroup(group);
+					System.out.println("The group has been deleted");
 				}
 				else {
 					System.out.println("Not valid chioce!");
