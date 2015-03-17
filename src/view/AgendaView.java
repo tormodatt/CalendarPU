@@ -35,8 +35,7 @@ public class AgendaView extends Database {
 		}
 		viewAgenda();
 	}
-	
-	public void viewAgenda() {
+	public ArrayList<Appointment> returnAgenda(){
 		ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 
 		for (int i = 0; i < calendars.size(); i++) {
@@ -47,6 +46,11 @@ public class AgendaView extends Database {
 				}
 			}
 		}
+		return appointments; 
+	}
+	public void viewAgenda() {
+		
+		ArrayList<Appointment> appointments = returnAgenda(); 
 
 		System.out.println("This weeks appointments:\nTitle\t\tStart\t\tEnd\n");
 		for (int i = 0; i < appointments.size(); i++) {
