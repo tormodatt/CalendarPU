@@ -338,7 +338,7 @@ public class Main extends Database{
 		}
 	}
 
-	private void addAppointment() throws Exception {
+	public void addAppointment() throws Exception {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Please enter a title for your appointment:");
 		String title = scan.nextLine();
@@ -347,7 +347,7 @@ public class Main extends Database{
 		System.out.println("Please enter end time in the format: [YYYY-MM-DD HH:MM:SS.S] ");
 		String end = scan.nextLine();
 		System.out.println("Please enter priority: [1 is very important. 3 is the least important] :");
-		int priority = scan.nextInt();
+		int priority = Integer.parseInt(scan.nextLine());
 		System.out.println("Please enter maximum number of participants: ");        
 		int maxParticipants = scan.nextInt();  
 		System.out.println("Please enter a short description:");
