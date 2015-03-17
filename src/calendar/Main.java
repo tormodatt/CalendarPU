@@ -6,6 +6,7 @@ import Appointment.Room;
 import Appointment.RoomOverview;
 import user.Group;
 import user.User;
+import view.AgendaView;
 import tests.*;
 import calendar.Calendar;
 import calendar.Database;
@@ -83,10 +84,6 @@ public class Main extends Database{
 		System.out.println("User '" + user.getUsername() + "' is now added");
 	}
 	
-	private void showCalendar() {
-		//Kaller visning 
-	}
-	
 	private void notSeen() throws Exception {
 		try {
 			openConn();
@@ -117,8 +114,8 @@ public class Main extends Database{
 	private void showChoices() throws Exception {
 		Scanner scan = new Scanner(System.in);
 		String answer;
-		boolean flag = false; 
-		while (! flag) {
+		boolean flag1 = false; 
+		while (!flag1) {
 			System.out.println("What do you want to do?");
 			System.out.println(
 			"1. Show my calendar\n" +
@@ -127,7 +124,16 @@ public class Main extends Database{
 			"4. Show or administrate my groups\n");
 			int choice = scan.nextInt();
 			if (choice == 1) {
-				//agendaView()
+				AgendaView av = new AgendaView(user);
+				boolean exit = false;
+				while (!exit){
+				System.out.println("1. Next week\n2. Previous week\n3. Exit view");
+				choice = scan.nextInt();
+				if (choice==1) av.nextWeek();
+				else if (choice==2) av.previousWeek();
+				else if (choice==3) exit=true;
+				else System.out.println("Not a valid choice! Try again...");
+				}
 			} else if (choice==2) {
 				System.out.println("What do you want to update?\n"+
 				"1. Firstname\n"+
@@ -136,19 +142,19 @@ public class Main extends Database{
 				"4. Email\n");
 				int choice2 = scan.nextInt();
 				if (choice2==1) {
-					System.out.println("Please enter Firstname\n");
+					System.out.println("Please enter a new firstname\n");
 					String newvalue = scan.next();
 					user.updateFirstName(newvalue);;
 				} else if (choice2==2) {
-					System.out.println("Please enter Lastname\n");
+					System.out.println("Please enter a new lastname\n");
 					String newvalue = scan.next();
 					user.updateLastName(newvalue);
 				} else if (choice2==3) {
-					System.out.println("Please enter Password\n");
+					System.out.println("Please enter a new password\n");
 					String newvalue = scan.next();
 					user.updatePassword(newvalue);
 				} else if (choice2==4) {
-					System.out.println("Please enter mail\n");
+					System.out.println("Please enter a new mail\n");
 					String newvalue = scan.next();
 					user.updateMail(newvalue);
 				} else {
@@ -157,9 +163,10 @@ public class Main extends Database{
 			} else if (choice==3) {
 				System.out.println("Do wan't to: \n"+
 				"1. Add new appointment\n"+
-				"2. Update appointment/book room\n" +
-				"3. Delete appointment" +
-				"4. Show free timeslots");
+				"2. Update appointment\n" +
+				"3. Delete appointment\n" +
+				"4. Show free timeslots\n" + 
+				"5. Book room");
 				choice = scan.nextInt();
 				if (choice==1) {
 					addAppointment();
@@ -169,19 +176,17 @@ public class Main extends Database{
 					"1. Title\n"+
 					"2. Start\n"+
 					"3. End\n"+
-					"4. Room\n"+
-					"5. Priority\n"+
-					"6. Description\n"+
-					"7. Maximum participants\n");
+					"4. Priority\n"+
+					"5. Description\n"+
+					"6. Maximum participants\n");
 					choice = scan.nextInt();
 					System.out.println("Please enter the new value:");
 					answer = scan.next();
 					if (choice==1) appointment.updateTitle(answer);
 					else if (choice==2) appointment.updateStart(Timestamp.valueOf(answer));
 					else if (choice==3) appointment.updateEnd(Timestamp.valueOf(answer));
-					else if (choice==4) booking(appointment);
-					else if (choice==5) appointment.updateDescription(answer);
-					else if (choice==6) appointment.updateMaxParticipants(answer.toCharArray()[0]);
+					else if (choice==4) appointment.updateDescription(answer);
+					else if (choice==5) appointment.updateMaxParticipants(answer.toCharArray()[0]);
 					else System.out.println("Not a valid choice!");
 					System.out.println("The appointment has been updated!");
 				} else if (choice==3) {
@@ -190,10 +195,12 @@ public class Main extends Database{
 					System.out.println("The appointment has been successfully deleted!");
 				} else if (choice==4) {
 					showFreeRooms();
+				} else if (choice==5) {
+					selectAppointment();
+					booking(appointment);
 				} else {
 					System.out.println("Not valid chioce!");
 				}
-				flag = true; 
 			} else if (choice == 4) {
 				System.out.println("Do wan't to: \n"+
 				"1. Show groups\n"+
@@ -201,11 +208,11 @@ public class Main extends Database{
 				"3. Add member\n" +
 				"4. Remove member\n"+
 				"5. Delete group");
-						int choice2 = scan.nextInt();
-						if (choice2==1) {
+						choice = scan.nextInt();
+						if (choice==1) {
 							showGroups();
 						} else if (choice==2) {
-							createNewGroup();
+							createGroup();
 						} else if (choice==3) {
 							selectUser();
 							selectGroup();
@@ -224,7 +231,6 @@ public class Main extends Database{
 						else {
 							System.out.println("Not valid chioce!");
 						} 
-				flag = true; 
 			} else {
 				System.out.println("Not valid choice, try again!");
 			}
@@ -232,15 +238,15 @@ public class Main extends Database{
 	}
 	
 	private void selectUser() {
-		/* TO DO: usersView()
-		 * users = getUsers();
-		 * System.out.println("Which user?");
-		 * for (int i = 0; i < users.size(); i++) {
-				System.out.println((i+1) + ": "+ users.get(i).getFirstname()+ " "+user.get(i).getLastname());
-			} 
-		 * Scanner scan = new Scanner(System.in);
-		 * member = users.get(scan.nextInt());
-		 * */
+		/*TO DO: usersView()
+		users = getUsers();
+		System.out.println("Which user?");
+		for (int i = 0; i < users.size(); i++) {
+			System.out.println((i+1) + ": "+ users.get(i).getFirstname()+ " "+user.get(i).getLastname());
+		} 
+		Scanner scan = new Scanner(System.in);
+		member = users.get(scan.nextInt());
+		*/
 	}
 	
 	private void selectAppointment() {
@@ -257,93 +263,34 @@ public class Main extends Database{
 	
 	private void selectGroup() throws Exception {
 		 showGroups(); 
-		
-		 /* TO DO:* groups = user.getGroups();
-		 * System.out.println("Which group?");
-		 * for (int i = 0; i < groups.size(); i++) {
+		 ArrayList<Group> groups = user.getGroups();
+		 System.out.println("Which group?");
+		 for (int i = 0; i < groups.size(); i++) {
 				System.out.println((i+1) + ": "+ groups.get(i).getName());
 			} 
-		 * Scanner scan = new Scanner(System.in);
-		 * group = groups.get(scan.nextInt());
-		 * */		
+		 Scanner scan = new Scanner(System.in);
+		 group = groups.get(scan.nextInt());	
 	}
 	
-	private void joinGroup() throws Exception {
+	private void createGroup() throws Exception {
 		Scanner scan = new Scanner(System.in); 
-		System.out.println("Please enter group ID: "); //Evt endre til gruppenavn
-		int groupID = scan.nextInt(); 
-		try {
-			 
-			Group group = new Group(groupID); 
-			this.user.addGroup(group);
-			group.addMember(this.user);
-		} catch (Exception e) {
-			System.out.println("Not valid ID");
-		}
-		
-	}
-	//denne sender ut error så fort gruppenavn er skrevet inn
-	private void createNewGroup() throws Exception {
-		System.out.println("Create new group!");
-		Scanner scan = new Scanner(System.in); 
-		try { 
-			System.out.println("Please enter prefered group name: ");
-			String groupName = scan.next(); 
-			Group newGroup = new Group(groupName, this.user); 
-			this.user.addGroup(newGroup);
-			newGroup.addMember(this.user);
-			System.out.println("Group created, you are the leader of the group.");
-		} catch (Exception e) {
-			System.out.println("Error"); 
-		}
-		
+		System.out.println("Please enter prefered group name: ");
+		String groupName = scan.next(); 
+		Group newGroup = new Group(groupName, this.user); 
+		user.addGroup(newGroup);
+		newGroup.addMember(user);
+		System.out.println("Group created, you are the leader of the group.");		
 	}
 	
 	private void showGroups() throws Exception {
 		ArrayList<Group> groups = user.getGroups();
-		if (groups==null) System.out.println("You aren't part of any group yet");
+		if (groups==null) System.out.println("\nYou aren't part of any group yet!");
 		else {
-			System.out.println("Groups you are member of:\n");
+			System.out.println("\nGroups you are member of:");
 			for (int i = 0; i < groups.size(); i++) {
 				System.out.println((i+1) + ". "+groups.get(i).getName());
-		}
-
-		}
-		 //Metode for Œ vise alle tilgjengelige grupper som man kan bli medlem i HER
-		Scanner scanner = new Scanner(System.in); 
-		boolean flag = false; 
-		while (! flag) {
-			System.out.println("Do you want to: " + "\n" + "1. Join a group" + "\n" 
-					+ "2. Create new group" + "\n" + "3. Leave group"); //+ Evt. vise alle avtaler til en av gruppene
-			int choice = scanner.nextInt();
-			if (choice == 1) {
-				joinGroup(); 
-				flag = true; 
-			} else if (choice == 2) {
-				createNewGroup(); 
-				flag = true; 
-			} else if (choice == 3) {
-				leaveGroup();
-				flag = true; 
-			} else {
-				System.out.println("Not valid choice, try again!");
 			}
-		}
-		
-	}
-	
-	private void leaveGroup() {
-		Scanner scan = new Scanner(System.in); 
-		System.out.println("Please enter group ID: "); //Evt endre til gruppenavn
-		int groupID = scan.nextInt(); 
-		try {
-			Group group = new Group(groupID); 
-			this.user.removeGroup(group);
-			group.removeMember(this.user);
-		} catch (Exception e) {
-			System.out.println("Not valid ID");
-		}
-		
+		}		
 	}
 
 	private void showAppointments() throws Exception { //MŒ gj¿res noe 
@@ -353,7 +300,7 @@ public class Main extends Database{
 			preparedStatement.setInt(1, this.user.getPersonalCalendar().getCalendarID());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				appointments.add(new Appointment(resultSet.getInt("AppointmentID"))); 
+				appointments.add(new Appointment(resultSet.getInt("AppointmentID"),user)); 
 			}
 		} finally {
 			closeConn();
@@ -381,20 +328,19 @@ public class Main extends Database{
 	//denne metoden failer etter at man skal skrevet inn start og sluttidspunkt
 	private void addAppointment() throws Exception {
 		Scanner scan = new Scanner(System.in);
-		System.out.println("Please enter a title for your appointment \1"
-				+ "n");
-		String title = scan.next();
+		System.out.println("Please enter a title for your appointment\n");
+		String title = scan.nextLine();
 		System.out.println("Please enter start time in the format [YYYY-MM-DD HH:MM:SS.S] ");
-		String start = scan.next(); 
+		String start = scan.nextLine(); 
 		System.out.println("Please enter end time in the format [YYYY-MM-DD HH:MM:SS.S] ");
-		String end = scan.next();
+		String end = scan.nextLine();
 		System.out.println("Please enter priority:");
-		int priority = scan.next().toCharArray()[0];
+		int priority = scan.nextInt();
 		System.out.println("Please enter a short description:");
 		String description = scan.next();
 		System.out.println("Please enter maximum number of participants: ");
 		int capacity = scan.nextInt(); 
-		appointment = new Appointment(user,title,Timestamp.valueOf(start),Timestamp.valueOf(end),null,priority,description,capacity);
+		appointment = new Appointment(user,title,Timestamp.valueOf(start),Timestamp.valueOf(end),priority,description,capacity);
 		System.out.println("Appointment added! Do you wan't to book a room now?\n1. Yes!\n2. No, I'll do that later");
 		int answer = scan.nextInt();
 		if (answer==1) {
@@ -415,14 +361,11 @@ public class Main extends Database{
 			Scanner scan = new Scanner(System.in);
 			System.out.println("Please enter the number of the choosen room:");
 			int roomnr = scan.nextInt();
-			appointment.updateRoom(rooms.get(roomnr));
-			System.out.println("The Room " + rooms.get(roomnr) + " is booked!");
+			appointment.updateRoom(rooms.get(roomnr-1));
+			System.out.println("The Room " + rooms.get(roomnr-1).getRoomName() + " is booked!");
 		}
 	}
-			
-		
-	
-	
+
 	public static void main(String[] args) throws Exception {
 		Main main = new Main(); 
 		main.run(); //Logger inn med eksisterende bruker/oppretter ny 

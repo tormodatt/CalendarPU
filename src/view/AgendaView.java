@@ -1,81 +1,92 @@
 package view;
 
 import java.util.ArrayList;
-
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.Locale;
 
 import calendar.*;
 import user.*;
 import Appointment.*;
 import calendar.*;
 
-public class AgendaView {
+public class AgendaView extends Database {
 	
-	private User owner;
-	private ArrayList<calendar.Calendar> calendars;
-	private ArrayList<Appointment> appointments;
-	private Timestamp currentTime;
+	private User user;
+	private ArrayList<calendar.Calendar> calendars = new ArrayList<calendar.Calendar>();
 	private Timestamp weekStart;
 	private Timestamp weekEnd;
-	private final long week = 604800000;
 	
-	public AgendaView(User owner) {
-		this.owner = owner;
-		//this.appointments = owner.getPersonalCalendar().getAppointment(); // mangler denne metoden
-		for (int i = 0; i < owner.getGroups().size(); i++) {
-			this.calendars.add(owner.getGroups().get(i).getCalendar());
+	private PreparedStatement preparedStatement = null;
+	private PreparedStatement ps = null;
+	private ResultSet resultSet = null;
+	
+	Calendar cal = Calendar.getInstance(new Locale("en","GB"));
+
+	public AgendaView(User user) {
+		setStartEndOfWeek();
+		this.user = user;
+		calendars.add(user.getPersonalCalendar());
+		for (int i = 0; i < user.getGroups().size(); i++) {
+			this.calendars.add(user.getGroups().get(i).getCalendar());
 		}
+		viewAgenda();
 	}
 	
-	public String viewAgenda() {
-		
-		Date today = new Date();
-		Timestamp currentTime = new Timestamp(today.getTime());
-		
-		String agendaView = "Appointments this week appointments:" + "\n";
-		
-		for (Appointment appointment : appointments) {
-			if (appointment.getStartTime().after(currentTime)) {
-				agendaView = agendaView + appointment.getStartTime().toString() + ": " + appointment.getTitle() + "\n";
+	public void viewAgenda() {
+		ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+
+		for (int i = 0; i < calendars.size(); i++) {
+			for (int j = 0; j < calendars.get(i).getAppointments().size(); j++) {
+				Appointment appointment = calendars.get(i).getAppointments().get(j);
+				if ((!appointment.getStartTime().before(weekStart)&&appointment.getStartTime().before(weekEnd))||(!appointment.getEndTime().before(weekStart)&&appointment.getEndTime().before(weekEnd))) {
+					appointments.add(appointment);
+				}
 			}
 		}
-		return agendaView;
+
+		System.out.println("This weeks appointments:\nTitle\t\tStart\t\tEnd\n");
+		for (int i = 0; i < appointments.size(); i++) {
+			System.out.println(appointments.get(i).getTitle()+"\t"+appointments.get(i).getStartTime()+"\t"+appointments.get(i).getEndTime());
+		}
 	}
 	
 	public void setStartEndOfWeek() {
-		// get today and clear time of day
-		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.clear(Calendar.MINUTE);
 		cal.clear(Calendar.SECOND);
 		cal.clear(Calendar.MILLISECOND);
 
-		// get start of this week in milliseconds
 		cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
 		weekStart = new Timestamp(cal.getTime().getTime());
-		weekEnd = new Timestamp(cal.getTime().getTime()+604800000);
+		cal.add(Calendar.DAY_OF_WEEK, 7);
+		weekEnd = new Timestamp(cal.getTime().getTime());
 	}
 	
 	public void nextWeek() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(weekStart);
-		cal.add(Calendar.DAY_OF_WEEK, 7);
-		weekStart.setTime(cal.getTime().getTime());
 		cal.setTime(weekEnd);
+		weekStart.setTime(cal.getTime().getTime());
 		cal.add(Calendar.DAY_OF_WEEK, 7);
 		weekEnd.setTime(cal.getTime().getTime());
+		viewAgenda();
 	}
 	
 	public void previousWeek() {
-		Calendar cal = Calendar.getInstance();
 		cal.setTime(weekStart);
+		weekEnd.setTime(cal.getTime().getTime());
 		cal.add(Calendar.DAY_OF_WEEK, -7);
 		weekStart.setTime(cal.getTime().getTime());
-		cal.setTime(weekStart);
-		cal.add(Calendar.DAY_OF_WEEK, -7);
-		weekStart.setTime(cal.getTime().getTime());
+		viewAgenda();
 	}
-
+	
+	public Timestamp getStartOfWeek() {
+		return weekStart;
+	}
+	
+	public Timestamp getEndOfWeek() {
+		return weekEnd;
+	}
 }

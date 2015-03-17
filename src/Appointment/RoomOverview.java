@@ -22,7 +22,7 @@ public class RoomOverview extends Database {
 	private ResultSet resultSet = null;
 	
 	
-	public RoomOverview(Timestamp startTime, Timestamp Endtime, int capacity) throws Exception {
+	public RoomOverview(Timestamp startTime, Timestamp endTime, int capacity) throws Exception {
 		this.freeRooms = new ArrayList<Room>();
 		
 		this.startTime = startTime;
@@ -52,6 +52,10 @@ public class RoomOverview extends Database {
 		return roomString;
 	}
 	
+	public ArrayList<Room> getFreeRooms() {
+		return freeRooms;
+	}
+	/*
 	public static void main(String[] args) throws Exception {
 		
 		Timestamp start = Timestamp.valueOf("2010-01-01 12:55:00.000000");
@@ -60,5 +64,5 @@ public class RoomOverview extends Database {
 		RoomOverview ov = new RoomOverview(start, end, 20);
 		System.out.println(ov);
 	}
-
+	*/
 }

@@ -13,7 +13,7 @@ import user.User;
 public class Group extends Database{
 	
 	private String name; 
-	private ArrayList<User> members; 
+	private ArrayList<User> members = new ArrayList<User>(); 
 	private User leader;
 	private Group mainGroup; 
 	private int groupID;
@@ -23,7 +23,7 @@ public class Group extends Database{
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
 	
-	public Group(int groupID) throws Exception {
+	public Group(int groupID,User user) throws Exception {
 		if (groupIDExists(groupID)) {
 			try {
 				openConn();
@@ -32,26 +32,22 @@ public class Group extends Database{
 				resultSet = preparedStatement.executeQuery();
 				if (resultSet.next()) {
 					this.name = resultSet.getString("Name");
-					this.leader = new User(resultSet.getString("Leader"));
+					String leaderUsername = resultSet.getString("Leader");
+					if (leaderUsername.equals(user.getUsername())) this.leader = user;
+					else this.leader = new User(leaderUsername);
 				}
 				this.groupID = groupID;
 				preparedStatement = connect.prepareStatement("select * from Group_relation where Sub_group=?");
 				preparedStatement.setInt(1,groupID);
 				resultSet = preparedStatement.executeQuery();
-				// DEBUG START
-				System.out.println("Utenfor");
-				// DEBUG END
 				if (resultSet.next()) {
-					this.mainGroup = new Group(resultSet.getInt("Super_group"));
-					// DEBUG START
-					System.out.println("Inni");
-					// DEBUG END
+					this.mainGroup = new Group(resultSet.getInt("Super_group"),user);
 				}
 				preparedStatement = connect.prepareStatement("select * from Group_relation where Super_group=?");
 				preparedStatement.setInt(1,groupID);
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
-					this.subGroups.add(new Group(resultSet.getInt("Sub_group")));
+					this.subGroups.add(new Group(resultSet.getInt("Sub_group"),user));
 				}
 			} finally {
 				closeConn();
@@ -136,6 +132,7 @@ public class Group extends Database{
 	}
 	
 	public void addMember(User user) throws Exception {
+		/*
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("insert into Group_members (Username) values (?)");
@@ -144,7 +141,8 @@ public class Group extends Database{
 		} finally {
 			closeConn();	
 		}
-		this.members.add(user);
+		*/
+		members.add(user);
 	}
 	
 	
@@ -209,5 +207,17 @@ public class Group extends Database{
 		return this.calendar; 
 	}
 	
+	public void deleteGroup() throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("delete from Appointment where GroupID=?");
+			preparedStatement.setInt(1,getGroupID());
+			preparedStatement.executeUpdate();
+		}
+		finally {
+			closeConn();
+		}
+		//TO DO: Slette objekt
+	}
 	
 }

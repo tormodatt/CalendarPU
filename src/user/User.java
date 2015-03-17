@@ -18,8 +18,8 @@ public class User extends Database{
 	public String mail; 
 	
 	public Calendar personalCalendar; 
-	public ArrayList<Group> groups;
-	public ArrayList<Notification> notifications;
+	public ArrayList<Group> groups = new ArrayList<Group>();
+	public ArrayList<Notification> notifications = new ArrayList<Notification>();
 	
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -42,7 +42,7 @@ public class User extends Database{
 				preparedStatement.setString(1, getUsername());
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
-					addGroup(new Group(resultSet.getInt("GroupID")));
+					groups.add(new Group(resultSet.getInt("GroupID"),this));
 				}
 				personalCalendar = new Calendar(this);
 			} finally {
@@ -104,6 +104,54 @@ public class User extends Database{
 			preparedStatement.setString(1,"Personlig");
 			preparedStatement.setString(2,getUsername());
 			preparedStatement.executeUpdate();
+		} finally {
+			closeConn();
+		}
+	}
+	
+	public void updateFirstName(String firstname) throws Exception {
+		try {
+		openConn();
+		preparedStatement = connect.prepareStatement("update User set Firstname=? where Username=?");
+		preparedStatement.setString(1, firstname);
+		preparedStatement.setString(2, getUsername());
+		preparedStatement.executeUpdate();
+		} finally {
+			closeConn();
+		}
+	}
+	
+	public void updateLastName(String firstname) throws Exception {
+		try {
+		openConn();
+		preparedStatement = connect.prepareStatement("update User set Lastname=? where Username=?");
+		preparedStatement.setString(1, lastname);
+		preparedStatement.setString(2, getUsername());
+		preparedStatement.executeUpdate();
+		} finally {
+			closeConn();
+		}
+	}
+	
+	public void updatePassword(String password) throws Exception {
+		try {
+		openConn();
+		preparedStatement = connect.prepareStatement("update User set Password=? where Username=?");
+		preparedStatement.setString(1, password);
+		preparedStatement.setString(2, getUsername());
+		preparedStatement.executeUpdate();
+		} finally {
+			closeConn();
+		}
+	}
+	
+	public void updateMail(String mail) throws Exception {
+		try {
+		openConn();
+		preparedStatement = connect.prepareStatement("update User set Mail=? where Username=?");
+		preparedStatement.setString(1, mail);
+		preparedStatement.setString(2, getUsername());
+		preparedStatement.executeUpdate();
 		} finally {
 			closeConn();
 		}
@@ -181,6 +229,17 @@ public class User extends Database{
 			groups.remove(group); 
 		} else {
 			throw new IllegalArgumentException("Ikke medlem i gruppe");  
+		}
+	}
+	
+	public void setAllSeen() throws Exception {
+		try {
+			openConn();
+			preparedStatement = connect.prepareStatement("update Invited set Seen=1 where Reciever=?");
+			preparedStatement.setString(1, getUsername());
+			preparedStatement.executeUpdate();
+		} finally {
+			closeConn();
 		}
 	}
 	private boolean isValidName(String name){

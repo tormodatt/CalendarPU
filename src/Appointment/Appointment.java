@@ -31,19 +31,19 @@ public class Appointment extends Database {
 	private ArrayList<User> participants;
 
 	//Hente avtale
-	public Appointment(int appointmentID) throws Exception {
+	public Appointment(int appointmentID, User owner) throws Exception {
 			try {
 				openConn();
 				preparedStatement = connect.prepareStatement("select * from Appointment WHERE AppointmentID=?");
 				preparedStatement.setInt(1, appointmentID);
 				resultSet = preparedStatement.executeQuery();
 				if (resultSet.next()) {
-					this.calendar = new Calendar(resultSet.getInt("CalendarID"));
-					this.owner = new User(resultSet.getString("Owner"));
+					this.calendar = owner.getPersonalCalendar();
+					this.owner = owner;
 					this.title = resultSet.getString("Title");
 					this.start = resultSet.getTimestamp("Start");
 					this.end = resultSet.getTimestamp("End");
-					this.room = new Room(resultSet.getString("Room_name"));
+					if (resultSet.getString("Room_name")!=null) this.room = new Room(resultSet.getString("Room_name"));
 					this.priority = resultSet.getInt("Priority");
 					this.description = resultSet.getString("Description");
 					this.maxParticipants = resultSet.getInt("Max_participants");
@@ -61,36 +61,40 @@ public class Appointment extends Database {
 	}
 
 	//Opprette avtale
-	public Appointment(User owner, String title, Timestamp start, Timestamp end,  Room room, int priority, String description, int maxPartisipants) throws Exception {
+	public Appointment(User owner, String title, Timestamp start, Timestamp end, int priority, String description, int maxParticipants) throws Exception {
 		try {
 			if(isValidTimestamp(start) && isValidTimestamp(end) && isValidTitle(title)){
 			}else throw new IllegalArgumentException("Either the name or username is invalid");  
 
 			openConn();
-			preparedStatement = connect.prepareStatement("insert into Appointment values (default,?,?,?,?,?,?,?,?,?,?)");
+			preparedStatement = connect.prepareStatement("insert into Appointment values (default,?,?,?,?,?,?,?,?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1,owner.getPersonalCalendar().getCalendarID());
 			preparedStatement.setString(2,owner.getUsername());
 			preparedStatement.setString(3, title);
 			preparedStatement.setTimestamp(4,start);
 			preparedStatement.setTimestamp(5,end);
-			preparedStatement.setString(6,room.getRoomName());
+			preparedStatement.setString(6,null);
 			preparedStatement.setInt(7, priority);
 			preparedStatement.setString(8, description);
-			preparedStatement.setInt(9, maxPartisipants);
+			preparedStatement.setInt(9, maxParticipants);
 			preparedStatement.setTimestamp(10, null);
 			preparedStatement.executeUpdate();
 			resultSet = preparedStatement.getGeneratedKeys();
 			if (resultSet.next()) {
-				this.appointmentID = resultSet.getInt("NotificationID");
+				this.appointmentID = resultSet.getInt(1);
 			}
 		} finally {
 			closeConn();
 		}
+		this.calendar = owner.getPersonalCalendar();
 		calendar.addAppointment(this);
 		this.owner = owner;
 		this.title = title;
 		this.start = start;
 		this.end = end;
+		this.priority = priority;
+		this.description = description;
+		this.maxParticipants = maxParticipants;
 	}
 
 	//Endre avtale
@@ -192,7 +196,7 @@ public class Appointment extends Database {
 		ps.setInt(2, getAppointmentID());
 		ps.executeUpdate();
 		ps = connect.prepareStatement("update Invited set Confirmed=0 where AppointmentID=?");
-		ps.setInt(2, getAppointmentID());
+		ps.setInt(1, getAppointmentID());
 		ps.executeUpdate();
 		} finally {
 			closeConn();

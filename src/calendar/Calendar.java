@@ -14,7 +14,7 @@ public class Calendar extends Database {
 	private User user;
 	private Group group;
 
-	private ArrayList<Appointment> appointments;
+	private ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -65,11 +65,11 @@ public class Calendar extends Database {
 				this.calendarID = resultSet.getInt("CalendarID");
 				this.title = resultSet.getString("Title");
 			}
+			this.user = user;
 			setAppointments();
 		} finally {
 			closeConn();
 		}
-		this.user = user;
 	}
 
 	//Hente gruppekalender
@@ -100,7 +100,7 @@ public class Calendar extends Database {
 				this.calendarID = calendarID;
 				this.title = resultSet.getString("Title");
 				this.user = new User(resultSet.getString("Username"));
-				this.group = new Group(resultSet.getInt("GroupID"));
+				this.group = new Group(resultSet.getInt("GroupID"),user);
 			}
 			setAppointments();
 		} finally {
@@ -122,17 +122,17 @@ public class Calendar extends Database {
 		return group;
 	}
 	
-	public ArrayList<Appointment> getAppointment() {
+	public ArrayList<Appointment> getAppointments() {
 		return appointments;
 	}
 
 	//Settere
 	public void setAppointments() throws Exception {
-		preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE CalendarID = ?");
-		preparedStatement.setInt(1, calendarID);
+		preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE CalendarID=?");
+		preparedStatement.setInt(1, getCalendarID());
 		resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
-			this.appointments.add(new Appointment(resultSet.getInt("AppointmentID")));
+			this.appointments.add(new Appointment(resultSet.getInt("AppointmentID"),getUser()));
 		}
 	}
 	
