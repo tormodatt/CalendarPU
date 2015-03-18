@@ -4,7 +4,7 @@ import user.User;
 import user.Group;
 
 @SuppressWarnings("unused")
-public class danielTestClass {
+public class DanielTestClass {
 	
 	private void run() throws Exception {
 		System.out.println("Start");
@@ -27,7 +27,7 @@ public class danielTestClass {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		danielTestClass c = new danielTestClass();
+		DanielTestClass c = new DanielTestClass();
 		c.run();
 		
 	}
