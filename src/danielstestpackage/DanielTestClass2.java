@@ -1,12 +1,14 @@
 package danielstestpackage;
 
 import user.Group;
+import user.User;
 
 public class DanielTestClass2 {
 
 	private void run() throws Exception {
-		Group gruppe1 = new Group(148);
-		Group gruppe2 = new Group(149);
+		User perOlsen = new User("perOlsen");
+		Group gruppe1 = new Group(148, perOlsen);
+//		Group gruppe2 = new Group(149);
 //		gruppe1.addSubGroup(gruppe2);
 		
 //		System.out.println(gruppe1.getLeader());
