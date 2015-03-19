@@ -57,6 +57,7 @@ public class User extends Database{
 		setCredencials(firstname,lastname,username,password,mail);
 		this.firstname = firstname;
 		this.lastname = lastname;
+		this.username = username;
 		this.password = password;
 		this.mail = mail;
 		this.personalCalendar = new Calendar(this,"Personal Calendar");
@@ -98,11 +99,6 @@ public class User extends Database{
 			preparedStatement.setString(3,lastname);
 			preparedStatement.setString(4,mail);
 			preparedStatement.setString(5,password);
-			preparedStatement.executeUpdate();
-			//Opprette en personlig kalender
-			preparedStatement = connect.prepareStatement("insert into Calendar values (default,?,?,null)");
-			preparedStatement.setString(1,"Personlig");
-			preparedStatement.setString(2,getUsername());
 			preparedStatement.executeUpdate();
 		} finally {
 			closeConn();
@@ -160,7 +156,7 @@ public class User extends Database{
 	public boolean userNameExists(String username) throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select Username from all_s_gr46_calendar.User WHERE Username= ?");
+			preparedStatement = connect.prepareStatement("select Username from User WHERE Username= ?");
 			preparedStatement.setString(1,username);
 			resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {

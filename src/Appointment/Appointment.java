@@ -98,45 +98,6 @@ public class Appointment extends Database {
 	}
 
 	//Endre avtale
-	public void updateAppointment(Calendar calendar, User owner, String title, Timestamp start, Timestamp end,  Room room, int priority, String description, int maxParticipants) throws Exception {
-		try {
-			if(isValidTimestamp(start) && isValidTimestamp(end)&& isValidTitle(title)){
-			}else throw new IllegalArgumentException("Either the name or username is invalid");  
-
-			openConn();
-			preparedStatement = connect.prepareStatement("update Appointment SET CalendarID=?,Username=?,Start=?,End=?,Room_name=?,Priority=?,Description=?,Max_participants=? WHERE AppointmentID=?");
-			preparedStatement.setInt(1,calendar.getCalendarID());
-			preparedStatement.setString(2,owner.getUsername());
-			preparedStatement.setString(3, title);
-			preparedStatement.setTimestamp(4,start);
-			preparedStatement.setTimestamp(5,end);
-			preparedStatement.setString(6,room.getRoomName());
-			preparedStatement.setInt(7, priority);
-			preparedStatement.setString(8, description);
-			preparedStatement.setInt(9, maxParticipants);
-			preparedStatement.setInt(10, getAppointmentID());
-			preparedStatement.executeUpdate();
-		} finally {
-			closeConn();
-		}
-		this.calendar.removeAppointment(this);
-		calendar.addAppointment(this);
-		this.calendar = calendar;
-		this.owner = owner;
-		this.title = title;
-		this.start = start;
-		this.end = end;
-		this.room = room;
-		this.priority = priority;
-		this.description = description;
-		this.maxParticipants = maxParticipants;
-
-		//Notify participants
-		for (int i = 0; i < participants.size(); i++) {
-			new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has changed",participants.get(i));
-		}
-	}
-	
 	public void updateTitle(String title) throws Exception {
 		try {
 		openConn();
@@ -146,6 +107,9 @@ public class Appointment extends Database {
 		ps.executeUpdate();
 		} finally {
 			closeConn();
+		}
+		for (int i = 0; i < participants.size(); i++) {
+			new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has changed its title to "+title,participants.get(i));
 		}
 		this.title = title;
 	}
@@ -184,7 +148,7 @@ public class Appointment extends Database {
 		}
 		this.end = end;
 		for (int i = 0; i < participants.size(); i++) {
-			new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has changed its end time to "+getStartTime(),participants.get(i));
+			new Notification("Your appiontment has changed","The appointment "+getTitle()+" scheduled at "+getStartTime()+" has changed its end time to "+getEndTime(),participants.get(i));
 		}
 	}
 	
@@ -436,5 +400,4 @@ public class Appointment extends Database {
 
 		}return true; 
 	}
-
 }
