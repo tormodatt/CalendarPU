@@ -34,6 +34,8 @@ public class Main extends Database{
 
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
+	
+	private boolean mainflag = false;
 
 	public void run() throws Exception {
 		Scanner scan = new Scanner(System.in);  
@@ -50,6 +52,7 @@ public class Main extends Database{
 			} else if (choice == 3) {
 				System.out.println("Program closing, welcome back!"); //Legge inn noe mer? eks. fjerne databasetilgang++? 
 				status = true; 
+				mainflag = true;
 			} else {
 				System.out.println("Not valid choice, try again");
 			}
@@ -58,9 +61,13 @@ public class Main extends Database{
 
 	private void logIn() throws Exception {
 		Scanner input = new Scanner(System.in);
-		System.out.println("Please enter username:");
-		String username = input.next(); 
-		User existingUser = new User(username);
+		User existingUser;
+		while (true) {			
+			System.out.println("Please enter username:");
+			String username = input.next();
+			existingUser = new User(username);
+			if (existingUser.getPassword() != null) break;
+		}
 		this.user = existingUser; 
 		System.out.println("Please enter password:");
 		while (input.next().equals(user.getPassword())==false) System.out.println("Wrong password! Try again");
@@ -88,10 +95,11 @@ public class Main extends Database{
 	private void notSeen() throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("select NotificationID from Notification WHERE Receiver=? and Seen=0");
+			preparedStatement = connect.prepareStatement("select NotificationID from Notification WHERE (Receiver=? and Seen=0)");
 			preparedStatement.setString(1, user.getUsername());
 			resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
+				unseenNotifications = new ArrayList<Notification>();
 				unseenNotifications.add(new Notification(resultSet.getInt("NotificationID"))); 
 			}
 		} finally {
@@ -119,10 +127,11 @@ public class Main extends Database{
 		while (!flag1) {
 			System.out.println("What do you want to do?");
 			System.out.println(
-					"1. Show my calendar\n" +
-							"2. Update my credencials\n" +
-							"3. Administrate my appointments\n"+
-					"4. Show or administrate my groups\n");
+					"1. Show my calendar\n"
+					+ "2. Update my credencials\n"
+					+ "3. Administrate my appointments\n"
+					+ "4. Show or administrate my groups\n"
+					+ "5. Log out");
 			int choice = scan.nextInt();
 			if (choice == 1) {
 				AgendaView av = new AgendaView(user);
@@ -243,8 +252,15 @@ public class Main extends Database{
 				}
 				else {
 					System.out.println("Not valid chioce!");
-				} 
-			} else {
+				}
+			} else if (choice == 5) {
+				flag1 = true;
+			} else if (choice == 6) {
+				//
+			} else if (choice == 7) {
+				//
+			}
+			else {
 				System.out.println("Not valid choice, try again!");
 			}
 		}
@@ -395,11 +411,16 @@ public class Main extends Database{
 	}
 
 	public static void main(String[] args) throws Exception {
-		Main main = new Main(); 
-		main.run(); //Logger inn med eksisterende bruker/oppretter ny 
-		main.notSeen(); //Sjekker invitasjoner/notifications 
-		//main.showCalendar(); //Visning av kalender 
-		main.showChoices(); //Viser liste med mulige valg
+		Main main = new Main();
+		while (true) {			
+			main.run(); //Logger inn med eksisterende bruker/oppretter ny
+			if (main.mainflag == true) {
+				break;
+			}
+			main.notSeen(); //Sjekker invitasjoner/notifications 
+			//main.showCalendar(); //Visning av kalender 
+			main.showChoices(); //Viser liste med mulige valg
+		}
 	}
 
 }
