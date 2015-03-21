@@ -29,7 +29,7 @@ public class Notification extends Database {
 				this.receiver = new User(resultSet.getString("Receiver"));
 				this.message = resultSet.getString("Message");
 				this.subject = resultSet.getString("Subject");
-				this.excecuted = resultSet.getTimestamp("Executed");
+				this.excecuted = resultSet.getTimestamp("Excecuted");
 			}
 		} finally {
 			closeConn();
