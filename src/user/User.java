@@ -231,7 +231,7 @@ public class User extends Database{
 	public void setAllSeen() throws Exception {
 		try {
 			openConn();
-			preparedStatement = connect.prepareStatement("update Invited set Seen=1 where Reciever=?");
+			preparedStatement = connect.prepareStatement("update Notification set Seen=1 where Receiver=?");
 			preparedStatement.setString(1, getUsername());
 			preparedStatement.executeUpdate();
 		} finally {
