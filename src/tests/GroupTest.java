@@ -11,7 +11,7 @@ import calendar.Database;
 import user.Group;
 import user.User;
 
-public class SystemTestsGroup extends Database {
+public class GroupTest extends Database {
 
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;

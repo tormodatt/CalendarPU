@@ -9,7 +9,7 @@ import user.User;
 import calendar.Calendar;
 
 
-public class SystemTestsCalendar {
+public class CalendarTest {
 	
 	private User ola;
 	
