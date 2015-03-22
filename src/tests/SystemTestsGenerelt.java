@@ -7,8 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import user.Group;
@@ -34,27 +34,34 @@ import calendar.Calendar;
  * GroupID: "-1"
  */
 
-public class SystemTestsGenerelt {
+public class SystemTestsGenerelt extends TestSuperClass {
 	
-	static User perOlsen;
-	static User torNilsen;
-	static Group gruppe1;
-	static Group gruppe2;
-	static Group gruppe3;
+	User perOlsen;
+	User torNilsen;
+	Group gruppe1;
+	Group gruppe2;
+	Group gruppe3;
 	
-	@BeforeClass
-	public static void oneTimeSetUp() throws Exception {
+	public SystemTestsGenerelt() throws Exception {
+		deleteUser("perOlsen");
+		deleteUser("torNilsen");
+		deleteUser("olaNordmann");
+		deleteUser("kariNordmann");
+
 		perOlsen = new User("Per", "Olsen", "perOlsen", "pass", "per.olsen@mail.com");
 		torNilsen = new User("Tor", "Nilsen", "torNilsen", "pass", "tor.nilsen@mail.com");
 		gruppe1 = new Group("gruppe1", perOlsen);
 		gruppe2 = new Group("gruppe2", torNilsen);
 		gruppe3 = new Group("gruppe3", perOlsen);
+
 	}
 	
-	@AfterClass
-	public static void oneTimeTearDown() throws Exception {
-		// Slett brukere og grupper
+	@After
+	public void tearDown() throws Exception {
+		deleteUser("perOlsen");
+		deleteUser("torNilsen");
 	}
+	
 	
 	@Test
 	// Teste om en eksisterende bruker har tilknyttet en kalender."
@@ -62,7 +69,7 @@ public class SystemTestsGenerelt {
 		User user = new User("perOlsen");
 		Calendar cal = user.getPersonalCalendar();
 		assertNotNull(cal);
-		assertEquals(user, cal);
+		assertEquals(perOlsen.getPersonalCalendar(), cal);
 	}
 	
 	@Test
@@ -72,7 +79,9 @@ public class SystemTestsGenerelt {
 		Calendar cal  = user.getPersonalCalendar();
 		assertNotNull(cal);
 		assertEquals(user, cal.getUser());
-		// Slett brukeren.
+		
+		deleteUser("olaNordmann");
+		deleteUser("kariNordmann");
 	}
 	
 	@Test

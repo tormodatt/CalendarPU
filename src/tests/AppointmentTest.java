@@ -25,7 +25,7 @@ public class AppointmentTest extends TestSuperClass {
 		deleteUser("olakul");
 		
 		User ola = new User("Ola", "Kristiansen", "olakul", "kuleste123", "ola.kri@gmail.com");
-		Calendar ok2015 = ola.getPersonalCalendar(); 
+		Calendar ok2015 = ola.getPersonalCalendar();
 		Room kantinen = new Room("Kantinen", 22, "K-101"); 
 		Appointment kiltfest = new Appointment(ola, "Kiltfest", Timestamp.valueOf("2015-03-15 17:00:00.0"), Timestamp.valueOf("2015-03-15 18:00:00.0"), 2, "Kiltfest for å feire at de nye har fått kilt.",160);
 		kiltfest.updateRoom(kantinen);
@@ -35,7 +35,7 @@ public class AppointmentTest extends TestSuperClass {
 		assertEquals(ok2015.getCalendarID(), kiltfest.getCalendar().getCalendarID()); 
 
 		ola = new User("olakul");  
-		Room soverommet = new Room("Soverommet", 2, "S2"); 
+		// Room soverommet = new Room("Soverommet", 2, "S2"); 
 		try {
 			Appointment beis = new Appointment(ola, "Beis&&", Timestamp.valueOf("2015-04-01 22:15:00.0"), Timestamp.valueOf("2015-04-01 22:45:00.0"), 3,"Fordi beis er bra. Alltid", 2); 			
 			fail("The title should not be allowed."); 

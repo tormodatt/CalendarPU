@@ -247,7 +247,7 @@ public class User extends Database{
 				index++; 
 			}else return false; 
 		}
-		if( index < 3){
+		if( index < 2){
 			return false; 
 		}
 		return true; 
