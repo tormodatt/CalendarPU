@@ -31,15 +31,15 @@ public class Appointment extends Database {
 	private ArrayList<User> participants = new ArrayList<User>();
 
 	//Hente avtale
-	public Appointment(int appointmentID, User owner) throws Exception {
+	public Appointment(int appointmentID, Calendar calendar) throws Exception {
 			try {
 				openConn();
 				preparedStatement = connect.prepareStatement("select * from Appointment WHERE AppointmentID=?");
 				preparedStatement.setInt(1, appointmentID);
 				resultSet = preparedStatement.executeQuery();
 				if (resultSet.next()) {
-					this.calendar = owner.getPersonalCalendar();
-					this.owner = owner;
+					this.calendar = calendar;
+					this.owner = calendar.getUser();
 					this.title = resultSet.getString("Title");
 					this.start = resultSet.getTimestamp("Start");
 					this.end = resultSet.getTimestamp("End");
@@ -69,7 +69,7 @@ public class Appointment extends Database {
 			openConn();
 			preparedStatement = connect.prepareStatement("insert into Appointment values (default,?,?,?,?,?,?,?,?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
 			preparedStatement.setInt(1,calendar.getCalendarID());
-			if (calendar.ownerIsGroup()) preparedStatement.setString(2, null);
+			if (calendar.ownerIsGroup()) preparedStatement.setString(2, calendar.getGroup().getLeader().getUsername());
 			else {
 				this.owner = calendar.getUser();
 				preparedStatement.setString(2,owner.getUsername());

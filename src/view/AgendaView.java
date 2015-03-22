@@ -30,8 +30,11 @@ public class AgendaView extends Database {
 		setStartEndOfWeek();
 		this.user = user;
 		calendars.add(user.getPersonalCalendar());
-		for (int i = 0; i < user.getGroups().size(); i++) {
-			this.calendars.add(user.getGroups().get(i).getCalendar());
+		for (int i = 0; i < user.getAdminGroups().size(); i++) {
+			this.calendars.add(user.getAdminGroups().get(i).getCalendar());
+		}
+		for (int i = 0; i < user.getMemberGroups().size(); i++) {
+			this.calendars.add(user.getMemberGroups().get(i).getCalendar());
 		}
 		viewAgenda();
 	}
@@ -52,9 +55,9 @@ public class AgendaView extends Database {
 		
 		ArrayList<Appointment> appointments = returnAgenda(); 
 
-		System.out.println("This weeks appointments:\nTitle\t\tStart\t\tEnd\n");
+		System.out.println("This weeks appointments:\n\nTitle\t\tStart\t\t\tEnd");
 		for (int i = 0; i < appointments.size(); i++) {
-			System.out.println(appointments.get(i).getTitle()+"\t"+appointments.get(i).getStartTime()+"\t"+appointments.get(i).getEndTime());
+			System.out.println(appointments.get(i).getTitle()+"\t\t"+appointments.get(i).getStartTime().toString().substring(0,16)+"\t"+appointments.get(i).getEndTime().toString().substring(0, 16));
 		}
 	}
 	

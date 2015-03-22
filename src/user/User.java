@@ -98,9 +98,9 @@ public class User extends Database{
 
 	public void setCredencials(String firstname, String lastname, String username, String password, String mail) throws Exception {
 		try {
-			if(isValidName(firstname) && isValidName(lastname) && isValidUsername(username) && isValidMail(mail)){
-
-			}else throw new IllegalArgumentException("Either the name or username is invalid");  
+//			if(isValidName(firstname) && isValidName(lastname) && isValidUsername(username) && isValidMail(mail)){
+//
+//			}else throw new IllegalArgumentException("Either the name or username is invalid");  
 
 			openConn();
 			preparedStatement = connect.prepareStatement("insert into User values (?,?, ?, ?, ?)");
@@ -218,6 +218,7 @@ public class User extends Database{
 				preparedStatement.setString(1, getUsername());
 				preparedStatement.setInt(2, group.getGroupID());
 				preparedStatement.executeUpdate();
+				//preparedStatement = connect.prepareStatement("insert into Invited")
 			} finally {
 				closeConn();
 			}
@@ -265,7 +266,7 @@ public class User extends Database{
 				index++; 
 			}else return false; 
 		}
-		if( index < 3){
+		if( index < 2){
 			return false; 
 		}
 		return true; 

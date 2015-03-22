@@ -1,12 +1,13 @@
 package tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import user.Group;
@@ -16,7 +17,8 @@ import Appointment.Notification;
 import Appointment.Room;
 import calendar.Database;
 
-public class SystemTestsAppointment extends Database {
+@SuppressWarnings("unused")
+public class SystemTestsAvtaler extends Database {
 	
 	User u1;
 	User u2;
@@ -26,6 +28,7 @@ public class SystemTestsAppointment extends Database {
 	Room r1;
 	Appointment a1;
 	
+	@Before
 	private void setUp() throws Exception {
 		u1 = new User("Per", "Olsen", "perOlsen", "pass", "per.olsen@mail.com");
 		r1 = new Room("Zoo2", 10, "Andre etasje");
@@ -40,10 +43,11 @@ public class SystemTestsAppointment extends Database {
 		g1.addMember(u2);
 		g1.addMember(u3);		
 		r1 = new Room("Zoo2", 10, "Andre etasje");
-		Appointment a1 = new Appointment(u1.getPersonalCalendar(), u1, "Møte", "2015-03-13 12:00:00", "2015-03-13 14:00:00", r1, 1, "Møte med forretningsforbindelser.", 10);
+		Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 		g1.getCalendar().addAppointment(a1);
 	}
 	
+	@After
 	private void tearDown() throws Exception {
 		PreparedStatement ps = connect.prepareStatement(
 				"DELETE FROM `all_s_gr46_calendar`.`User` WHERE `Username`='perOlsen';\n"
@@ -70,11 +74,11 @@ public class SystemTestsAppointment extends Database {
 	public void testA1() throws Exception {
 		try {
 			setUp();
-			Appointment a1 = new Appointment(u1.getPersonalCalendar(), u1, "Møte", "2015-03-13 12:00:00", "2015-03-13 14:00:00", r1, 1, "Møte med forretningsforbindelser.", 10);
+			Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 			int aid = a1.getAppointmentID();
 			u1.getPersonalCalendar().addAppointment(a1);
 			
-			Appointment a1Copy = new Appointment(aid);
+			Appointment a1Copy = new Appointment(aid, u1);
 			assertNotNull(a1Copy);
 			assertEquals(a1, a1Copy);
 		}
@@ -89,8 +93,8 @@ public class SystemTestsAppointment extends Database {
 		try {
 			setUp();
 			try {
-				Appointment a1 = new Appointment(u1.getPersonalCalendar(), u1, "Møte", "2015-03-13 12:00:00", "2015-03-13 10:00:00", r1, 1, "Møte med forretningsforbindelser.", 10);
-				fail();
+				Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 10:00:00"), 1, "Møte med forretningsforbindelser.", 10);
+				fail("Sluttidspunktet kan ikke være før starttidspunktet.");
 			}
 			catch (Exception e) {
 				// Her vil vi havne :)
@@ -106,7 +110,9 @@ public class SystemTestsAppointment extends Database {
 	public void testA2a() throws Exception {
 		try {
 			setUp2();
-			a1.updateAppointment(u1.getPersonalCalendar(), u1, "Møte", "2015-03-13 16:00:00", "2015-03-13 18:00:00", r1, 1, "Møte med forretningsforbindelser.", 10);
+			//Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
+			a1.updateStart(Timestamp.valueOf("2015-03-13 16:00:00"));
+			a1.updateEnd(Timestamp.valueOf("2015-03-13 18:00:00"));
 			PreparedStatement ps1 = connect.prepareStatement("SELECT NotificationID FROM Notification WHERE Receiver = \"torNilsen\"");
 			ResultSet rs = ps1.executeQuery();
 			int nid = -1;
@@ -127,9 +133,9 @@ public class SystemTestsAppointment extends Database {
 	public void testA2b() throws Exception {
 		User u1 = new User("Per", "Olsen", "perOlsen", "pass", "per.olsen@mail.com");
 		Room r1 = new Room("Zoo2", 10, "Andre etasje");
-		Appointment a1 = new Appointment(u1.getPersonalCalendar(), u1, "Møte", "2015-03-13 12:00:00", "2015-03-13 14:00:00", r1, 1, "Møte med forretningsforbindelser.", 10);
+		Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 		try {
-			Appointment a2 = new Appointment(u1.getPersonalCalendar(), u1, "Party", "2015-03-13 13:00:00", "2015-03-13 15:00:00", r1, 1, "Kult party.", 10);
+			Appointment a2 = new Appointment(u1, "Party", Timestamp.valueOf("2015-03-13 13:00:00"), Timestamp.valueOf("2015-03-13 15:00:00"), 1, "Kult party.", 10);
 				// Denne avtalen skal ikke kunne opprettes men denne kombinasjonen av tid og rom.
 				fail("Det ble ikke kastet en exception ved overlapp.");
 		}
@@ -146,7 +152,7 @@ public class SystemTestsAppointment extends Database {
 		User u1 = new User("Per", "Olsen", "perOlsen", "pass", "per.olsen@mail.com");
 		User u2 = new User("Tor", "Nilsen", "torNilsen", "pass", "tor.nilsen@mail.com");
 		Room r1 = new Room("Zoo2", 10, "Andre etasje");
-		Appointment a1 = new Appointment(u1.getPersonalCalendar(), u1, "Møte", "2015-03-13 12:00:00", "2015-03-13 14:00:00", r1, 1, "Møte med forretningsforbindelser.", 10);
+		Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 		int aid = a1.getAppointmentID();
 		a1.addParticipant(u2);
 		PreparedStatement ps = connect.prepareStatement("SELECT * FROM Invited WHERE User = \"torNilsen\" AND AppointmentID = ?");
@@ -161,7 +167,7 @@ public class SystemTestsAppointment extends Database {
 	@Test
 	// A5d: 
 	public void testA5c() throws Exception {
-		Appointment a1 = new Appointment(u1.getPersonalCalendar(), u1, "Møte", "2015-03-13 12:00:00", "2015-03-13 14:00:00", r1, 1, "Møte med forretningsforbindelser.", 10);
+		Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 	}
 	
 	@Test
