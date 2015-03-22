@@ -7,6 +7,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import user.Group;
@@ -40,6 +42,7 @@ public class SystemTestsGeneral {
 	static Group gruppe2;
 	static Group gruppe3;
 	
+	@BeforeClass
 	public static void oneTimeSetUp() throws Exception {
 		perOlsen = new User("Per", "Olsen", "perOlsen", "pass", "per.olsen@mail.com");
 		torNilsen = new User("Tor", "Nilsen", "torNilsen", "pass", "tor.nilsen@mail.com");
@@ -48,6 +51,7 @@ public class SystemTestsGeneral {
 		gruppe3 = new Group("gruppe3", perOlsen);
 	}
 	
+	@AfterClass
 	public static void oneTimeTearDown() throws Exception {
 		// Slett brukere og grupper
 	}
@@ -93,7 +97,7 @@ public class SystemTestsGeneral {
 		assertNotNull(subGroup);
 		assertEquals(gruppe2, subGroup);
 		
-		Group gruppe1copy = new Group(gid);
+		Group gruppe1copy = new Group(gid, perOlsen);
 		// DEBUG START
 		System.out.println(gruppe1copy.getSubGroups());
 		// DEBUG END
@@ -108,7 +112,7 @@ public class SystemTestsGeneral {
 		Group mainGroup = gruppe2.getMainGroup();
 		assertEquals(gruppe1, mainGroup);
 		
-		Group gruppe2copy = new Group(2);
+		Group gruppe2copy = new Group(gruppe2.getGroupID(), gruppe2.getLeader());
 		mainGroup = gruppe2copy.getMainGroup();
 		assertEquals(gruppe1, mainGroup);
 		

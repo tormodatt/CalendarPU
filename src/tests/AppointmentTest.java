@@ -2,22 +2,28 @@ package tests;
 
 import static org.junit.Assert.*;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.Test;
 
-import Appointment.Appointment;
-import calendar.Calendar;
-import Appointment.Room; 
 import user.User;
+import Appointment.Appointment;
+import Appointment.Room;
+import calendar.Calendar;
 
 
 public class AppointmentTest {
-
+	
+	
+	// Lage Appointments med riktige og gale verdier.
 	@Test
 	public void setAppointmentTest() throws Exception {
 		User ola = new User("Ola", "Kristiansen", "olakul", "kuleste123", "ola.kri@gmail.com");
 		Calendar ok2015 = new Calendar(ola, "testkalender"); 
 		Room kantinen = new Room("Kantinen", 22, "K-101"); 
-		Appointment kiltfest = new Appointment(ok2015, ola, "Kiltfest", "2015-03-15 17:00:00.0" , "2015-03-15 18:00:00.0", kantinen, 2, "Kiltfest for å feire at de nye har fått kilt.",160);
+		Appointment kiltfest = new Appointment(ola, "Kiltfest", Timestamp.valueOf("2015-03-15 17:00:00.0"), Timestamp.valueOf("2015-03-15 18:00:00.0"), 2, "Kiltfest for å feire at de nye har fått kilt.",160);
 		assertEquals("olakul", kiltfest.getOwner().getUsername()); 
 		assertEquals("Kantinen", kiltfest.getRoom().getRoomName()); 
 		assertEquals(ok2015.getCalendarID(), kiltfest.getCalendar().getCalendarID()); 
@@ -26,8 +32,8 @@ public class AppointmentTest {
 		ok2015 = new Calendar(ola, "testkalender"); 
 		Room soverommet = new Room("Soverommet", 2, "S2"); 
 		try {
-			Appointment beis = new Appointment(ok2015, ola, "Beis&&", "2015-04-01 22:15:00.0", "2015-04-01 22:45:00.0", soverommet, 3,"Fordi beis er bra. Alltid", 2); 			
-			fail("The title is not valid"); 
+			Appointment beis = new Appointment(ola, "Beis&&", Timestamp.valueOf("2015-04-01 22:15:00.0"), Timestamp.valueOf("2015-04-01 22:45:00.0"), 3,"Fordi beis er bra. Alltid", 2); 			
+			fail("The title should not be allowed."); 
 		}
 		catch (Exception e) {
 			// Her vil vi havne.
@@ -35,39 +41,37 @@ public class AppointmentTest {
 
 	}
 
+	// Oppdatere med riktige verdier.
 	@Test
-	public void updateAppointmentTest(){
-		try {
-			User stephanie = new User("Stephanie", "Buadu", "stephabu", "blomstererfint123", "stepabu@stud.ntnu.no");
-			Calendar steph15 = new Calendar(stephanie, "partykalender"); 
-			Room lesesal = new Room("lesesalen", 6, "GK-01"); 
-			Room hjemme = new Room("hjemme",22, "RFKK"); 
-			Appointment bursdag = new Appointment(steph15, stephanie, "bursdag", "2015-06-16 22:00:00.0", "2015-06-17 03:00:00.0", lesesal, 1, "Nå skal det feires bursdag", 20); 
-			assertEquals(steph15.getCalendarID(), bursdag.getCalendar().getCalendarID()); 
-			assertEquals("lesesalen", bursdag.getRoom().getRoomName()); 
-			assertEquals("bursdag", bursdag.getTitle()); 
-			bursdag.updateAppointment(steph15, stephanie, "flæææ", "2015-06-16 22:00:00.0", "2015-06-17 03:00:00.0", hjemme, 3, "det skal bli fylla!!", 10);
-			assertEquals("flæææ", bursdag.getTitle()); 
-			assertEquals("hjemme", bursdag.getRoom().getRoomName()); 
-		} catch(Exception e){
-			e.printStackTrace();
-			fail("Det ble kastet en exception.");
-		} 	
+	public void updateAppointmentTest() throws Exception {
+		User stephanie = new User("Stephanie", "Buadu", "stephabu", "blomstererfint123", "stepabu@stud.ntnu.no");
+		Calendar steph15 = new Calendar(stephanie, "partykalender"); 
+		Room lesesal = new Room("lesesalen", 6, "GK-01"); 
+		Room hjemme = new Room("hjemme",22, "RFKK"); 
+		Appointment bursdag = new Appointment(stephanie, "bursdag", Timestamp.valueOf("2015-06-16 22:00:00.0"), Timestamp.valueOf("2015-06-17 03:00:00.0"), 1, "Nå skal det feires bursdag", 20);
+		assertEquals(steph15.getCalendarID(), bursdag.getCalendar().getCalendarID()); 
+		assertEquals("lesesalen", bursdag.getRoom().getRoomName()); 
+		assertEquals("bursdag", bursdag.getTitle()); 
+		bursdag.updateTitle("flæææ");
+		bursdag.updateDescription("det skal bli fylla!!");
+		bursdag.updateMaxParticipants(10);
+		bursdag.updateRoom(hjemme);
+		assertEquals("flæææ", bursdag.getTitle()); 
+		assertEquals("hjemme", bursdag.getRoom().getRoomName());  	
 	}
 	
 	@Test 
-	public void addParticipant(){
-		try {
-			User sandra = new User("Sandra", "Buadu", "sandra", "1234567890", "sandra@gotmail.com");
-			User thomas = new User("Thomas", "Kristiansen", "tomtom", "abcabcabc", "thomas@gmail.com"); 
-			//må lage et arrangement og alle tilhørende ting
-			//legge til deltakerne
-			//sjekke at de er der
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+	public void addParticipant() throws Exception {
+		User sandra = new User("Sandra", "Buadu", "sandra", "pass", "sandra@gotmail.com");
+		User thomas = new User("Thomas", "Kristiansen", "tomtom", "pass", "thomas@gmail.com");
+		User fredrik = new User("Fredrik", "Olsen", "fredrikOlsen", "pass", "fredrik@gmail.com");
+		Appointment fotball = new Appointment(sandra, "Fotballtrening", Timestamp.valueOf("2015-04-20 18:00:00"), Timestamp.valueOf("2015-04-20 18:00:00"), 3, "Spille fotball", 20);
+		fotball.addParticipant(thomas);
+		fotball.addParticipant(fredrik);
 		
+		ArrayList<User> participants = new ArrayList<User>(Arrays.asList(sandra, thomas, fredrik));
+		
+		assertTrue(participants.equals(fotball.getParticipants()));
 		
 	}
 

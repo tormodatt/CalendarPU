@@ -24,13 +24,13 @@ public class CalendarView {
 	
 	public CalendarView(User owner) {
 		this.owner = owner;
-		this.appointments = owner.getPersonalCalendar().getAppointment();
+		this.appointments = owner.getPersonalCalendar().getAppointments();
 		this.ownerGroup = null;
 	}
 	
 	public CalendarView(Group ownerGroup) {
 		this.ownerGroup = ownerGroup;
-		this.appointments = ownerGroup.getCalendar().getAppointment();
+		this.appointments = ownerGroup.getCalendar().getAppointments();
 		this.owner = null;
 	}
 	
