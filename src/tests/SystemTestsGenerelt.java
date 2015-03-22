@@ -88,8 +88,8 @@ public class SystemTestsGenerelt extends TestSuperClass {
 	// Teste om en ny person i gruppe får tildelt gruppekalender."
 	public void testG1_3() throws Exception {
 		User user = new User("Ola", "Nordmann", "olaNordmann", "pass", "ola.nordmann@mail.com");
-		user.addGroup(gruppe1);
-		ArrayList<Group> groups = user.getGroups();
+		user.addMemberGroup(gruppe1);
+		ArrayList<Group> groups = user.getMemberGroups();
 		Calendar cal = groups.get(0).getCalendar();
 		assertNotNull(cal);
 		assertEquals(gruppe1.getCalendar(), cal);
@@ -136,13 +136,13 @@ public class SystemTestsGenerelt extends TestSuperClass {
 	@Test
 	// Tester om en en person kan legges til i en gruppe, fra personen.
 	public void testG3_1() throws Exception {
-		assertTrue((perOlsen.getGroups()).size() == 1);
-		assertEquals(perOlsen.getGroups().get(0), gruppe1);
+		assertTrue((perOlsen.getMemberGroups()).size() == 1);
+		assertEquals(perOlsen.getMemberGroups().get(0), gruppe1);
 		assertTrue(gruppe1.getMembers().contains(perOlsen));
 		
-		perOlsen.addGroup(gruppe2);
+		perOlsen.addMemberGroup(gruppe2);
 		
-		ArrayList<Group> groups = perOlsen.getGroups();
+		ArrayList<Group> groups = perOlsen.getMemberGroups();
 		assertTrue(groups.size() == 2);
 		assertTrue(groups.get(0) == gruppe1 || groups.get(0) == gruppe2);
 		assertTrue(groups.get(1) == gruppe1 || groups.get(0) == gruppe2);
@@ -157,7 +157,7 @@ public class SystemTestsGenerelt extends TestSuperClass {
 		
 		gruppe2.addMember(perOlsen);
 		
-		ArrayList<Group> groups = perOlsen.getGroups();
+		ArrayList<Group> groups = perOlsen.getMemberGroups();
 		assertTrue(groups.size() == 2);
 		assertTrue(groups.get(0) == gruppe1 || groups.get(0) == gruppe2);
 		assertTrue(groups.get(1) == gruppe1 || groups.get(0) == gruppe2);

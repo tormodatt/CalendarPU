@@ -27,7 +27,7 @@ public class AppointmentTest extends TestSuperClass {
 		User ola = new User("Ola", "Kristiansen", "olakul", "kuleste123", "ola.kri@gmail.com");
 		Calendar ok2015 = ola.getPersonalCalendar();
 		Room kantinen = new Room("Kantinen", 22, "K-101"); 
-		Appointment kiltfest = new Appointment(ola, "Kiltfest", Timestamp.valueOf("2015-03-15 17:00:00.0"), Timestamp.valueOf("2015-03-15 18:00:00.0"), 2, "Kiltfest for å feire at de nye har fått kilt.",160);
+		Appointment kiltfest = new Appointment(ok2015, "Kiltfest", Timestamp.valueOf("2015-03-15 17:00:00.0"), Timestamp.valueOf("2015-03-15 18:00:00.0"), 2, "Kiltfest for å feire at de nye har fått kilt.",160);
 		kiltfest.updateRoom(kantinen);
 		
 		assertEquals("olakul", kiltfest.getOwner().getUsername()); 
@@ -37,7 +37,7 @@ public class AppointmentTest extends TestSuperClass {
 		ola = new User("olakul");  
 		// Room soverommet = new Room("Soverommet", 2, "S2"); 
 		try {
-			Appointment beis = new Appointment(ola, "Beis&&", Timestamp.valueOf("2015-04-01 22:15:00.0"), Timestamp.valueOf("2015-04-01 22:45:00.0"), 3,"Fordi beis er bra. Alltid", 2); 			
+			Appointment beis = new Appointment(ok2015, "Beis&&", Timestamp.valueOf("2015-04-01 22:15:00.0"), Timestamp.valueOf("2015-04-01 22:45:00.0"), 3,"Fordi beis er bra. Alltid", 2); 			
 			fail("The title should not be allowed."); 
 		}
 		catch (Exception e) {
@@ -56,7 +56,7 @@ public class AppointmentTest extends TestSuperClass {
 		User stephanie = new User("Stephanie", "Buadu", "stephabu", "blomstererfint123", "stepabu@stud.ntnu.no"); 
 		Room lesesal = new Room("lesesalen", 6, "GK-01"); 
 		Room hjemme = new Room("hjemme",22, "RFKK"); 
-		Appointment bursdag = new Appointment(stephanie, "bursdag", Timestamp.valueOf("2015-06-16 22:00:00.0"), Timestamp.valueOf("2015-06-17 03:00:00.0"), 1, "Nå skal det feires bursdag", 20);
+		Appointment bursdag = new Appointment(stephanie.getPersonalCalendar(), "bursdag", Timestamp.valueOf("2015-06-16 22:00:00.0"), Timestamp.valueOf("2015-06-17 03:00:00.0"), 1, "Nå skal det feires bursdag", 20);
 		bursdag.updateRoom(lesesal);
 		assertEquals(stephanie.getPersonalCalendar().getCalendarID(), bursdag.getCalendar().getCalendarID()); 
 		assertEquals("lesesalen", bursdag.getRoom().getRoomName()); 
@@ -79,7 +79,7 @@ public class AppointmentTest extends TestSuperClass {
 		User sandra = new User("Sandra", "Buadu", "sandra", "pass", "sandra@gotmail.com");
 		User thomas = new User("Thomas", "Kristiansen", "tomtom", "pass", "thomas@gmail.com");
 		User fredrik = new User("Fredrik", "Olsen", "fredrikOlsen", "pass", "fredrik@gmail.com");
-		Appointment fotball = new Appointment(sandra, "Fotballtrening", Timestamp.valueOf("2015-04-20 18:00:00"), Timestamp.valueOf("2015-04-20 18:00:00"), 3, "Spille fotball", 20);
+		Appointment fotball = new Appointment(sandra.getPersonalCalendar(), "Fotballtrening", Timestamp.valueOf("2015-04-20 18:00:00"), Timestamp.valueOf("2015-04-20 18:00:00"), 3, "Spille fotball", 20);
 		fotball.addParticipant(sandra);
 		fotball.addParticipant(thomas);
 		fotball.addParticipant(fredrik);

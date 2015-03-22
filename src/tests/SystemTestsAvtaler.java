@@ -43,7 +43,7 @@ public class SystemTestsAvtaler extends Database {
 		g1.addMember(u2);
 		g1.addMember(u3);		
 		r1 = new Room("Zoo2", 10, "Andre etasje");
-		Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
+		Appointment a1 = new Appointment(u1.getPersonalCalendar(), "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 		g1.getCalendar().addAppointment(a1);
 	}
 	
@@ -74,11 +74,11 @@ public class SystemTestsAvtaler extends Database {
 	public void testA1() throws Exception {
 		try {
 			setUp();
-			Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
+			Appointment a1 = new Appointment(u1.getPersonalCalendar(), "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 			int aid = a1.getAppointmentID();
 			u1.getPersonalCalendar().addAppointment(a1);
 			
-			Appointment a1Copy = new Appointment(aid, u1);
+			Appointment a1Copy = new Appointment(aid, u1.getPersonalCalendar());
 			assertNotNull(a1Copy);
 			assertEquals(a1, a1Copy);
 		}
@@ -93,7 +93,7 @@ public class SystemTestsAvtaler extends Database {
 		try {
 			setUp();
 			try {
-				Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 10:00:00"), 1, "Møte med forretningsforbindelser.", 10);
+				Appointment a1 = new Appointment(u1.getPersonalCalendar(), "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 10:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 				fail("Sluttidspunktet kan ikke være før starttidspunktet.");
 			}
 			catch (Exception e) {
@@ -133,9 +133,9 @@ public class SystemTestsAvtaler extends Database {
 	public void testA2b() throws Exception {
 		User u1 = new User("Per", "Olsen", "perOlsen", "pass", "per.olsen@mail.com");
 		Room r1 = new Room("Zoo2", 10, "Andre etasje");
-		Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
+		Appointment a1 = new Appointment(u1.getPersonalCalendar(), "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 		try {
-			Appointment a2 = new Appointment(u1, "Party", Timestamp.valueOf("2015-03-13 13:00:00"), Timestamp.valueOf("2015-03-13 15:00:00"), 1, "Kult party.", 10);
+			Appointment a2 = new Appointment(u1.getPersonalCalendar(), "Party", Timestamp.valueOf("2015-03-13 13:00:00"), Timestamp.valueOf("2015-03-13 15:00:00"), 1, "Kult party.", 10);
 				// Denne avtalen skal ikke kunne opprettes men denne kombinasjonen av tid og rom.
 				fail("Det ble ikke kastet en exception ved overlapp.");
 		}
@@ -152,7 +152,7 @@ public class SystemTestsAvtaler extends Database {
 		User u1 = new User("Per", "Olsen", "perOlsen", "pass", "per.olsen@mail.com");
 		User u2 = new User("Tor", "Nilsen", "torNilsen", "pass", "tor.nilsen@mail.com");
 		Room r1 = new Room("Zoo2", 10, "Andre etasje");
-		Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
+		Appointment a1 = new Appointment(u1.getPersonalCalendar(), "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 		int aid = a1.getAppointmentID();
 		a1.addParticipant(u2);
 		PreparedStatement ps = connect.prepareStatement("SELECT * FROM Invited WHERE User = \"torNilsen\" AND AppointmentID = ?");
@@ -167,7 +167,7 @@ public class SystemTestsAvtaler extends Database {
 	@Test
 	// A5d: 
 	public void testA5c() throws Exception {
-		Appointment a1 = new Appointment(u1, "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
+		Appointment a1 = new Appointment(u1.getPersonalCalendar(), "Møte", Timestamp.valueOf("2015-03-13 12:00:00"), Timestamp.valueOf("2015-03-13 14:00:00"), 1, "Møte med forretningsforbindelser.", 10);
 	}
 	
 	@Test
