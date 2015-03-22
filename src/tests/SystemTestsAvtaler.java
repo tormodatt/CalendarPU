@@ -18,7 +18,7 @@ import Appointment.Room;
 import calendar.Database;
 
 @SuppressWarnings("unused")
-public class SystemTestsAppointment extends Database {
+public class SystemTestsAvtaler extends Database {
 	
 	User u1;
 	User u2;

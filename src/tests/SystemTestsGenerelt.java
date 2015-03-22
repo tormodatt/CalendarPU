@@ -34,7 +34,7 @@ import calendar.Calendar;
  * GroupID: "-1"
  */
 
-public class SystemTestsGeneral {
+public class SystemTestsGenerelt {
 	
 	static User perOlsen;
 	static User torNilsen;
