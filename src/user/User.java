@@ -18,7 +18,8 @@ public class User extends Database{
 	public String mail; 
 
 	public Calendar personalCalendar; 
-	public ArrayList<Group> groups = new ArrayList<Group>();
+	public ArrayList<Group> adminGroups = new ArrayList<Group>();
+	public ArrayList<Group> memberGroups = new ArrayList<Group>();
 	public ArrayList<Notification> notifications = new ArrayList<Notification>();
 
 	private PreparedStatement preparedStatement = null;
@@ -42,7 +43,13 @@ public class User extends Database{
 				preparedStatement.setString(1, getUsername());
 				resultSet = preparedStatement.executeQuery();
 				while (resultSet.next()) {
-					groups.add(new Group(resultSet.getInt("GroupID"),this));
+					memberGroups.add(new Group(resultSet.getInt("GroupID"),this));
+				}
+				preparedStatement = connect.prepareStatement("select GroupID from `Group` WHERE Leader=?");
+				preparedStatement.setString(1, getUsername());
+				resultSet = preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					adminGroups.add(new Group(resultSet.getInt("GroupID"),this));
 				}
 				personalCalendar = new Calendar(this);
 			} finally {
@@ -82,8 +89,11 @@ public class User extends Database{
 	public Calendar getPersonalCalendar() {
 		return personalCalendar;
 	}
-	public ArrayList<Group> getGroups() {
-		return groups;
+	public ArrayList<Group> getAdminGroups() {
+		return adminGroups;
+	}
+	public ArrayList<Group> getMemberGroups() {
+		return memberGroups;
 	}
 
 	public void setCredencials(String firstname, String lastname, String username, String password, String mail) throws Exception {
@@ -193,9 +203,13 @@ public class User extends Database{
 		}		
 		this.mail = mail;
 	}
+	
+	public void addAdminGroup(Group group) {
+		adminGroups.add(group);
+	}
 
-	public void addGroup(Group group) throws Exception {
-		if (groups.contains(group)) {
+	public void addMemberGroup(Group group) throws Exception {
+		if (memberGroups.contains(group)) {
 			throw new IllegalArgumentException("Allerede medlem i gruppe"); 
 		} else {
 			try {
@@ -207,12 +221,16 @@ public class User extends Database{
 			} finally {
 				closeConn();
 			}
-			groups.add(group); 
+			memberGroups.add(group); 
 		}
 	}
+	
+	public void removeAdminGroup(Group group) {
+		adminGroups.remove(group);
+	}
 
-	public void removeGroup(Group group) throws Exception {
-		if (groups.contains(group)) {
+	public void removeMemberGroup(Group group) throws Exception {
+		if (memberGroups.contains(group)) {
 			try {
 				openConn();
 				preparedStatement = connect.prepareStatement("delete from Group_members where Username=? and GroupID=?");
@@ -222,7 +240,7 @@ public class User extends Database{
 			} finally {
 				closeConn();
 			}
-			groups.remove(group); 
+			memberGroups.remove(group); 
 		} else {
 			throw new IllegalArgumentException("Ikke medlem i gruppe");  
 		}

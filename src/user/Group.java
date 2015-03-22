@@ -2,6 +2,7 @@ package user;
 
 import java.util.ArrayList;
 
+import Appointment.Notification;
 import calendar.Calendar;
 import calendar.Database;
 
@@ -52,7 +53,7 @@ public class Group extends Database{
 			} finally {
 				closeConn();
 			}
-			this.calendar = new Calendar(this, name + " calendar"); //Lager evt. en metode senere, setCalendar(), tar inn navn fra bruker
+			this.calendar = new Calendar(this); //Lager evt. en metode senere, setCalendar(), tar inn navn fra bruker
 		} else {
 			 System.out.println("Group does not exist!");
 		}
@@ -132,34 +133,18 @@ public class Group extends Database{
 	}
 	
 	public void addMember(User user) throws Exception {
-		/*
-		try {
-			openConn();
-			preparedStatement = connect.prepareStatement("insert into Group_members (Username) values (?)");
-			preparedStatement.setString(1,user.getUsername());
-			preparedStatement.executeUpdate();
-		} finally {
-			closeConn();	
-		}
-		*/
+		new Notification("You've been added to a group", "You've been added to the group "+getName(), user);
 		members.add(user);
 	}
 	
 	
 	public void removeMember(User user) throws Exception {
-		try {
-			openConn();
-			preparedStatement = connect.prepareStatement("delete from Group_members (Username) values (?)");
-			preparedStatement.setString(1,user.getUsername());
-			preparedStatement.executeUpdate();
-		} finally {
-			closeConn();	
-		}
-		this.members.remove(user);
+		new Notification("You've been removed from a group", "You've been removed from the group "+getName(), user);
+		members.remove(user);
 	}
 	
 	public ArrayList<User> getMembers() {
-		return this.members;
+		return members;
 	}
 
 	
@@ -208,6 +193,10 @@ public class Group extends Database{
 	}
 	
 	public void deleteGroup() throws Exception {
+		for (int i = 0; i < members.size(); i++) {
+			members.get(i).removeMemberGroup(this);
+			new Notification("A group you are member of has been deleted","The group "+getName()+" that you are a member of has been deleted.",members.get(i));
+		}
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("delete from Appointment where CalendarID=?");

@@ -61,15 +61,19 @@ public class Appointment extends Database {
 	}
 
 	//Opprette avtale
-	public Appointment(User owner, String title, Timestamp start, Timestamp end, int priority, String description, int maxParticipants) throws Exception {
+	public Appointment(Calendar calendar, String title, Timestamp start, Timestamp end, int priority, String description, int maxParticipants) throws Exception {
 		try {
 			if(isValidTimestamp(start) && isValidTimestamp(end) && isValidTitle(title)){
 			}else throw new IllegalArgumentException("Either the time or the title is invalid");  
 
 			openConn();
 			preparedStatement = connect.prepareStatement("insert into Appointment values (default,?,?,?,?,?,?,?,?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
-			preparedStatement.setInt(1,owner.getPersonalCalendar().getCalendarID());
-			preparedStatement.setString(2,owner.getUsername());
+			preparedStatement.setInt(1,calendar.getCalendarID());
+			if (calendar.ownerIsGroup()) preparedStatement.setString(2, null);
+			else {
+				this.owner = calendar.getUser();
+				preparedStatement.setString(2,owner.getUsername());
+			}
 			preparedStatement.setString(3, title);
 			preparedStatement.setTimestamp(4,start);
 			preparedStatement.setTimestamp(5,end);
@@ -86,9 +90,8 @@ public class Appointment extends Database {
 		} finally {
 			closeConn();
 		}
-		this.calendar = owner.getPersonalCalendar();
+		this.calendar = calendar;
 		calendar.addAppointment(this);
-		this.owner = owner;
 		this.title = title;
 		this.start = start;
 		this.end = end;

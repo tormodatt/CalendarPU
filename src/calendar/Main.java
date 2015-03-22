@@ -7,6 +7,7 @@ import Appointment.RoomOverview;
 import user.Group;
 import user.User;
 import view.AgendaView;
+import view.UserView;
 import sun.security.krb5.internal.APOptions;
 import tests.*;
 import calendar.Calendar;
@@ -30,7 +31,7 @@ public class Main extends Database{
 	private ArrayList<Notification> unseenNotifications; 
 	private Appointment appointment;
 	private Group group;
-	private ArrayList<Appointment> appointments; 
+	private Calendar calendar;
 
 	private PreparedStatement preparedStatement = null;
 	private ResultSet resultSet = null;
@@ -114,7 +115,7 @@ public class Main extends Database{
 				System.out.println("Excecuted: "+unseenNotifications.get(i).getExcecuted()+"\n");
 			}
 			Scanner scan = new Scanner(System.in);
-			System.out.println("Press any key to continue...");
+			System.out.println("Press the enter to continue...");
 			scan.next();
 			user.setAllSeen(); 
 		}
@@ -150,23 +151,23 @@ public class Main extends Database{
 						"2. LastName\n"+
 						"3. Password\n"+
 						"4. Email\n");
-				int choice2 = scan.nextInt();
-				if (choice2==1) {
+				choice = scan.nextInt();
+				if (choice==1) {
 					System.out.println("Please enter a new firstname:");
 					String newvalue = scan.next();
 					user.updateFirstName(newvalue);
 					System.out.println("Your first name has been changed to " + newvalue+ "\n");
-				} else if (choice2==2) {
+				} else if (choice==2) {
 					System.out.println("Please enter a new lastname:");
 					String newvalue = scan.next();
 					user.updateLastName(newvalue);
 					System.out.println("Your last name has been changed to " + newvalue + "\n");
-				} else if (choice2==3) {
+				} else if (choice==3) {
 					System.out.println("Please enter a new password:");
 					String newvalue = scan.next();
 					user.updatePassword(newvalue);
 					System.out.println("Your password has been changed to " + newvalue + "\n");
-				} else if (choice2==4) {
+				} else if (choice==4) {
 					System.out.println("Please enter a new mail:");
 					String newvalue = scan.next();
 					user.updateMail(newvalue);
@@ -221,63 +222,59 @@ public class Main extends Database{
 				}
 			} else if (choice == 4) {
 				System.out.println("What do you want to: \n"+
-						"1. Show groups\n"+
-						"2. Create a new group\n" +
-						"3. Add member\n" +
-						"4. Remove member\n"+
-						"5. Delete group");
+						"1. Show the groups I'am the leader of\n"+
+						"2. Show the groups I'am member of\n"+
+						"3. Create a new group\n" +
+						"4. Add member\n" +
+						"5. Remove member\n"+
+						"6. Leave a group\n"+
+						"7. Delete a group");
 				choice = scan.nextInt(); scan.nextLine(); 
 				if (choice==1) {
-					showGroups(); 
+					showAdminGroups();
 				} else if (choice==2) {
-					createGroup();
+					showMemberGroups();
 				} else if (choice==3) {
-					selectUser();
-					selectGroup();     
-					System.out.println("The member will be added to the group");  
-					//					member.addGroup(group);
-					//					group.addMember(member);
+					createGroup();
 				} else if (choice==4) {
 					selectUser();
-					selectGroup();
-					System.out.println("this is not implemented yet. Sorry!2");
-					//					member.removeGroup(group);
-					//					group.removeMember(member);
+					selectAdminGroup();     
+					member.addMemberGroup(group);
+					group.addMember(member);
+					System.out.println("The user "+member.getUsername()+" was added to the group "+group.getName());  
 				} else if (choice==5) {
-					selectGroup();
+					selectUser();
+					selectAdminGroup();
+					member.removeMemberGroup(group);
+					group.removeMember(member);
+					System.out.println("The user "+member.getUsername()+" was removed from the group "+group.getName());  
+				} else if (choice==6) {
+					selectMemberGroup();
+					group.removeMember(user);
+					user.removeMemberGroup(group);
+					System.out.println("You have left the group "+group.getName());
+				} else if (choice==7) {
+					selectAdminGroup();
 					group.deleteGroup();
-					//må ikke gruppen slettes hos alle andre medlemmer og??
-					user.removeGroup(group);
+					user.removeAdminGroup(group);
 					System.out.println("The group has been deleted");
-				}
-				else {
+				} else {
 					System.out.println("Not valid chioce!");
 				}
 			} else if (choice == 5) {
 				flag1 = true;
-			} else if (choice == 6) {
-				//
-			} else if (choice == 7) {
-				//
-			}
-			else {
+			} else {
 				System.out.println("Not valid choice, try again!");
 			}
 		}
 	}
 
-	private void selectUser() {
-		System.out.println("to pick a user is not implemented yet. Sorry!");
-
-		/*TO DO: usersView()
-		users = getUsers();
+	private void selectUser() throws Exception {
+		System.out.println("All Users:");
+		UserView uv = new UserView();
 		System.out.println("Which user?");
-		for (int i = 0; i < users.size(); i++) {
-			System.out.println((i+1) + ": "+ users.get(i).getFirstname()+ " "+user.get(i).getLastname());
-		} 
-		Scanner scan = new Scanner(System.in);
-		member = users.get(scan.nextInt());
-		 */
+		Scanner input = new Scanner(System.in);
+		member = new User(uv.getUserNames().get(input.nextInt()-1));
 	}
 
 	private void selectAppointment()throws Exception {
@@ -294,9 +291,8 @@ public class Main extends Database{
 		appointment = appointments.get(answer -1);
 	}
 
-	private void selectGroup() throws Exception {
-		; 
-		ArrayList<Group> groups = user.getGroups();
+	private void selectAdminGroup() throws Exception {
+		ArrayList<Group> groups = user.getAdminGroups();
 		System.out.println("Please pick a group");
 		for (int i = 0; i < groups.size(); i++) {
 			System.out.println((i+1) + ": "+ groups.get(i).getName());
@@ -306,19 +302,40 @@ public class Main extends Database{
 		System.out.println("you have chosen " + group.getName());
 
 	}
+	
+	private void selectMemberGroup() throws Exception {
+		ArrayList<Group> groups = user.getMemberGroups();
+		System.out.println("Please pick a group");
+		for (int i = 0; i < groups.size(); i++) {
+			System.out.println((i+1) + ": "+ groups.get(i).getName());
+		} 
+		Scanner scan = new Scanner(System.in);
+		group = groups.get(scan.nextInt()-1);
+		System.out.println("you have chosen " + group.getName());
+
+	}
+	
+	private void selectCalendar() {
+		System.out.println("Select Calendar: \n1. Personal calendar");
+		ArrayList<Group> groups = user.getAdminGroups();
+		for (int i = 0; i < groups.size(); i++) {
+			System.out.println((i+2)+". "+groups.get(i) +"\t"+groups.get(i).getCalendar().getTitle());
+		}
+		Scanner input = new Scanner(System.in);
+		calendar = groups.get(input.nextInt()).getCalendar();
+	}
 
 	private void createGroup() throws Exception {
 		Scanner scan = new Scanner(System.in); 
 		System.out.println("Please enter prefered group name: ");
 		String groupName = scan.next(); 
 		Group newGroup = new Group(groupName, this.user); 
-		user.addGroup(newGroup);
-		newGroup.addMember(user);
+		user.addAdminGroup(newGroup);
 		System.out.println("Group created, you are the leader of the group.");		
 	}
 
-	private void showGroups() throws Exception {
-		ArrayList<Group> groups = user.getGroups();
+	private void showAdminGroups() throws Exception {
+		ArrayList<Group> groups = user.getAdminGroups();
 		if (groups.size() == 0) System.out.println("\nYou aren't part of any group yet!");
 		else {
 			System.out.println("\nGroups you are member of:");
@@ -327,27 +344,17 @@ public class Main extends Database{
 			}
 		}		
 	}
-
-	private void showAppointments() throws Exception { //MŒ gj¿res noe 
-		try {
-			openConn();
-			preparedStatement = connect.prepareStatement("select AppointmentID from Appointment WHERE CalendarID=?");
-			preparedStatement.setInt(1, this.user.getPersonalCalendar().getCalendarID());
-			resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				appointments.add(new Appointment(resultSet.getInt("AppointmentID"),user)); 
+	
+	private void showMemberGroups() throws Exception {
+		ArrayList<Group> groups = user.getMemberGroups();
+		if (groups.size() == 0) System.out.println("\nYou aren't part of any group yet!");
+		else {
+			System.out.println("\nGroups you are member of:");
+			for (int i = 0; i < groups.size(); i++) {
+				System.out.println((i+1) + ". "+groups.get(i).getName());
 			}
-		} finally {
-			closeConn();
-		}
-		System.out.println("What do you want to do?" + "\n" + "1. Cancel appointment" + "\n" 
-				+ "2. Change appointment information");
-		Scanner scan = new Scanner(System.in); 
-		//Fullf¿re her 
-
+		}		
 	}
-
-
 
 	private void showFreeRooms() throws Exception {
 		roomOverview = new RoomOverview(appointment.getStartTime(),appointment.getEndTime(),appointment.getMaxParticipants());
@@ -362,7 +369,7 @@ public class Main extends Database{
 	}
 
 	private void addAppointment() throws Exception {
-
+		selectCalendar();
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Please enter a title for your appointment:");
 		String title = scan.nextLine();
@@ -376,12 +383,9 @@ public class Main extends Database{
 		int maxParticipants = Integer.parseInt(scan.nextLine());  
 		System.out.println("Please enter a short description:");
 		String description = scan.nextLine();
-
-
-		appointment = new Appointment(this.user,title,Timestamp.valueOf(start),Timestamp.valueOf(end),priority,description,maxParticipants);
+		appointment = new Appointment(calendar,title,Timestamp.valueOf(start),Timestamp.valueOf(end),priority,description,maxParticipants);
 		System.out.println("Appointment added!"); 
 		System.out.println("Do you wan't to book a room now?\n1. Yes!\n2. No, I'll do that later");
-
 		int answer = scan.nextInt(); 
 		if (answer==1) {
 			booking(appointment);
@@ -413,13 +417,12 @@ public class Main extends Database{
 	public static void main(String[] args) throws Exception {
 		Main main = new Main();
 		while (true) {			
-			main.run(); //Logger inn med eksisterende bruker/oppretter ny
+			main.run();
 			if (main.mainflag == true) {
 				break;
 			}
-			main.notSeen(); //Sjekker invitasjoner/notifications 
-			//main.showCalendar(); //Visning av kalender 
-			main.showChoices(); //Viser liste med mulige valg
+			main.notSeen(); 
+			main.showChoices();
 		}
 	}
 

@@ -13,6 +13,7 @@ public class Calendar extends Database {
 	private String title;
 	private User user;
 	private Group group;
+	private boolean ownerIsGroup;
 
 	private ArrayList<Appointment> appointments = new ArrayList<Appointment>();
 
@@ -24,16 +25,20 @@ public class Calendar extends Database {
 		try {
 			if(isValidTitle(title)){
 				openConn();
-				preparedStatement = connect.prepareStatement("insert into Calendar (Title, Username, GroupID) values (?,?,null)");
+				preparedStatement = connect.prepareStatement("insert into Calendar (Title, Username, GroupID) values (?,?,null)",PreparedStatement.RETURN_GENERATED_KEYS);
 				preparedStatement.setString(1,title);
 				preparedStatement.setString(2,user.getUsername());
 				preparedStatement.executeUpdate();
+				if (resultSet.next()) {
+					this.calendarID = resultSet.getInt(1);
+				}
 			}else throw new IllegalArgumentException("The calendars title is not valid"); 
 		} finally {
 			closeConn();
 		}
 		this.user = user; 
 		this.title = title; 
+		ownerIsGroup = false;
 	}
 
 	//Opprette gruppekalender
@@ -42,16 +47,20 @@ public class Calendar extends Database {
 		try {
 			if(isValidTitle(title)){
 				openConn();
-				preparedStatement = connect.prepareStatement("insert into Calendar (Title, Username,GroupID) values (?,null,?)");
+				preparedStatement = connect.prepareStatement("insert into Calendar (Title, Username,GroupID) values (?,null,?)",PreparedStatement.RETURN_GENERATED_KEYS);
 				preparedStatement.setString(1,title);
 				preparedStatement.setInt(2,group.getGroupID());
 				preparedStatement.executeUpdate();
+				if (resultSet.next()) {
+					this.calendarID = resultSet.getInt(1);
+				}
 			}else throw new IllegalArgumentException("The title is not valid");
 		}finally {
 			closeConn();
 		}
 		this.group = group; 
 		this.title = title; 
+		ownerIsGroup = true;
 	}
 
 	//Hente personlig kalender
@@ -66,6 +75,7 @@ public class Calendar extends Database {
 				this.title = resultSet.getString("Title");
 			}
 			this.user = user;
+			ownerIsGroup = false;
 			setAppointments();
 		} finally {
 			closeConn();
@@ -88,6 +98,7 @@ public class Calendar extends Database {
 			closeConn();
 		}
 		this.group = group; 
+		ownerIsGroup = true;
 	}
 
 	public Calendar(int calendarID) throws Exception {
@@ -120,6 +131,10 @@ public class Calendar extends Database {
 	}
 	public Group getGroup() {
 		return group;
+	}
+	
+	public boolean ownerIsGroup() {
+		return ownerIsGroup;
 	}
 	
 	public ArrayList<Appointment> getAppointments() {
