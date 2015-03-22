@@ -24,10 +24,14 @@ public class Calendar extends Database {
 		try {
 			if(isValidTitle(title)){
 				openConn();
-				preparedStatement = connect.prepareStatement("insert into Calendar (Title, Username, GroupID) values (?,?,null)");
+				preparedStatement = connect.prepareStatement("insert into Calendar (Title, Username, GroupID) values (?,?,null)", PreparedStatement.RETURN_GENERATED_KEYS);
 				preparedStatement.setString(1,title);
 				preparedStatement.setString(2,user.getUsername());
 				preparedStatement.executeUpdate();
+				ResultSet rs = preparedStatement.getGeneratedKeys();
+				while (rs.next()) {
+					this.calendarID = rs.getInt(1);
+				}
 			}else throw new IllegalArgumentException("The calendars title is not valid"); 
 		} finally {
 			closeConn();

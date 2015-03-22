@@ -61,7 +61,7 @@ public class Room extends Database {
 
 
 	public Room(String roomName, int capacity, String location) throws Exception { // Konstruktør for å legge til et nytt rom i databasen
-		if(isValidName(roomName) && ! roomNameExists(roomName) && isValidLocation(location) && isValidCapasity(capacity)){
+		if(isValidName(roomName) && (! roomNameExists(roomName)) && isValidLocation(location) && isValidCapasity(capacity)){
 			setCredencials(roomName, capacity, location);
 			this.roomName = roomName;
 			this.capacity = capacity;
@@ -148,7 +148,7 @@ public class Room extends Database {
 			}
 			else return false; 
 		}
-		if (index < 3) return false; 
+		if (index < 2) return false; 
 		return true; 
 
 	}
