@@ -1,18 +1,37 @@
 package tests;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-import Appointment.Room;
+import user.Group;
+import user.User;
 import calendar.Database;
 
 public class TestSuperClass extends Database {
 	
 	protected void deleteUser(String username) throws Exception {
 		openConn();
-		PreparedStatement ps = connect.prepareStatement("DELETE FROM `User` WHERE `Username`=?;");
-		ps.setString(1, username);
-		ps.executeUpdate();
+		
+		int cid = -1;
+		PreparedStatement ps1 = connect.prepareStatement("SELECT `CalendarID` FROM `Calendar` WHERE `Username`=?");
+		ps1.setString(1, username);
+		ResultSet rs = ps1.executeQuery();
+		while (rs.next()) {
+			cid = rs.getInt(1);
+		}
+		
+		PreparedStatement ps2 = connect.prepareStatement("DELETE FROM `User` WHERE `Username`=?;");
+		ps2.setString(1, username);
+		ps2.executeUpdate();
+				
+		PreparedStatement ps3 = connect.prepareStatement("DELETE FROM `Calendar` WHERE `CalendarID`=?;");
+		ps3.setInt(1, cid);
+		ps3.executeUpdate();
 		closeConn();
+	}
+	
+	protected void deleteUser(User user) throws Exception {
+		deleteUser(user.getUsername());
 	}
 	
 	protected void deleteGroup(int groupID) throws Exception  {
@@ -21,6 +40,10 @@ public class TestSuperClass extends Database {
 		ps.setInt(1, groupID);
 		ps.executeUpdate();
 		closeConn();
+	}
+	
+	protected void deleteGroup(Group group) throws Exception {
+		deleteGroup(group.getGroupID());
 	}
 	
 	protected void deleteRoom(String romnavn) throws Exception  {
@@ -47,16 +70,18 @@ public class TestSuperClass extends Database {
 		closeConn();
 	}
 	
-	
 	public static void main(String[] args) throws Exception {
-		AppointmentTest a = new AppointmentTest();
-		// a.deleteUser("sandra");
-		// User sandra = new User("sandra");
-		// User sandra = new User("Sandra", "Buadu", "sandra", "pass", "sandra@gotmail.com");
-		// System.out.println(sandra.getPersonalCalendar().getCalendarID());
+		TestSuperClass a = new TestSuperClass();
+//		User u = new User("En", "Person", "enPerson", "pass", "en.person@mail.com");
+//		a.deleteUser("enPerson");
+//		System.out.println(u.getPersonalCalendar().getCalendarID());
 		
-		Room soverommet = new Room("soverommet", 2, "S2"); 
-		// a.deleteRoom("Kantinen");
+		User perOlsen = new User("Per", "Olsen", "perOlsen", "pass", "per.olsen@mail.com");
+		User torNilsen = new User("Tor", "Nilsen", "torNilsen", "pass", "tor.nilsen@mail.com");
+		Group gruppe1 = new Group("gruppe1", perOlsen);
+		Group gruppe2 = new Group("gruppe2", torNilsen);
+		Group gruppe3 = new Group("gruppe3", perOlsen);
+		
 	}
 	
 }
