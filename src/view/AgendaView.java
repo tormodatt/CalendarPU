@@ -55,9 +55,9 @@ public class AgendaView extends Database {
 		
 		ArrayList<Appointment> appointments = returnAgenda(); 
 
-		System.out.println("This weeks appointments:\n\nTitle\t\tStart\t\t\tEnd");
+		System.out.println("This weeks appointments:\n\n\tTitle\t\tStart\t\t\tEnd");
 		for (int i = 0; i < appointments.size(); i++) {
-			System.out.println(appointments.get(i).getTitle()+"\t\t"+appointments.get(i).getStartTime().toString().substring(0,16)+"\t"+appointments.get(i).getEndTime().toString().substring(0, 16));
+			System.out.println((i+1)+"\t"+appointments.get(i).getTitle()+"\t\t"+appointments.get(i).getStartTime().toString().substring(0,16)+"\t"+appointments.get(i).getEndTime().toString().substring(0, 16));
 		}
 	}
 	

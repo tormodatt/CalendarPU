@@ -29,8 +29,9 @@ public class Calendar extends Database {
 				preparedStatement.setString(1,title);
 				preparedStatement.setString(2,user.getUsername());
 				preparedStatement.executeUpdate();
-				if (resultSet.next()) {
-					this.calendarID = resultSet.getInt(1);
+				ResultSet rs = preparedStatement.getGeneratedKeys();
+				while (rs.next()) {
+					this.calendarID = rs.getInt(1);
 				}
 			}else throw new IllegalArgumentException("The calendars title is not valid"); 
 		} finally {
@@ -51,6 +52,7 @@ public class Calendar extends Database {
 				preparedStatement.setString(1,title);
 				preparedStatement.setInt(2,group.getGroupID());
 				preparedStatement.executeUpdate();
+				resultSet = preparedStatement.getGeneratedKeys();
 				if (resultSet.next()) {
 					this.calendarID = resultSet.getInt(1);
 				}
@@ -84,6 +86,9 @@ public class Calendar extends Database {
 
 	//Hente gruppekalender
 	public Calendar(Group group) throws Exception {
+		this.group = group; 
+		this.user = group.getLeader();
+		ownerIsGroup = true;
 		try {
 			openConn();
 			preparedStatement = connect.prepareStatement("select * from Calendar WHERE GroupID=?");
@@ -97,8 +102,6 @@ public class Calendar extends Database {
 		} finally {
 			closeConn();
 		}
-		this.group = group; 
-		ownerIsGroup = true;
 	}
 
 	public Calendar(int calendarID) throws Exception {
@@ -147,7 +150,7 @@ public class Calendar extends Database {
 		preparedStatement.setInt(1, getCalendarID());
 		resultSet = preparedStatement.executeQuery();
 		while (resultSet.next()) {
-			this.appointments.add(new Appointment(resultSet.getInt("AppointmentID"),getUser()));
+			this.appointments.add(new Appointment(resultSet.getInt("AppointmentID"),this));
 		}
 	}
 	

@@ -7,6 +7,7 @@ import Appointment.RoomOverview;
 import user.Group;
 import user.User;
 import view.AgendaView;
+import view.AppointmentView;
 import view.UserView;
 import sun.security.krb5.internal.APOptions;
 import tests.*;
@@ -138,11 +139,17 @@ public class Main extends Database{
 				AgendaView av = new AgendaView(user);
 				boolean exit = false;
 				while (!exit){
-					System.out.println("\n1. Next week\n2. Previous week\n3. Exit view");
+					System.out.println("\n1. Next week\n2. Previous week\n3. View details of an appointment\n4. Exit view");
 					choice = scan.nextInt();
 					if (choice==1) av.nextWeek();
 					else if (choice==2) av.previousWeek();
-					else if (choice==3) exit=true;
+					else if (choice==3) {
+						System.out.println("Which appointment?");
+						choice = scan.nextInt();
+						AppointmentView apv = new AppointmentView(av.returnAgenda().get(choice-1));
+						System.out.println(apv.viewAppointment());
+					}
+					else if (choice==4) exit=true;
 					else System.out.println("Not a valid choice! Try again...");
 				}
 			} else if (choice==2) {
